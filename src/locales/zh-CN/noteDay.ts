@@ -1,0 +1,20 @@
+export default {
+  'note.day.label.title': '标题',
+  'note.day.label.start.date': '开始日期',
+  'note.day.label.end.date': '结束日期',
+  'note.day.label.date.range': '起止日期',
+  'note.day.label.repeatType': '间隔周期',
+  'note.day.label.interval': '间隔周期数',
+  'note.day.label.repeatDescription': '执行频率',
+  'note.day.label.nextDate': '下次执行',
+  'note.day.label.countDown': '倒计时（天）',
+  'note.day.label.totalCount': '总次数',
+  'note.day.label.runCount': '已执行次数',
+  'note.day.label.remainCount': '剩余次数',
+
+  'note.day.add.type': '类型',
+  'note.day.add.type1': '单次',
+  'note.day.add.type2': '多次',
+  'note.day.run': '执行',
+  'note.day.recall': '撤回',
+};
