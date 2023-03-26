@@ -57,7 +57,7 @@ export default ({ type, actionRef }) => {
       }
     } else if (action === 2) {
       // 数字类型的校验存在问题, antd bug
-      if (currentRow.creditLimit) currentRow.creditLimit = currentRow.creditLimit.toString();
+      if (currentRow.balance) currentRow.balance = currentRow.balance.toString();
       setInitialValues({...currentRow});
     }
   }, [action, type, currentRow]);
@@ -92,7 +92,7 @@ export default ({ type, actionRef }) => {
     <>
       <MyModalForm
         title={title()}
-        labelWidth={80}
+        labelWidth={85}
         request={requestHandler}
         onSuccess={successHandler}
         initialValues={initialValues}
@@ -117,39 +117,20 @@ export default ({ type, actionRef }) => {
           disabled={action === 2}
           name="balance"
           label={t('account.label.balance')}
-          rules={action !== 2 ? amountRequiredRules() : null}
+          rules={amountRequiredRules()}
         />
         {
-          type === 'CREDIT' &&
-          <ProFormText
-            name="creditLimit"
-            label={t('account.label.credit.limit')}
-            rules={amountRequiredRules()}
-          />
-        }
-        {
-          type === 'DEBT' &&
+          (type === 'CREDIT' || type === 'DEBT') &&
           <ProFormText
             name="creditLimit"
             label={t('account.label.credit.limit')}
           />
         }
         {
-          type === 'CREDIT' &&
+          (type === 'CREDIT' || type === 'DEBT') &&
           <ProFormSelect
             name="billDay"
-            label={t('account.label.bill.day')}
-            fieldProps={{
-              options: Array(31).fill(0).map((_, i) => {return { label: i+1, value: i+1 }}),
-              showSearch: true
-            }}
-          />
-        }
-        {
-          type === 'DEBT' &&
-          <ProFormSelect
-            name="billDay"
-            label={t('account.label.bill.day.debt')}
+            label={type === 'CREDIT' ? t('account.label.bill.day') : t('account.label.bill.day.debt')}
             fieldProps={{
               options: Array(31).fill(0).map((_, i) => {return { label: i+1, value: i+1 }}),
               showSearch: true
