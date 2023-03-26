@@ -2,14 +2,8 @@ import { Button, message, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max';
-import {
-  query,
-  remove,
-  toggle,
-  toggleCanExpense,
-  toggleCanIncome,
-  toggleCanTransfer,
-} from '@/services/tag';
+import { query, remove, toggle } from '@/services/common';
+import { toggleCanExpense, toggleCanIncome, toggleCanTransfer } from '@/services/tag';
 import { useMsg } from '@/utils/hooks';
 import { tableProp } from '@/utils/prop';
 import MySwitch from '@/components/MySwitch';
@@ -44,7 +38,7 @@ export default () => {
     Modal.confirm({
       title: messageConfirm,
       onOk: async () => {
-        await remove(record.id);
+        await remove('tags', record.id);
         successHandler();
       },
     });
@@ -74,7 +68,7 @@ export default () => {
       render: (_, record) => (
         <MySwitch
           value={record.enable}
-          request={() => toggle(record.id)}
+          request={() => toggle('tags', record.id)}
           onSuccess={successHandler}
         />
       ),
@@ -162,7 +156,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={query}
+      request={ () => query('tags') }
       actionRef={tagActionRef}
     />
   );

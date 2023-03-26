@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import { useModel } from '@umijs/max';
 import {ProFormText} from '@ant-design/pro-components';
 import {requiredRules} from "@/utils/rules";
-import {update} from "@/services/tag-relation";
+import { update } from "@/services/common";
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
 
@@ -22,7 +22,7 @@ export default ({ flow }) => {
   }
 
   const requestHandler = async (values) => {
-    await update(currentRow.id, values);
+    await update('tag-relations', currentRow.id, values);
   }
 
   return (

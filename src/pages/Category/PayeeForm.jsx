@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import { useModel } from '@umijs/max';
 import {ProFormSwitch, ProFormText, ProFormTextArea} from '@ant-design/pro-components';
-import { create, update } from '@/services/payee';
+import { create, update } from '@/services/common';
 import {requiredRules} from "@/utils/rules";
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
@@ -29,9 +29,9 @@ export default () => {
 
   const requestHandler = async (values) => {
     if (action === 1) {
-      await create(values);
+      await create('payees', values);
     } else if (action === 2) {
-      await update(currentRow.id, values);
+      await update('payees', currentRow.id, values);
     }
   }
 

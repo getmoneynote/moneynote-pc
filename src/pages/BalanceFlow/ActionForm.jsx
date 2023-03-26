@@ -12,11 +12,7 @@ import {
 import { useModel, useRequest } from '@umijs/max';
 import moment from 'moment';
 import { isEqual } from '@/utils/util';
-import { create, update } from '@/services/flow';
-import { getAll as getAllAccount } from '@/services/account';
-import { getAll as getAllPayee } from '@/services/payee';
-import { getAll as getAllCategory } from '@/services/category';
-import { getAll as getAllTag } from '@/services/tag';
+import { getAll, create, update } from '@/services/common';
 import { treeSelectSingleProp, treeSelectMultipleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
@@ -29,7 +25,7 @@ export default () => {
   const { action, currentRow, visible } = useModel('modal');
   const [tabKey, setTabKey] = useState('EXPENSE');
 
-  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(getAllAccount, { manual: true });
+  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
   const accountOptions = useMemo(() => {
     switch (tabKey) {
       case 'EXPENSE':
@@ -41,7 +37,7 @@ export default () => {
     }
   }, [tabKey, accounts]);
 
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(getAllPayee, { manual: true });
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees'), { manual: true });
   const payeeOptions = useMemo(() => {
     if (tabKey === 'EXPENSE') {
       return payees.filter(i => i.canExpense);
@@ -51,7 +47,7 @@ export default () => {
     }
   }, [tabKey, payees]);
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(getAllCategory, { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
   const categoryOptions = useMemo(() => {
     if (tabKey === 'EXPENSE') {
       return categories.filter(i => i.canExpense);
@@ -61,7 +57,7 @@ export default () => {
     }
   }, [tabKey, categories]);
 
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(getAllTag, { manual: true });
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags'), { manual: true });
   const tagOptions = useMemo(() => {
     switch (tabKey) {
       case 'EXPENSE':
@@ -196,7 +192,7 @@ export default () => {
   const requestHandler = async (values) => {
     if (values.tags) values.tags = values.tags.map((i) => i?.value || i);
     if (action !== 2) {
-      await create(values);
+      await create('balance-flows', values);
     } else {
       //优化
       if (isEqual(currentRow.categories, values.categories)) {
@@ -210,7 +206,7 @@ export default () => {
       ) {
         delete values.tags;
       }
-      await update(currentRow.id, values);
+      await update('balance-flows', currentRow.id, values);
     }
   };
 

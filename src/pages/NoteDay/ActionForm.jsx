@@ -8,7 +8,7 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import moment from 'moment';
-import { create, update } from '@/services/note-day';
+import { create, update } from '@/services/common';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
@@ -41,10 +41,13 @@ export default () => {
   };
 
   const requestHandler = async (values) => {
+    if (type === 0) {
+      values.repeatType = 0;
+    }
     if (action !== 2) {
-      await create(values);
+      await create('note-days', values);
     } else {
-      await update(currentRow.id, values);
+      await update('note-days', currentRow.id, values);
     }
   };
 
@@ -70,7 +73,6 @@ export default () => {
             },
           ]}
           fieldProps={{
-            disabled: action === 2,
             value: type,
             optionType: 'button',
             buttonStyle: 'solid',

@@ -11,7 +11,7 @@ export const errorConfig = {
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': localStorage.getItem('accessToken') ? 'Bearer ' + localStorage.getItem('accessToken') : '',
+    'Authorization': `Bearer ${localStorage.getItem("accessToken") ?? ''}`,
   },
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
   // 错误处理： umi@3 的错误处理方案。

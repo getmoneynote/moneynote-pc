@@ -4,12 +4,8 @@ import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import {useModel, useRequest} from '@umijs/max';
 import moment from 'moment';
-import { confirm, query, remove, statistics } from '@/services/flow';
-import { getAll as getAllAccount } from '@/services/account';
-import { getAll as getAllPayee } from '@/services/payee';
-import { getAll as getAllCategory } from '@/services/category';
-import { getAll as getAllTag } from '@/services/tag';
-import { getAll as getAllBook } from '@/services/book';
+import { confirm, statistics } from '@/services/flow';
+import { getAll, query, remove } from '@/services/common';
 import { useMsg } from '@/utils/hooks';
 import { selectSearchProp, tableProp, treeSelectMultipleProp } from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
@@ -24,11 +20,11 @@ export default () => {
   const { show } = useModel('modal');
   const { successMsg } = useMsg();
 
-  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(getAllAccount, { manual: true });
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(getAllCategory, { manual: true });
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(getAllTag, { manual: true });
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(getAllPayee, { manual: true });
-  const { data : books = [], loading : booksLoading} = useRequest(getAllBook);
+  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags'), { manual: true });
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees'), { manual: true });
+  const { data : books = [], loading : booksLoading} = useRequest(() => getAll('books'));
 
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
 
@@ -68,7 +64,7 @@ export default () => {
     Modal.confirm({
       title: record.confirm ? messageDeleteConfirmBalance : messageDeleteConfirm,
       onOk: async () => {
-        await remove(record.id);
+        await remove('balance-flows', record.id);
         successHandler();
       },
     });
@@ -355,9 +351,9 @@ export default () => {
   }
 
   function extraRender() {
-    const total1 = t('flow.total.expense') + ': ' + statisticsData[0];
-    const total2 = t('flow.total.income') + ': ' + statisticsData[1];
-    const total3 = t('flow.total.surplus') + ': ' + statisticsData[2];
+    const total1 = `${t('flow.total.expense')}: ${statisticsData[0]}`;
+    const total2 = `${t('flow.total.income')}: ${statisticsData[1]}`;
+    const total3 = `${t('flow.total.surplus')}: ${statisticsData[2]}`;
     const message = (
       <span>
         {total1}&nbsp;&nbsp;&nbsp;&nbsp;{total2}&nbsp;&nbsp;&nbsp;&nbsp;{total3}
@@ -387,7 +383,7 @@ export default () => {
           statistics(params).then((res) => {
             setStatisticsData(res.data);
           });
-          return query({ ...params, ...{ sort: tableSortFormat(sort) } });
+          return query('balance-flows', { ...params, ...{ sort: tableSortFormat(sort) } });
         }}
       />
     </>

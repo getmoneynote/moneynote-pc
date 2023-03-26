@@ -1,14 +1,13 @@
 import {Button} from "antd";
 import { ProTable } from '@ant-design/pro-components';
-import {useIntl, useModel} from "@umijs/max";
-import { query } from '@/services/templates';
+import { useModel } from "@umijs/max";
+import { query } from '@/services/common';
 import { tableProp } from '@/utils/prop';
 import CopyForm from './CopyForm';
 import t from '@/utils/i18n';
 
 export default () => {
 
-  const intl = useIntl();
   const { show } = useModel('modal');
 
   const copyHandler = (record) => {
@@ -52,7 +51,7 @@ export default () => {
       {...tableProp}
       search={false}
       columns={columns}
-      request={query}
+      request={ () => query('book-templates') }
     />
   );
 };

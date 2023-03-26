@@ -1,8 +1,7 @@
 import {useEffect, useState} from "react";
 import {useModel, useRequest} from '@umijs/max';
 import {ProFormText, ProFormTextArea, ProFormSelect, ProFormSwitch} from '@ant-design/pro-components';
-import {create, update} from '@/services/account';
-import {getAll as getAllCurrency} from "@/services/currency";
+import {create, getAll, update} from '@/services/common';
 import {amountRequiredRules, requiredRules} from "@/utils/rules";
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
@@ -12,7 +11,7 @@ export default ({ type, actionRef }) => {
   const { action, currentRow, visible } = useModel('modal');
   const { initialState } = useModel('@@initialState');
 
-  const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(getAllCurrency, { manual: true });
+  const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(() => getAll('currencies'), { manual: true });
   useEffect(() => {
     if (visible) {
       loadCurrencies();
@@ -38,7 +37,7 @@ export default ({ type, actionRef }) => {
           setInitialValues({
             ...initialValues,
             canIncome: false,
-            canTransferTo: false,
+            canTransferFrom: false,
           });
           break;
         case 'ASSET':
@@ -69,9 +68,9 @@ export default ({ type, actionRef }) => {
 
   const requestHandler = async (values) => {
     if (action === 1) {
-      await create({ ...values, ...{ type: type } });
+      await create('accounts', { ...values, ...{ type: type } });
     } else if (action === 2) {
-      await update(currentRow.id, values);
+      await update('accounts', currentRow.id, values);
     }
   }
 
@@ -79,19 +78,14 @@ export default ({ type, actionRef }) => {
     let title = action === 1 ? t('add') : t('update');
     switch (type) {
       case 'CHECKING':
-        title += t('checking.account');
-        break;
+        return title + t('checking.account');
       case 'CREDIT':
-        title += t('credit.account');
-        break;
+        return title + t('credit.account');
       case 'ASSET':
-        title += t('asset.account');
-        break;
+        return title + t('asset.account');
       case 'DEBT':
-        title += t('debt.account');
-        break;
+        return title + t('debt.account');
     }
-    return title;
   }
 
   return (
@@ -131,7 +125,6 @@ export default ({ type, actionRef }) => {
             name="creditLimit"
             label={t('account.label.credit.limit')}
             rules={amountRequiredRules()}
-            colProps={{ xl: 12 }}
           />
         }
         {
@@ -139,7 +132,6 @@ export default ({ type, actionRef }) => {
           <ProFormText
             name="creditLimit"
             label={t('account.label.credit.limit')}
-            colProps={{ xl: 12 }}
           />
         }
         {
@@ -147,7 +139,17 @@ export default ({ type, actionRef }) => {
           <ProFormSelect
             name="billDay"
             label={t('account.label.bill.day')}
-            colProps={{ xl: 12 }}
+            fieldProps={{
+              options: Array(31).fill(0).map((_, i) => {return { label: i+1, value: i+1 }}),
+              showSearch: true
+            }}
+          />
+        }
+        {
+          type === 'DEBT' &&
+          <ProFormSelect
+            name="billDay"
+            label={t('account.label.bill.day.debt')}
             fieldProps={{
               options: Array(31).fill(0).map((_, i) => {return { label: i+1, value: i+1 }}),
               showSearch: true
@@ -159,7 +161,6 @@ export default ({ type, actionRef }) => {
           <ProFormText
             name="apr"
             label={t('account.label.apr')}
-            colProps={{ xl: 12 }}
           />
         }
         <ProFormText name="no" label={t('account.label.no')} />

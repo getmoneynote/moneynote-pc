@@ -6,7 +6,7 @@ import {
   ProFormTextArea,
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
-import {create, query, update} from '@/services/tag';
+import {create, query, update} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
@@ -37,9 +37,9 @@ export default () => {
 
   const requestHandler = async (values) => {
     if (action === 1) {
-      await create(values);
+      await create('tags', values);
     } else if (action === 2) {
-      await update(currentRow.id, values);
+      await update('tags', currentRow.id, values);
     }
   };
 
@@ -55,7 +55,7 @@ export default () => {
         name="pId"
         label={t('label.parent.tag')}
         request={async () => {
-          const response = await query({ enable: true });
+          const response = await query('tags', { enable: true });
           return response.data;
         }}
         fieldProps={{

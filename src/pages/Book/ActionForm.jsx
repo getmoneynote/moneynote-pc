@@ -7,10 +7,7 @@ import {
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
 import MyModalForm from '@/components/MyModalForm';
-import { create, update } from '@/services/book';
-import {getAll as getAllCurrency} from "@/services/currency";
-import {getAll as getAllAccount} from "@/services/account";
-import {getAll as getAllCategory} from "@/services/category";
+import { create, update, getAll } from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import t from '@/utils/i18n';
@@ -22,9 +19,9 @@ export default () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { action, currentRow, visible } = useModel('modal');
 
-  const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(getAllCurrency, { manual: true });
-  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(getAllAccount, { manual: true });
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(getAllCategory, { manual: true });
+  const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(() => getAll('currencies'), { manual: true });
+  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
 
   useEffect(() => {
     if (visible) {
@@ -66,9 +63,9 @@ export default () => {
 
   const requestHandler = async (values) => {
     if (action !== 2) {
-      await create(values);
+      await create('books', values);
     } else {
-      await update(currentRow.id, values);
+      await update('books', currentRow.id, values);
     }
   };
 

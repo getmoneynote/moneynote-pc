@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ProFormText, ProFormTextArea, ProFormTreeSelect } from '@ant-design/pro-components';
 import {useModel} from '@umijs/max';
 import MyModalForm from '@/components/MyModalForm';
-import {create, update, query} from '@/services/category';
+import {create, update, query} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import t from '@/utils/i18n';
@@ -28,14 +28,14 @@ export default ({ type, actionRef }) => {
 
   const requestHandler = async (values) => {
     if (action === 1) {
-      await create({...values, ...{ type: type }});
+      await create('categories', {...values, ...{ type: type }});
     } else if (action === 2) {
-      await update(currentRow.id, values);
+      await update('categories', currentRow.id, values);
     }
   };
 
   const requestSelectData = async () => {
-    const response = await query({
+    const response = await query('categories', {
       type: type,
       enable: true
     });

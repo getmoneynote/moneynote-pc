@@ -16,7 +16,7 @@ export async function register(data) {
 
 export async function changePassword(data) {
   return request('changePassword', {
-    method: 'POST',
+    method: 'PATCH',
     data: data,
   });
 }
@@ -28,7 +28,7 @@ export async function getInitState() {
 }
 
 export async function setDefaultBook(id) {
-  return request('setDefaultBook/' + id, {
-    method: 'PUT',
+  return request(`setDefaultBook/${id}`, {
+    method: 'PATCH',
   });
 }

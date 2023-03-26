@@ -3,7 +3,8 @@ import { useIntl, useModel } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import moment from 'moment';
-import { query, recall, remove, runOnce } from '@/services/note-day';
+import { query, remove } from '@/services/common'
+import { recall, runOnce } from '@/services/note-day';
 import { useMsg } from '@/utils/hooks';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
@@ -37,7 +38,7 @@ export default () => {
     Modal.confirm({
       title: messageDeleteConfirm,
       onOk: async () => {
-        await remove(record.id);
+        await remove('note-days', record.id);
         successHandler();
       },
     });
@@ -151,7 +152,7 @@ export default () => {
           expandedRowRender: (record) => expandedRowRender(record),
           rowExpandable: (record) => expandedRowRender(record),
         }}
-        request={query}
+        request={ () => query('note-days') }
       />
     </>
   );

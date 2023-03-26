@@ -2,7 +2,7 @@ import { Button, message, Modal } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
-import { query, remove, toggle } from '@/services/book';
+import { query, remove, toggle } from '@/services/common';
 import { setDefaultBook } from '@/services/user';
 import { useMsg } from '@/utils/hooks';
 import MySwitch from '@/components/MySwitch';
@@ -39,7 +39,7 @@ export default () => {
     Modal.confirm({
       title: messageConfirm,
       onOk: async () => {
-        await remove(record.id);
+        await remove('books', record.id);
         successHandler();
       },
     });
@@ -101,7 +101,7 @@ export default () => {
         <MySwitch
           disabled={initialState.currentBook.id === record.id}
           value={record.enable}
-          request={() => toggle(record.id)}
+          request={() => toggle('books', record.id)}
           onSuccess={successHandler}
         />
       ),
@@ -167,7 +167,7 @@ export default () => {
           expandedRowRender: (record) => expandedRowRender(record),
           rowExpandable: (record) => expandedRowRender(record),
         }}
-        request={query}
+        request={() => query('books')}
       />
     </>
   );

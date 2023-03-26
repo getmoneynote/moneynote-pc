@@ -3,12 +3,9 @@ import {Alert, Button, Form, Input, message, Modal, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max';
-import moment from 'moment';
+import { query, remove, toggle } from '@/services/common';
 import {
-  query,
-  remove,
   statistics,
-  toggle,
   toggleCanExpense,
   toggleCanIncome,
   toggleCanTransferFrom,
@@ -44,7 +41,7 @@ export default ({ type, actionRef }) => {
     Modal.confirm({
       title: messageDeleteConfirm,
       onOk: async () => {
-        await remove(record.id);
+        await remove('accounts', record.id);
         successHandler();
       },
     });
@@ -118,17 +115,6 @@ export default ({ type, actionRef }) => {
       ]);
     }
 
-    if (type === 'ASSET') {
-      columns = columns.concat([
-        {
-          title: t('account.label.asOfDate'),
-          dataIndex: 'asOfDate',
-          render: (value) => moment(value).format('YYYY-MM-DD'),
-          hideInSearch: true,
-        },
-      ]);
-    }
-
     if (type === 'DEBT') {
       columns = columns.concat([
         {
@@ -145,6 +131,11 @@ export default ({ type, actionRef }) => {
         {
           title: t('account.label.apr'),
           dataIndex: 'apr',
+          hideInSearch: true,
+        },
+        {
+          title: t('account.label.bill.day.debt'),
+          dataIndex: 'billDay',
           hideInSearch: true,
         },
       ]);
@@ -260,7 +251,7 @@ export default ({ type, actionRef }) => {
         render: (_, record) => (
           <MySwitch
             value={record.enable}
-            request={() => toggle(record.id)}
+            request={() => toggle('accounts', record.id)}
             onSuccess={successHandler}
           />
         ),
@@ -289,10 +280,10 @@ export default ({ type, actionRef }) => {
   }
 
   function extraRender() {
-    let message = t('total.balance') + ': ' + statisticsData[0];
+    let message = `${t('total.balance')}: ${statisticsData[0]}`;
     if (type === 'CREDIT' || type === 'DEBT') {
-      const totalLimit = t('total.limit') + ': ' + statisticsData[1];
-      const totalRemain = t('total.remain.limit') + ': ' + statisticsData[2];
+      const totalLimit = `${t('total.limit')}: ${statisticsData[1]}`;
+      const totalRemain = `${t('total.remain.limit')}: ${statisticsData[2]}`;
       message = (
         <span>
           {message}&nbsp;&nbsp;&nbsp;&nbsp;{totalLimit}&nbsp;&nbsp;&nbsp;&nbsp;{totalRemain}
@@ -366,7 +357,7 @@ export default ({ type, actionRef }) => {
           statistics(params).then((res) => {
             setStatisticsData(res.data);
           });
-          return query({ ...params, ...{ sort: tableSortFormat(sort) } });
+          return query('accounts', { ...params, ...{ sort: tableSortFormat(sort) } });
         }}
       />
     </>

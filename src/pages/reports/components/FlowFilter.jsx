@@ -9,17 +9,15 @@ import {
 import { useRequest } from "@umijs/max";
 import moment from 'moment/moment';
 import { selectSearchProp, treeSelectMultipleProp } from '@/utils/prop';
-import { getAll as getAllPayee } from '@/services/payee';
-import { getAll as getAllCategory } from '@/services/category';
-import { getAll as getAllTag } from '@/services/tag';
+import { getAll } from '@/services/common';
 import t from '@/utils/i18n';
 
 
 export default ({ type, cat, run }) => {
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(getAllCategory, { manual: true });
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(getAllTag, { manual: true });
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(getAllPayee, { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags'), { manual: true });
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees'), { manual: true });
 
   return (
     <Card>

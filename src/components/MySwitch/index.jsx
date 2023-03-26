@@ -2,8 +2,8 @@ import {Switch} from "antd";
 
 export default ({ value, request, disabled = false, onSuccess }) => {
 
-  const changeHandler = () => {
-    request();
+  const changeHandler = async () => {
+    await request();
     onSuccess();
   }
 
