@@ -230,6 +230,11 @@ export default () => {
       },
     },
     {
+      title: t('label.notes'),
+      dataIndex: 'notes',
+      hideInTable: true,
+    },
+    {
       title: t('operation'),
       align: 'center',
       width: 160,
