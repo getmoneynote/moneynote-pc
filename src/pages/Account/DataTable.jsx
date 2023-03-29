@@ -56,7 +56,7 @@ export default ({ type, actionRef }) => {
   };
 
   const adjustHandler = (record) => {
-    show(<AdjustForm actionRef={actionRef} />, 3, record);
+    show(<AdjustForm actionRef={actionRef} />, 1, record);
   };
 
   function columnRender() {

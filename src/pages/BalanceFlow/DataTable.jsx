@@ -10,6 +10,7 @@ import { useMsg } from '@/utils/hooks';
 import { selectSearchProp, tableProp, treeSelectMultipleProp } from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
+import AdjustForm from '../Account/AdjustForm';
 import TagForm from './TagForm';
 import t from '@/utils/i18n';
 
@@ -42,7 +43,11 @@ export default () => {
   }
 
   const updateHandler = (record) => {
-    show(<ActionForm />, 2, record);
+    if (record.type === 'ADJUST') {
+      show(<AdjustForm actionRef={actionRef} />, 2, record);
+    } else {
+      show(<ActionForm />, 2, record);
+    }
   };
 
   const refundHandler = (record) => {
@@ -325,22 +330,12 @@ export default () => {
       );
     }
     let currencyItem = null;
-    if (record.type === 'EXPENSE' || record.type === 'INCOME') {
-      if (record.account.currencyCode !== record.book.defaultCurrencyCode) {
-        currencyItem = (
-          <span>
-            {t('convertCurrency') + record.book.defaultCurrencyCode}: {record.convertedAmount}
-          </span>
-        );
-      }
-    } else if (record.type === 'TRANSFER') {
-      if (record.account.currencyCode !== record.to.currencyCode) {
-        currencyItem = (
-          <span>
-            {t('convertCurrency') + record.to.currencyCode}: {record.convertedAmount}
-          </span>
-        );
-      }
+    if (record.needConvert) {
+      currencyItem = (
+        <span>
+          {t('convertCurrency') + record.convertCode}: {record.convertedAmount}
+        </span>
+      );
     }
     if (notesItem || currencyItem) {
       return (

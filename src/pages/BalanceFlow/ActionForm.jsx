@@ -34,6 +34,8 @@ export default () => {
         return accounts.filter(i => i.canIncome);
       case 'TRANSFER':
         return accounts.filter(i => i.canTransferFrom);
+      default:
+        return accounts;
     }
   }, [tabKey, accounts]);
 
@@ -242,6 +244,9 @@ export default () => {
           break;
         case 'TRANSFER':
           title += t('transfer');
+          break;
+        case 'ADJUST':
+          title += t('adjust.balance');
           break;
       }
       return title;

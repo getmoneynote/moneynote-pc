@@ -39,9 +39,16 @@ export async function toggleCanTransferTo(id) {
   });
 }
 
-export async function adjust(id, data) {
+export async function createAdjust(id, data) {
   return request(`${prefix}/${id}/adjust`, {
     method: 'POST',
+    data: data,
+  });
+}
+
+export async function updateAdjust(id, data) {
+  return request(`${prefix}/${id}/adjust`, {
+    method: 'PUT',
     data: data,
   });
 }
