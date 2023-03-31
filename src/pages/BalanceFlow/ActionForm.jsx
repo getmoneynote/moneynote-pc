@@ -24,6 +24,13 @@ export default () => {
   const { initialState } = useModel('@@initialState');
   const { action, currentRow, visible } = useModel('modal');
   const [tabKey, setTabKey] = useState('EXPENSE');
+  const [currentBook, setCurrentBook] = useState(initialState.currentBook);
+  // 确保每次新增都是默认账单，修复先点击复制，之后再新增，遗留之前的数据。
+  useEffect(() => {
+    if (visible) {
+      setCurrentBook(initialState.currentBook);
+    }
+  }, [visible]);
 
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
   const accountOptions = useMemo(() => {
@@ -39,7 +46,7 @@ export default () => {
     }
   }, [tabKey, accounts]);
 
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees'), { manual: true });
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees', currentBook.id), { manual: true });
   const payeeOptions = useMemo(() => {
     if (tabKey === 'EXPENSE') {
       return payees.filter(i => i.canExpense);
@@ -49,7 +56,7 @@ export default () => {
     }
   }, [tabKey, payees]);
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories', currentBook.id), { manual: true });
   const categoryOptions = useMemo(() => {
     if (tabKey === 'EXPENSE') {
       return categories.filter(i => i.canExpense);
@@ -59,7 +66,9 @@ export default () => {
     }
   }, [tabKey, categories]);
 
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags'), { manual: true });
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => getAll('books'), { manual: true });
+
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags', currentBook.id), { manual: true });
   const tagOptions = useMemo(() => {
     switch (tabKey) {
       case 'EXPENSE':
@@ -75,53 +84,44 @@ export default () => {
   useEffect(() => {
     if (visible) {
       loadAccounts();
+      loadBooks();
+    }
+  }, [visible]);
+  useEffect(() => {
+    if (visible && currentBook) {
       loadCategories();
       loadPayees();
       loadTags();
     }
-  }, [visible]);
+  }, [visible, currentBook]);
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (action === 1) {
+      // if (!currentBook) return;
       let accountId = null;
       let categories = [{}];
       let toId = null;
       if (tabKey === 'EXPENSE') {
-        if (initialState.currentBook.defaultExpenseAccount) {
-          accountId = initialState.currentBook.defaultExpenseAccount.id;
-          setAccountCurrencyCode(initialState.currentBook.defaultExpenseAccount.currencyCode);
-        } else {
-          setAccountCurrencyCode(null);
-        }
-        if (initialState.currentBook.defaultExpenseCategory) {
-          categories = [{ categoryId: initialState.currentBook.defaultExpenseCategory.id }];
+        accountId = currentBook.defaultExpenseAccount?.id;
+        setAccountCurrencyCode(currentBook.defaultExpenseAccount?.currencyCode);
+        if (currentBook.defaultExpenseCategory) {
+          categories = [{ categoryId: currentBook.defaultExpenseCategory.id }];
         }
       } else if (tabKey === 'INCOME') {
-        if (initialState.currentBook.defaultIncomeAccount) {
-          accountId = initialState.currentBook.defaultIncomeAccount.id;
-          setAccountCurrencyCode(initialState.currentBook.defaultIncomeAccount.currencyCode);
-        } else {
-          setAccountCurrencyCode(null);
-        }
-        if (initialState.currentBook.defaultIncomeCategory) {
-          categories = [{ categoryId: initialState.currentBook.defaultIncomeCategory.id }];
+        accountId = currentBook.defaultIncomeAccount?.id;
+        setAccountCurrencyCode(currentBook.defaultIncomeAccount?.currencyCode);
+        if (currentBook.defaultIncomeCategory) {
+          categories = [{ categoryId: currentBook.defaultIncomeCategory.id }];
         }
       } else if (tabKey === 'TRANSFER') {
-        if (initialState.currentBook.defaultTransferFromAccount) {
-          accountId = initialState.currentBook.defaultTransferFromAccount.id;
-          setAccountCurrencyCode(initialState.currentBook.defaultTransferFromAccount.currencyCode);
-        } else {
-          setAccountCurrencyCode(null);
-        }
-        if (initialState.currentBook.defaultTransferToAccount) {
-          toId = initialState.currentBook.defaultTransferToAccount.id;
-          setToAccountCurrencyCode(initialState.currentBook.defaultTransferToAccount.currencyCode);
-        } else {
-          setToAccountCurrencyCode(null);
-        }
+        accountId = currentBook.defaultTransferFromAccount?.id;
+        setAccountCurrencyCode(currentBook.defaultTransferFromAccount?.currencyCode);
+        toId = currentBook.defaultTransferToAccount?.id;
+        setToAccountCurrencyCode(currentBook.defaultTransferToAccount?.currencyCode);
       }
       setInitialValues({
+        bookId: currentBook.id,
         createTime: moment(),
         accountId: accountId,
         categories: categories,
@@ -131,9 +131,10 @@ export default () => {
       });
     } else {
       let initialValues = { ...currentRow };
+      initialValues.bookId = currentRow.book.id;
       initialValues.accountId = currentRow.account.id;
-      initialValues.toId = currentRow.to ? currentRow.to.id : null;
-      initialValues.payeeId = currentRow.payee ? currentRow.payee.id : null;
+      initialValues.toId = currentRow.to?.id;
+      initialValues.payeeId = currentRow.payee?.id;
       initialValues.tags = currentRow.tags ? currentRow.tags.map((item) => item.tag.id) : null;
       if (action !== 2) {
         initialValues.notes = null;
@@ -151,10 +152,11 @@ export default () => {
       }
       setInitialValues(initialValues);
       setAccountCurrencyCode(currentRow.account.currencyCode);
-      if (currentRow.to) setToAccountCurrencyCode(currentRow.to.currencyCode);
+      setToAccountCurrencyCode(currentRow.to?.currencyCode);
       setTabKey(currentRow.type);
+      setCurrentBook(currentRow.book);
     }
-  }, [action, tabKey, currentRow]);
+  }, [action, tabKey, currentRow, currentBook]);
 
   const [accountCurrencyCode, setAccountCurrencyCode] = useState();
   const [toAccountCurrencyCode, setToAccountCurrencyCode] = useState();
@@ -167,25 +169,22 @@ export default () => {
   const [isConvert, setIsConvert] = useState(false);
   const [convertCode, setConvertCode] = useState('');
   useEffect(() => {
-    if (accountCurrencyCode) {
-      if (tabKey === 'EXPENSE') {
-        setIsConvert(accountCurrencyCode !== initialState.currentBook.defaultCurrencyCode);
-        setConvertCode(initialState.currentBook.defaultCurrencyCode);
-      } else if (tabKey === 'INCOME') {
-        setIsConvert(accountCurrencyCode !== initialState.currentBook.defaultCurrencyCode);
-        setConvertCode(initialState.currentBook.defaultCurrencyCode);
-      } else if (tabKey === 'TRANSFER') {
-        if (toAccountCurrencyCode) {
-          setIsConvert(accountCurrencyCode !== toAccountCurrencyCode);
-          setConvertCode(toAccountCurrencyCode);
-        } else {
-          setIsConvert(false);
-        }
+    if (!accountCurrencyCode) return;
+    if (tabKey === 'EXPENSE') {
+      setIsConvert(accountCurrencyCode !== currentBook.defaultCurrencyCode);
+      setConvertCode(currentBook.defaultCurrencyCode);
+    } else if (tabKey === 'INCOME') {
+      setIsConvert(accountCurrencyCode !== currentBook.defaultCurrencyCode);
+      setConvertCode(currentBook.defaultCurrencyCode);
+    } else if (tabKey === 'TRANSFER') {
+      if (toAccountCurrencyCode) {
+        setIsConvert(accountCurrencyCode !== toAccountCurrencyCode);
+        setConvertCode(toAccountCurrencyCode);
+      } else {
+        setIsConvert(false);
       }
-    } else {
-      setIsConvert(false);
     }
-  }, [tabKey, accountCurrencyCode, toAccountCurrencyCode]);
+  }, [tabKey, accountCurrencyCode, toAccountCurrencyCode, currentBook]);
 
   const successHandler = () => {
     actionRef.current?.reload();
@@ -267,6 +266,21 @@ export default () => {
         onSuccess={successHandler}
         initialValues={initialValues}
       >
+        <ProFormSelect
+          name="bookId"
+          label={t('flow.label.book')}
+          rules={requiredRules()}
+          onChange={(_, option) => {
+            setCurrentBook(option);
+          }}
+          disabled={action !== 1}
+          fieldProps={{
+            options: books,
+            loading: booksLoading,
+            showSearch: true,
+            allowClear: false,
+          }}
+        />
         <ProFormText name="title" label={t('flow.label.title')} />
         <ProFormDateTimePicker
           name="createTime"

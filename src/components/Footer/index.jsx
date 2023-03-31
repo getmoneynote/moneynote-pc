@@ -17,7 +17,7 @@ export default () => {
       {/*    <a href="#">{t('footer.download.about')}</a>*/}
       {/*  </Space>*/}
       {/*</div>*/}
-      <div>&copy; {new Date().getFullYear()} {t('company.name')}{t('copyright.reserve')}&nbsp;&nbsp;<a target="_blank" href="https://beian.miit.gov.cn/">{t('footer.no')}</a> v1.0.6</div>
+      <div>&copy; {new Date().getFullYear()} {t('company.name')}{t('copyright.reserve')}&nbsp;&nbsp;<a target="_blank" href="https://beian.miit.gov.cn/">{t('footer.no')}</a> v1.0.7</div>
       <ModalContainer />
     </Space>
   );

@@ -48,7 +48,7 @@ export default ({ actionRef }) => {
         <ProFormText name="title" label={t('flow.label.title')} />
         <ProFormDateTimePicker name="createTime" format="YYYY-MM-DD HH:mm" label={t('flow.label.createTime')} allowClear={false} rules={requiredRules()} />
         {
-          action !== 2 &&
+          action === 1 &&
           <ProFormText name="balance" label={t('account.label.balance')} rules={amountRequiredRules()} />
         }
         <ProFormTextArea name="notes" label={t('label.notes')} />

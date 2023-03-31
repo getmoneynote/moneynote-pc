@@ -27,9 +27,12 @@ export async function remove(prefix, id) {
   });
 }
 
-export async function getAll(prefix) {
+export async function getAll(prefix, bookId) {
   return request(`${prefix}/all`, {
     method: 'GET',
+    params: {
+      'bookId': bookId,
+    },
   });
 }
 

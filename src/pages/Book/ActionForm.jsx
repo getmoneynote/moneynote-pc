@@ -40,12 +40,12 @@ export default () => {
     } else {
       setInitialValues({
         ...currentRow,
-        defaultExpenseAccountId: currentRow.defaultExpenseAccount.id,
-        defaultIncomeAccountId: currentRow.defaultIncomeAccount.id,
-        defaultExpenseCategoryId: currentRow.defaultExpenseCategory.id,
-        defaultIncomeCategoryId: currentRow.defaultIncomeCategory.id,
-        defaultTransferFromAccountId: currentRow.defaultTransferFromAccount.id,
-        defaultTransferToAccountId: currentRow.defaultTransferToAccount.id,
+        defaultExpenseAccountId: currentRow.defaultExpenseAccount?.id,
+        defaultIncomeAccountId: currentRow.defaultIncomeAccount?.id,
+        defaultExpenseCategoryId: currentRow.defaultExpenseCategory?.id,
+        defaultIncomeCategoryId: currentRow.defaultIncomeCategory?.id,
+        defaultTransferFromAccountId: currentRow.defaultTransferFromAccount?.id,
+        defaultTransferToAccountId: currentRow.defaultTransferToAccount?.id,
       });
     }
   }, [action, currentRow]);

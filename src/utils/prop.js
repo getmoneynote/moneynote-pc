@@ -25,7 +25,7 @@ export const spaceVProp = {
 };
 
 export const treeSelectSingleProp = {
-  treeDataSimpleMode: false,
+  treeDataSimpleMode: true,
   multiple: false,
   allowClear: true,
   treeCheckable: false,

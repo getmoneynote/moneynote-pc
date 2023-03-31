@@ -21,10 +21,11 @@ export default () => {
   const { show } = useModel('modal');
   const { successMsg } = useMsg();
 
+  const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags'), { manual: true });
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees'), { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories', currentBook.id), { manual: true });
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags', currentBook.id), { manual: true });
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees', currentBook.id), { manual: true });
   const { data : books = [], loading : booksLoading} = useRequest(() => getAll('books'));
 
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
@@ -81,12 +82,15 @@ export default () => {
       dataIndex: 'book',
       sorter: true,
       render: (_, record) => record.book.name,
-      hideInTable: true,
+      hideInTable: false,
       valueType: 'select',
       initialValue: initialState.currentBook.id,
       fieldProps: {
         options: books,
         loading: booksLoading,
+        onChange: (_, option) => {
+          setCurrentBook(option);
+        },
         ...selectSearchProp,
         mode: false,
       },
