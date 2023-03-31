@@ -403,9 +403,7 @@ export default () => {
           label={t('flow.label.confirm')}
           colProps={{ xl: 6 }}
         />
-        {tabKey !== 'TRANSFER' && (
-          <ProFormSwitch name="include" label={t('flow.label.include')} colProps={{ xl: 6 }} />
-        )}
+        <ProFormSwitch name="include" label={t('flow.label.include')} colProps={{ xl: 6 }} />
         <ProFormTextArea name="notes" label={t('label.notes')} />
       </MyModalForm>
     </>
