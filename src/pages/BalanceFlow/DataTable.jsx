@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useMemo, useState} from 'react';
 import { Alert, Button, Dropdown, Form, Input, message, Modal, Space, Tag, Tooltip } from 'antd';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
@@ -22,10 +22,55 @@ export default () => {
   const { successMsg } = useMsg();
 
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
+  const [type, setType] = useState();
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
+
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories', currentBook.id), { manual: true });
+  const categoryOptions = useMemo(() => {
+    let options = categories;
+    if (!type) return options;
+    if (type === 'EXPENSE') {
+      options = categories.filter(i => i.canExpense);
+    } else if (type === 'INCOME') {
+      options = categories.filter(i => i.canIncome);
+    } else {
+      options = [];
+    }
+    return options;
+  }, [type, categories]);
+
+
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags', currentBook.id), { manual: true });
+  const tagOptions = useMemo(() => {
+    let options = tags;
+    if (!type) return options;
+    if (type === 'EXPENSE') {
+      options = tags.filter(i => i.canExpense);
+    } else if (type === 'INCOME') {
+      options = tags.filter(i => i.canIncome);
+    } else if (type === 'TRANSFER') {
+      options = tags.filter(i => i.canTransfer);
+    } else {
+      options = [];
+    }
+    return options;
+  }, [type, tags]);
+
+
   const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees', currentBook.id), { manual: true });
+  const payeeOptions = useMemo(() => {
+    let options = payees;
+    if (!type) return options;
+    if (type === 'EXPENSE') {
+      options = payees.filter(i => i.canExpense);
+    } else if (type === 'INCOME') {
+      options = payees.filter(i => i.canIncome);
+    } else {
+      options = [];
+    }
+    return options;
+  }, [type, payees]);
+
   const { data : books = [], loading : booksLoading} = useRequest(() => getAll('books'));
 
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
@@ -88,9 +133,7 @@ export default () => {
       fieldProps: {
         options: books,
         loading: booksLoading,
-        onChange: (_, option) => {
-          setCurrentBook(option);
-        },
+        onChange: (_, option) => setCurrentBook(option),
         ...selectSearchProp,
         mode: false,
       },
@@ -107,7 +150,6 @@ export default () => {
       sorter: true,
       align: 'center',
       valueType: 'select',
-      // request: () => typeOptions,
       fieldProps: {
         options: [
           { label: t('expense'), value: 'EXPENSE' },
@@ -115,6 +157,7 @@ export default () => {
           { label: t('transfer'), value: 'TRANSFER' },
           { label: t('adjust.balance'), value: 'ADJUST' },
         ],
+        onChange: value => setType(value),
       },
     },
     {
@@ -184,7 +227,7 @@ export default () => {
       render: (_, record) => record.categoryName,
       valueType: 'treeSelect',
       fieldProps: {
-        options: categories,
+        options: categoryOptions,
         loading: categoriesLoading,
         onFocus: loadCategories,
         ...treeSelectMultipleProp,
@@ -196,7 +239,7 @@ export default () => {
       render: (_, record) => tagColumnRender(record),
       valueType: 'treeSelect',
       fieldProps: {
-        options: tags,
+        options: tagOptions,
         loading: tagsLoading,
         onFocus: loadTags,
         ...treeSelectMultipleProp,
@@ -210,7 +253,7 @@ export default () => {
       valueType: 'select',
       search: { transform: (value) => ({ payees: value }) },
       fieldProps: {
-        options: payees,
+        options: payeeOptions,
         loading: payeesLoading,
         onFocus: loadPayees,
         ...selectSearchProp,
