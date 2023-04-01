@@ -322,7 +322,7 @@ export default () => {
                   <Button
                     type="text"
                     onClick={() => refundHandler(record)}
-                    disabled={record.type === 'ADJUST' || record.type === 'TRANSFER'}
+                    disabled={record.type === 'ADJUST'}
                   >
                     {t('refund')}
                   </Button>

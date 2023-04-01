@@ -11,7 +11,7 @@ import {
 } from '@ant-design/pro-components';
 import { useModel, useRequest } from '@umijs/max';
 import moment from 'moment';
-import { isEqual } from '@/utils/util';
+import { isEqual, translateAction, translateFlowType } from '@/utils/util';
 import { getAll, create, update } from '@/services/common';
 import { treeSelectSingleProp, treeSelectMultipleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
@@ -226,12 +226,13 @@ export default () => {
         toId: toId,
       });
     } else {
-      let initialValues = { ...currentRow };
-      initialValues.bookId = currentRow.book.id;
-      initialValues.accountId = currentRow.account.id;
-      initialValues.toId = currentRow.to?.id;
-      initialValues.payeeId = currentRow.payee?.id;
-      initialValues.tags = currentRow.tags ? currentRow.tags.map((item) => item.tag.id) : null;
+      // let initialValues = structuredClone(currentRow);
+      let initialValues = JSON.parse(JSON.stringify(currentRow));
+      initialValues.bookId = initialValues.book.id;
+      initialValues.accountId = initialValues.account.id;
+      initialValues.toId = initialValues.to?.id;
+      initialValues.payeeId = initialValues.payee?.id;
+      initialValues.tags = initialValues.tags ? initialValues.tags.map((item) => item.tag.id) : null;
       if (action !== 2) {
         initialValues.notes = null;
         initialValues.createTime = moment();
@@ -239,11 +240,16 @@ export default () => {
         initialValues.include = true;
       }
       if (action === 4) {
-        if (initialValues.categories) {
-          initialValues.categories.forEach((value) => {
-            value.amount = value.amount * -1;
-            value.convertedAmount = value.convertedAmount * -1;
-          });
+        if (initialValues.type === 'EXPENSE' || initialValues.type === 'INCOME') {
+          if (initialValues.categories) {
+            initialValues.categories.forEach((element) => {
+              element.amount = element.amount * -1;
+              element.convertedAmount = element.convertedAmount * -1;
+            });
+          }
+        } else { //转账
+          initialValues.amount = initialValues.amount * -1;
+          initialValues.convertedAmount = initialValues.convertedAmount * -1;
         }
       }
       setInitialValues(initialValues);
@@ -337,25 +343,7 @@ export default () => {
     if (action === 1) {
       return <Tabs activeKey={tabKey} items={items} onChange={(value) => setTabKey(value)} />;
     } else {
-      let title = '';
-      if (action === 2) title = t('update');
-      else if (action === 3) title = t('copy');
-      else if (action === 4) title = t('refund');
-      switch (currentRow.type) {
-        case 'EXPENSE':
-          title += t('expense');
-          break;
-        case 'INCOME':
-          title += t('income');
-          break;
-        case 'TRANSFER':
-          title += t('transfer');
-          break;
-        case 'ADJUST':
-          title += t('adjust.balance');
-          break;
-      }
-      return title;
+      return translateAction(action) + translateFlowType(currentRow.type);
     }
   };
 

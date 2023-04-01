@@ -1,4 +1,5 @@
 import moment from 'moment';
+import t from '@/utils/i18n';
 
 // https://stackoverflow.com/questions/21148419/efficiently-rename-re-map-javascript-json-object-keys-within-array-of-objects
 export function renameKeyInJson(json, keys) {
@@ -81,4 +82,30 @@ export function isEqual(obj1, obj2){
   }
 
   return true;
+}
+
+export function translateAction(action) {
+  switch (action) {
+    case 1:
+      return t('add');
+    case 2:
+      return t('update');
+    case 3:
+      return t('copy');
+    case 4:
+      return t('refund');
+  }
+}
+
+export function translateFlowType(type) {
+  switch (type) {
+    case 'EXPENSE':
+      return t('expense');
+    case 'INCOME':
+      return t('income');
+    case 'TRANSFER':
+      return t('transfer');
+    case 'ADJUST':
+      return t('adjust.balance');
+  }
 }
