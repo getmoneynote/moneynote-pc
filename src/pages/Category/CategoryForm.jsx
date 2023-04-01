@@ -5,6 +5,7 @@ import MyModalForm from '@/components/MyModalForm';
 import {create, update, query} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
+import {translateAction} from "@/utils/util";
 import t from '@/utils/i18n';
 
 export default ({ type, actionRef }) => {
@@ -43,14 +44,13 @@ export default ({ type, actionRef }) => {
   }
 
   const title = () => {
-    let title = action === 1 ? t('add') : t('update');
+    let title = translateAction(action);
     if (type === 'EXPENSE') {
-      title += t('tab.expense.category');
+      return  title + t('tab.expense.category');
     }
     if (type === 'INCOME') {
-      title += t('tab.income.category');
+      return title + t('tab.income.category');
     }
-    return title;
   }
 
   return (

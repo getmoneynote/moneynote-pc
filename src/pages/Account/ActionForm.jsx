@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useModel, useRequest} from '@umijs/max';
 import {ProFormText, ProFormTextArea, ProFormSelect, ProFormSwitch} from '@ant-design/pro-components';
 import {create, getAll, update} from '@/services/common';
+import {translateAccountType, translateAction} from '@/utils/util';
 import {amountRequiredRules, requiredRules} from "@/utils/rules";
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
@@ -12,11 +13,6 @@ export default ({ type, actionRef }) => {
   const { initialState } = useModel('@@initialState');
 
   const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(() => getAll('currencies'), { manual: true });
-  useEffect(() => {
-    if (visible) {
-      loadCurrencies();
-    }
-  }, [visible]);
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
@@ -74,24 +70,10 @@ export default ({ type, actionRef }) => {
     }
   }
 
-  const title = () => {
-    let title = action === 1 ? t('add') : t('update');
-    switch (type) {
-      case 'CHECKING':
-        return title + t('checking.account');
-      case 'CREDIT':
-        return title + t('credit.account');
-      case 'ASSET':
-        return title + t('asset.account');
-      case 'DEBT':
-        return title + t('debt.account');
-    }
-  }
-
   return (
     <>
       <MyModalForm
-        title={title()}
+        title={ translateAction(action) + translateAccountType(type) }
         labelWidth={85}
         request={requestHandler}
         onSuccess={successHandler}
@@ -102,6 +84,7 @@ export default ({ type, actionRef }) => {
           label={t('account.label.currencyCode')}
           rules={requiredRules()}
           fieldProps={{
+            onFocus: loadCurrencies,
             loading: currenciesLoading,
             options: currencies,
             showSearch: true,

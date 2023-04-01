@@ -9,6 +9,7 @@ import {
 import {create, query, update} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
+import {translateAction} from "@/utils/util";
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
 
@@ -45,7 +46,7 @@ export default () => {
 
   return (
     <MyModalForm
-      title={(action === 1 ? t('add') : t('update')) + t('tab.tag')}
+      title={translateAction(action) + t('tab.tag')}
       labelWidth={80}
       request={requestHandler}
       onSuccess={successHandler}

@@ -9,6 +9,7 @@ import {
 import MyModalForm from '@/components/MyModalForm';
 import { create, update, getAll } from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
+import { translateAction } from '@/utils/util';
 import { requiredRules } from '@/utils/rules';
 import t from '@/utils/i18n';
 
@@ -140,7 +141,7 @@ export default () => {
   return (
     <>
       <MyModalForm
-        title={(action === 1 ? t('add') : t('update')) + t('book')}
+        title={ translateAction(action) + t('book') }
         labelWidth={95}
         request={requestHandler}
         onSuccess={successHandler}

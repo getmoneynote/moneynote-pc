@@ -109,3 +109,16 @@ export function translateFlowType(type) {
       return t('adjust.balance');
   }
 }
+
+export function translateAccountType(type) {
+  switch (type) {
+    case 'CHECKING':
+      return t('checking.account');
+    case 'CREDIT':
+      return t('credit.account');
+    case 'ASSET':
+      return t('asset.account');
+    case 'DEBT':
+      return t('debt.account');
+  }
+}

@@ -14,6 +14,8 @@ export default (props) => {
     request,
     params,
     onSuccess,
+    autoFocusFirstInput = false,
+    isKeyPressSubmit = true,
   } = props;
 
   const formRef = useRef();
@@ -50,6 +52,8 @@ export default (props) => {
       onFinish={finishHandler}
       dateFormatter={value => value.valueOf()}
       modalProps={{destroyOnClose: false}}
+      autoFocusFirstInput={autoFocusFirstInput}
+      isKeyPressSubmit={isKeyPressSubmit}
       // submitter={{
       //   render: (props, defaultDoms) => {
       //     return [

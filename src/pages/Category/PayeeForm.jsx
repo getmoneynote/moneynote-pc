@@ -3,6 +3,7 @@ import { useModel } from '@umijs/max';
 import {ProFormSwitch, ProFormText, ProFormTextArea} from '@ant-design/pro-components';
 import { create, update } from '@/services/common';
 import {requiredRules} from "@/utils/rules";
+import {translateAction} from "@/utils/util";
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
 
@@ -37,7 +38,7 @@ export default () => {
 
   return (
     <MyModalForm
-      title={(action === 1 ? t('add') : t('update')) + t('tab.payee')}
+      title={translateAction(action) + t('tab.payee')}
       labelWidth={80}
       request={requestHandler}
       onSuccess={successHandler}
