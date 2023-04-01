@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {useModel, useRequest} from '@umijs/max';
 import {
   ProFormSelect,
@@ -20,8 +20,76 @@ export default () => {
   const { action, currentRow, visible } = useModel('modal');
 
   const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(() => getAll('currencies'), { manual: true });
+
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
+  const expenseAccountOptions = useMemo(() => {
+    let options = accounts.filter(i => i.canExpense);
+    if (action !== 1) {
+      if (currentRow.defaultExpenseAccount) {
+        if (!options.some(e => e.id === currentRow.defaultExpenseAccount.id)) {
+          options.unshift(currentRow.defaultExpenseAccount);
+        }
+      }
+    }
+    return options;
+  }, [accounts, action, currentRow]);
+  const incomeAccountOptions = useMemo(() => {
+    let options = accounts.filter(i => i.canIncome);
+    if (action !== 1) {
+      if (currentRow.defaultIncomeAccount) {
+        if (!options.some(e => e.id === currentRow.defaultIncomeAccount.id)) {
+          options.unshift(currentRow.defaultIncomeAccount);
+        }
+      }
+    }
+    return options;
+  }, [accounts, action, currentRow]);
+  const transferFromAccountOptions = useMemo(() => {
+    let options = accounts.filter(i => i.canTransferFrom);
+    if (action !== 1) {
+      if (currentRow.defaultTransferFromAccount) {
+        if (!options.some(e => e.id === currentRow.defaultTransferFromAccount.id)) {
+          options.unshift(currentRow.defaultTransferFromAccount);
+        }
+      }
+    }
+    return options;
+  }, [accounts, action, currentRow]);
+  const transferToAccountOptions = useMemo(() => {
+    let options = accounts.filter(i => i.canTransferTo);
+    if (action !== 1) {
+      if (currentRow.defaultTransferToAccount) {
+        if (!options.some(e => e.id === currentRow.defaultTransferToAccount.id)) {
+          options.unshift(currentRow.defaultTransferToAccount);
+        }
+      }
+    }
+    return options;
+  }, [accounts, action, currentRow]);
+
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
+  const expenseCategoryOptions = useMemo(() => {
+    let options = categories.filter(i => i.canExpense);
+    if (action !== 1) {
+      if (currentRow.defaultExpenseCategory) {
+        if (!options.some(e => e.id === currentRow.defaultExpenseCategory.id)) {
+          options.unshift(currentRow.defaultExpenseCategory);
+        }
+      }
+    }
+    return options;
+  }, [categories, action, currentRow]);
+  const incomeCategoryOptions = useMemo(() => {
+    let options = categories.filter(i => i.canIncome);
+    if (action !== 1) {
+      if (currentRow.defaultIncomeCategory) {
+        if (!options.some(e => e.id === currentRow.defaultIncomeCategory.id)) {
+          options.unshift(currentRow.defaultIncomeCategory);
+        }
+      }
+    }
+    return options;
+  }, [categories, action, currentRow]);
 
   useEffect(() => {
     if (visible) {
@@ -83,19 +151,20 @@ export default () => {
           name="defaultCurrencyCode"
           label={t('book.label.default.currency')}
           rules={requiredRules()}
+          disabled={action === 2}
           fieldProps={{
             loading: currenciesLoading,
             options: currencies,
             showSearch: true,
             allowClear: false
-        }}
+          }}
         />
         <ProFormSelect
           name="defaultExpenseAccountId"
           label={t('book.label.default.expense.account')}
           fieldProps={{
             loading: accountsLoading,
-            options: accounts.filter(i => i.canExpense),
+            options: expenseAccountOptions,
             showSearch: true,
             allowClear: true
           }}
@@ -105,7 +174,7 @@ export default () => {
           label={t('book.label.default.income.account')}
           fieldProps={{
             loading: accountsLoading,
-            options: accounts.filter(i => i.canIncome),
+            options: incomeAccountOptions,
             showSearch: true,
             allowClear: true
           }}
@@ -117,7 +186,7 @@ export default () => {
               label={t('book.label.default.expense.category')}
               fieldProps={{
                 loading: categoriesLoading,
-                options: categories.filter(i => i.canExpense),
+                options: expenseCategoryOptions,
                 ...treeSelectSingleProp,
               }}
             />
@@ -126,7 +195,7 @@ export default () => {
               label={t('book.label.default.income.category')}
               fieldProps={{
                 loading: categoriesLoading,
-                options: categories.filter(i => i.canIncome),
+                options: incomeCategoryOptions,
                 ...treeSelectSingleProp,
               }}
             />
@@ -137,7 +206,7 @@ export default () => {
           label={t('book.label.default.transfer.from.account')}
           fieldProps={{
             loading: accountsLoading,
-            options: accounts.filter(i => i.canTransferFrom),
+            options: transferFromAccountOptions,
             showSearch: true,
             allowClear: true
           }}
@@ -147,7 +216,7 @@ export default () => {
           label={t('book.label.default.transfer.to.account')}
           fieldProps={{
             loading: accountsLoading,
-            options: accounts.filter(i => i.canTransferTo),
+            options: transferToAccountOptions,
             showSearch: true,
             allowClear: true
           }}
