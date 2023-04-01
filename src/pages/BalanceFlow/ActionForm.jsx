@@ -181,19 +181,19 @@ export default () => {
   }, [books, action, currentRow]);
 
   // 为了解决默认值的问题，加visible是为了每次打开都重新加载。
-  useEffect(() => {
-    if (visible) {
-      loadAccounts();
-      loadBooks();
-    }
-  }, [visible]);
-  useEffect(() => {
-    if (visible && currentBook) {
-      loadCategories();
-      loadPayees();
-      loadTags();
-    }
-  }, [visible, currentBook]);
+  // useEffect(() => {
+  //   if (visible) {
+  //     loadAccounts();
+  //     loadBooks();
+  //   }
+  // }, [visible]);
+  // useEffect(() => {
+  //   if (visible && currentBook) {
+  //     loadCategories();
+  //     loadPayees();
+  //     loadTags();
+  //   }
+  // }, [visible, currentBook]);
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
@@ -370,6 +370,7 @@ export default () => {
           }}
           disabled={action !== 1}
           fieldProps={{
+            onFocus: loadBooks,
             options: bookOptions,
             loading: booksLoading,
             showSearch: true,
@@ -392,6 +393,7 @@ export default () => {
           rules={requiredRules()}
           onChange={accountChangeHandler}
           fieldProps={{
+            onFocus: loadAccounts,
             options: accountOptions,
             loading: accountsLoading,
             showSearch: true,
@@ -406,6 +408,7 @@ export default () => {
               rules={requiredRules()}
               onChange={toAccountChangeHandler}
               fieldProps={{
+                onFocus: loadAccounts,
                 options: toAccountOptions,
                 loading: accountsLoading,
                 showSearch: true,
@@ -434,6 +437,7 @@ export default () => {
                         label={categoryLabelMsg}
                         rules={requiredRules()}
                         fieldProps={{
+                          onFocus: loadCategories,
                           loading: categoriesLoading,
                           options: categoryOptions,
                           ...treeSelectSingleProp,
@@ -477,6 +481,7 @@ export default () => {
             name="payeeId"
             label={t('flow.label.payee')}
             fieldProps={{
+              onFocus: loadPayees,
               options: payeeOptions,
               loading: payeesLoading,
               showSearch: true
@@ -487,6 +492,7 @@ export default () => {
           name="tags"
           label={t('flow.label.tag')}
           fieldProps={{
+            onFocus: loadTags,
             loading: tagsLoading,
             options: tagOptions,
             ...treeSelectMultipleProp,
