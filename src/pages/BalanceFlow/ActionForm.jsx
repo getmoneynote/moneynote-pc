@@ -27,60 +27,160 @@ export default () => {
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   // 确保每次新增都是默认账单，修复先点击复制，之后再新增，遗留之前的数据。
   useEffect(() => {
-    if (visible) {
+    if (action === 1) {
       setCurrentBook(initialState.currentBook);
+      setTabKey('EXPENSE');
+    } else {
+      setCurrentBook(currentRow.book);
+      setTabKey(currentRow.type);
     }
-  }, [visible]);
+  }, [action, currentRow]);
 
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
   const accountOptions = useMemo(() => {
-    switch (tabKey) {
-      case 'EXPENSE':
-        return accounts.filter(i => i.canExpense);
-      case 'INCOME':
-        return accounts.filter(i => i.canIncome);
-      case 'TRANSFER':
-        return accounts.filter(i => i.canTransferFrom);
-      default:
-        return accounts;
+    let options = [];
+    if (tabKey === 'EXPENSE') {
+      options = accounts.filter(i => i.canExpense);
+      if (action === 1) {
+        if (currentBook.defaultExpenseAccount) {
+          if (!options.some(e => e.id === currentBook.defaultExpenseAccount.id)) {
+            options.unshift(currentBook.defaultExpenseAccount);
+          }
+        }
+      }
     }
-  }, [tabKey, accounts]);
+    if (tabKey === 'INCOME') {
+      options = accounts.filter(i => i.canIncome);
+      if (action === 1) {
+        if (currentBook.defaultIncomeAccount) {
+          if (!options.some(e => e.id === currentBook.defaultIncomeAccount.id)) {
+            options.unshift(currentBook.defaultIncomeAccount);
+          }
+        }
+      }
+    }
+    if (tabKey === 'TRANSFER') {
+      options = accounts.filter(i => i.canTransferFrom);
+      if (action === 1) {
+        if (currentBook.defaultTransferFromAccount) {
+          if (!options.some(e => e.id === currentBook.defaultTransferFromAccount.id)) {
+            options.unshift(currentBook.defaultTransferFromAccount);
+          }
+        }
+      }
+    }
+    if (action !== 1) {
+      if (!options.some(e => e.id === currentRow.account.id)) {
+        options.unshift(currentRow.account);
+      }
+    }
+    return options;
+  }, [tabKey, accounts, action, currentBook, currentRow]);
+  const toAccountOptions = useMemo(() => {
+    let options = [];
+    if (tabKey === 'TRANSFER') {
+      options = accounts.filter(i => i.canTransferTo)
+      if (action === 1) {
+        if (currentBook.defaultTransferToAccount) {
+          if (!options.some(e => e.id === currentBook.defaultTransferToAccount.id)) {
+            options.unshift(currentBook.defaultTransferToAccount);
+          }
+        }
+      }
+    }
+    if (action !== 1 && currentRow.to) {
+      if (!options.some(e => e.id === currentRow.to.id)) {
+        options.unshift(currentRow.to);
+      }
+    }
+    return options;
+  }, [tabKey, accounts, action, currentBook, currentRow]);
 
   const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees', currentBook.id), { manual: true });
   const payeeOptions = useMemo(() => {
+    let options = [];
     if (tabKey === 'EXPENSE') {
-      return payees.filter(i => i.canExpense);
+      options = payees.filter(i => i.canExpense);
     }
     if (tabKey === 'INCOME') {
-      return payees.filter(i => i.canIncome);
+      options = payees.filter(i => i.canIncome);
     }
-  }, [tabKey, payees]);
+    if (action !== 1 && currentRow.payee) {
+      if (!options.some(e => e.id === currentRow.payee.id)) {
+        options.unshift(currentRow.payee);
+      }
+    }
+    return options;
+  }, [tabKey, payees, action, currentRow]);
 
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories', currentBook.id), { manual: true });
   const categoryOptions = useMemo(() => {
+    let options = [];
     if (tabKey === 'EXPENSE') {
-      return categories.filter(i => i.canExpense);
+      options = categories.filter(i => i.canExpense);
+      // 新增时，默认的支出类别可能已禁用，需要处理。
+      if (action === 1) {
+        if (currentBook.defaultExpenseCategory) {
+          if (!options.some(e => e.id === currentBook.defaultExpenseCategory.id)) {
+            options.unshift(currentBook.defaultExpenseCategory);
+          }
+        }
+      }
     }
     if (tabKey === 'INCOME') {
-      return categories.filter(i => i.canIncome);
+      options = categories.filter(i => i.canIncome);
+      if (action === 1) {
+        if (currentBook.defaultIncomeCategory) {
+          if (!options.some(e => e.id === currentBook.defaultIncomeCategory.id)) {
+            options.unshift(currentBook.defaultIncomeCategory);
+          }
+        }
+      }
     }
-  }, [tabKey, categories]);
-
-  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => getAll('books'), { manual: true });
+    if (action !== 1) {
+      currentRow.categories.forEach(e => {
+        if (!options.some(e1 => e1.id === e.category.id)) {
+          options.unshift(e.category);
+        }
+      });
+    }
+    return options;
+  }, [tabKey, categories, action, currentBook, currentRow]);
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags', currentBook.id), { manual: true });
   const tagOptions = useMemo(() => {
-    switch (tabKey) {
-      case 'EXPENSE':
-        return tags.filter(i => i.canExpense);
-      case 'INCOME':
-        return tags.filter(i => i.canIncome);
-      case 'TRANSFER':
-        return tags.filter(i => i.canTransfer);
+    let options = [];
+    if (tabKey === 'EXPENSE') {
+      options = tags.filter(i => i.canExpense);
     }
-  }, [tabKey, tags]);
+    if (tabKey === 'INCOME') {
+      options = tags.filter(i => i.canIncome);
+    }
+    if (tabKey === 'TRANSFER') {
+      options = tags.filter(i => i.canTransfer);
+    }
+    if (action !== 1 && currentRow.tags) {
+      currentRow.tags.forEach(e => {
+        if (!options.some(e1 => e1.id === e.tag.id)) {
+          options.unshift(e.tag);
+        }
+      });
+    }
+    return options;
+  }, [tabKey, tags, action, currentRow]);
 
-  // 为了解决默认值的问题
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => getAll('books'), { manual: true });
+  const bookOptions = useMemo(() => {
+    let options = books;
+    if (action !== 1 && currentRow.book) {
+      if (!options.some(e => e.id === currentRow.book.id)) {
+        options.unshift(currentRow.book);
+      }
+    }
+    return options;
+  }, [books, action, currentRow]);
+
+  // 为了解决默认值的问题，加visible是为了每次打开都重新加载。
   useEffect(() => {
     if (visible) {
       loadAccounts();
@@ -104,21 +204,17 @@ export default () => {
       let toId = null;
       if (tabKey === 'EXPENSE') {
         accountId = currentBook.defaultExpenseAccount?.id;
-        setAccountCurrencyCode(currentBook.defaultExpenseAccount?.currencyCode);
         if (currentBook.defaultExpenseCategory) {
           categories = [{ categoryId: currentBook.defaultExpenseCategory.id }];
         }
       } else if (tabKey === 'INCOME') {
         accountId = currentBook.defaultIncomeAccount?.id;
-        setAccountCurrencyCode(currentBook.defaultIncomeAccount?.currencyCode);
         if (currentBook.defaultIncomeCategory) {
           categories = [{ categoryId: currentBook.defaultIncomeCategory.id }];
         }
       } else if (tabKey === 'TRANSFER') {
         accountId = currentBook.defaultTransferFromAccount?.id;
-        setAccountCurrencyCode(currentBook.defaultTransferFromAccount?.currencyCode);
         toId = currentBook.defaultTransferToAccount?.id;
-        setToAccountCurrencyCode(currentBook.defaultTransferToAccount?.currencyCode);
       }
       setInitialValues({
         bookId: currentBook.id,
@@ -151,15 +247,26 @@ export default () => {
         }
       }
       setInitialValues(initialValues);
-      setAccountCurrencyCode(currentRow.account.currencyCode);
-      setToAccountCurrencyCode(currentRow.to?.currencyCode);
-      setTabKey(currentRow.type);
-      setCurrentBook(currentRow.book);
     }
   }, [action, tabKey, currentRow, currentBook]);
 
   const [accountCurrencyCode, setAccountCurrencyCode] = useState();
   const [toAccountCurrencyCode, setToAccountCurrencyCode] = useState();
+  useEffect(() => {
+    if (action === 1) {
+      if (tabKey === 'EXPENSE') {
+        setAccountCurrencyCode(currentBook.defaultExpenseAccount?.currencyCode);
+      } else if (tabKey === 'INCOME') {
+        setAccountCurrencyCode(currentBook.defaultIncomeAccount?.currencyCode);
+      } else if (tabKey === 'TRANSFER') {
+        setAccountCurrencyCode(currentBook.defaultTransferFromAccount?.currencyCode);
+        setToAccountCurrencyCode(currentBook.defaultTransferToAccount?.currencyCode);
+      }
+    } else {
+      setAccountCurrencyCode(currentRow.account.currencyCode);
+      setToAccountCurrencyCode(currentRow.to?.currencyCode);
+    }
+  }, [action, tabKey, currentRow, currentBook]);
   const accountChangeHandler = (_, option) => {
     setAccountCurrencyCode(option.currencyCode);
   };
@@ -275,7 +382,7 @@ export default () => {
           }}
           disabled={action !== 1}
           fieldProps={{
-            options: books,
+            options: bookOptions,
             loading: booksLoading,
             showSearch: true,
             allowClear: false,
@@ -311,7 +418,7 @@ export default () => {
               rules={requiredRules()}
               onChange={toAccountChangeHandler}
               fieldProps={{
-                options: accounts.filter(i => i.canTransferTo),
+                options: toAccountOptions,
                 loading: accountsLoading,
                 showSearch: true,
                 allowClear: false,
