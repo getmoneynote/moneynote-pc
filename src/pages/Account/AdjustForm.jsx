@@ -16,6 +16,7 @@ export default ({ actionRef }) => {
     if (action === 1) {
       setInitialValues({
         'createTime': moment(),
+        'balance': currentRow.balance.toString(),
       });
     } else if (action === 2) {
       setInitialValues({

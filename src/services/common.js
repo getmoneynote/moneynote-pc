@@ -36,6 +36,13 @@ export async function getAll(prefix, bookId) {
   });
 }
 
+export async function queryAll(prefix, params) {
+  return request(`${prefix}/all`, {
+    method: 'GET',
+    params: params,
+  });
+}
+
 export async function toggle(prefix, id) {
   return request(`${prefix}/${id}/toggle`, {
     method: 'PATCH',

@@ -9,7 +9,7 @@ import t from '@/utils/i18n';
 
 export default ({ type, actionRef }) => {
 
-  const { action, currentRow, visible } = useModel('modal');
+  const { action, currentRow } = useModel('modal');
   const { initialState } = useModel('@@initialState');
 
   const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(() => getAll('currencies'), { manual: true });
@@ -53,8 +53,7 @@ export default ({ type, actionRef }) => {
       }
     } else if (action === 2) {
       // 数字类型的校验存在问题, antd bug
-      if (currentRow.balance) currentRow.balance = currentRow.balance.toString();
-      setInitialValues({...currentRow});
+      setInitialValues({...currentRow, balance: currentRow.balance.toString()});
     }
   }, [action, type, currentRow]);
 

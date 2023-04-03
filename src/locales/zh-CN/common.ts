@@ -38,4 +38,7 @@ export default {
   'day': '天',
   'month': '月',
   'year': '年',
+
+  'rules.format.error': '格式错误',
+  'rules.required': '请输入内容',
 };

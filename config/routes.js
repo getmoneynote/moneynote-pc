@@ -106,4 +106,9 @@ export default [
     layout: false,
     component: './404',
   },
+  {
+    path: '/test',
+    layout: false,
+    component: './Test',
+  },
 ];
