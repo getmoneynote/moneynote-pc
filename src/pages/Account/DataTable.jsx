@@ -2,8 +2,8 @@ import { useState } from 'react';
 import {Alert, Button, Form, Input, message, Modal, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { useIntl, useModel } from '@umijs/max';
-import { query, remove, toggle } from '@/services/common';
+import {useIntl, useModel, useRequest} from '@umijs/max';
+import {getAll, query, remove, toggle} from '@/services/common';
 import {
   statistics,
   toggleCanExpense,
@@ -14,7 +14,7 @@ import {
 } from '@/services/account';
 import { useMsg } from '@/utils/hooks';
 import MySwitch from '@/components/MySwitch';
-import { tableProp } from '@/utils/prop';
+import {selectSearchProp, tableProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from './AdjustForm';
@@ -26,6 +26,8 @@ export default ({ type, actionRef }) => {
   const { show } = useModel('modal');
   const { successMsg } = useMsg();
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
+
+  const { data : currencyOptions = [], loading : currencyLoading, run : loadCurrencies} = useRequest(() => getAll('currencies'), { manual: true });
 
   function successHandler() {
     message.success(successMsg);
@@ -91,6 +93,14 @@ export default ({ type, actionRef }) => {
         title: t('account.label.currencyCode'),
         dataIndex: 'currencyCode',
         sorter: true,
+        valueType: 'select',
+        fieldProps: {
+          options: currencyOptions,
+          loading: currencyLoading,
+          onFocus: loadCurrencies,
+          ...selectSearchProp,
+          mode: false,
+        },
       },
     ];
 

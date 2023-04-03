@@ -82,6 +82,7 @@ export default ({ type, actionRef }) => {
           name="currencyCode"
           label={t('account.label.currencyCode')}
           rules={requiredRules()}
+          disabled={action !== 1}
           fieldProps={{
             onFocus: loadCurrencies,
             loading: currenciesLoading,
