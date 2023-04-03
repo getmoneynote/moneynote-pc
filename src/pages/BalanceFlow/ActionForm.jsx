@@ -417,10 +417,10 @@ export default () => {
                         label={categoryLabelMsg}
                         rules={requiredRules()}
                         fieldProps={{
+                          ...treeSelectSingleProp,
                           onFocus: loadCategories,
                           loading: categoriesLoading,
                           options: categoryOptions,
-                          ...treeSelectSingleProp,
                         }}
                       />
                     </Col>
