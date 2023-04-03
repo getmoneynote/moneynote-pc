@@ -37,10 +37,11 @@ export async function getAll(prefix, bookId) {
 }
 
 export async function queryAll(prefix, params) {
-  return request(`${prefix}/all`, {
+  const response = await request(`${prefix}/all`, {
     method: 'GET',
     params: params,
   });
+  return response.data;
 }
 
 export async function toggle(prefix, id) {

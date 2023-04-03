@@ -22,7 +22,7 @@ export default () => {
 
   const { actionRef } = useModel('BalanceFlow.model');
   const { initialState } = useModel('@@initialState');
-  const { action, currentRow, visible } = useModel('modal');
+  const { action, currentRow } = useModel('modal');
   const [tabKey, setTabKey] = useState('EXPENSE');
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   // 确保每次新增都是默认账单，修复先点击复制，之后再新增，遗留之前的数据。
@@ -86,11 +86,10 @@ export default () => {
             options.unshift(currentBook.defaultTransferToAccount);
           }
         }
-      }
-    }
-    if (action !== 1 && currentRow.to) {
-      if (!options.some(e => e.id === currentRow.to.id)) {
-        options.unshift(currentRow.to);
+      } else {
+        if (!options.some(e => e.id === currentRow.to.id)) {
+          options.unshift(currentRow.to);
+        }
       }
     }
     return options;
@@ -159,41 +158,22 @@ export default () => {
     if (tabKey === 'TRANSFER') {
       options = tags.filter(i => i.canTransfer);
     }
-    if (action !== 1 && currentRow.tags) {
-      currentRow.tags.forEach(e => {
-        if (!options.some(e1 => e1.id === e.tag.id)) {
-          options.unshift(e.tag);
-        }
-      });
-    }
+    currentRow?.tags.forEach(e => {
+      if (!options.some(e1 => e1.id === e.tag.id)) {
+        options.unshift(e.tag);
+      }
+    });
     return options;
-  }, [tabKey, tags, action, currentRow]);
+  }, [tabKey, tags, currentRow]);
 
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => getAll('books'), { manual: true });
   const bookOptions = useMemo(() => {
     let options = books;
-    if (action !== 1 && currentRow.book) {
-      if (!options.some(e => e.id === currentRow.book.id)) {
-        options.unshift(currentRow.book);
-      }
+    if (!options.some(e => e.id === currentBook.id)) {
+      options.unshift(currentBook);
     }
     return options;
-  }, [books, action, currentRow]);
-
-  // 为了解决默认值的问题，加visible是为了每次打开都重新加载。
-  // useEffect(() => {
-  //   if (visible) {
-  //     loadAccounts();
-  //     loadBooks();
-  //   }
-  // }, [visible]);
-  // useEffect(() => {
-  //   if (visible && currentBook) {
-  //     loadCategories();
-  //     loadPayees();
-  //     loadTags();
-  //   }
-  // }, [visible, currentBook]);
+  }, [books, currentBook]);
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
