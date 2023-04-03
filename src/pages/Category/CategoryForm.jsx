@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ProFormText, ProFormTextArea, ProFormTreeSelect } from '@ant-design/pro-components';
 import {useModel} from '@umijs/max';
 import MyModalForm from '@/components/MyModalForm';
-import {create, update, query} from '@/services/common';
+import {create, update, queryAll} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import {translateAction} from "@/utils/util";
@@ -35,18 +35,10 @@ export default ({ type, actionRef }) => {
     }
   };
 
-  const requestSelectData = async () => {
-    const response = await query('categories', {
-      type: type,
-      enable: true
-    });
-    return response.data;
-  }
-
   const title = () => {
     let title = translateAction(action);
     if (type === 'EXPENSE') {
-      return  title + t('tab.expense.category');
+      return title + t('tab.expense.category');
     }
     if (type === 'INCOME') {
       return title + t('tab.income.category');
@@ -64,7 +56,7 @@ export default ({ type, actionRef }) => {
       <ProFormTreeSelect
         name="pId"
         label={t('label.parent.category')}
-        request={requestSelectData}
+        request={ () => queryAll('categories', { type: type }) }
         fieldProps={{
           ...treeSelectSingleProp,
         }}

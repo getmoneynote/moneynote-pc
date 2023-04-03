@@ -6,7 +6,7 @@ import {
   ProFormTextArea,
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
-import {create, query, update} from '@/services/common';
+import {create, queryAll, update} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import {translateAction} from "@/utils/util";
@@ -55,10 +55,7 @@ export default () => {
       <ProFormTreeSelect
         name="pId"
         label={t('label.parent.tag')}
-        request={async () => {
-          const response = await query('tags', { enable: true });
-          return response.data;
-        }}
+        request={ () => queryAll('tags') }
         fieldProps={{
           ...treeSelectSingleProp,
         }}
