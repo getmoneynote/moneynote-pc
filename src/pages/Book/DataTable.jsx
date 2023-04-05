@@ -121,7 +121,6 @@ export default () => {
         <Button
           size="small"
           type="link"
-          disabled={initialState.currentBook.id !== record.id}
           onClick={() => updateHandler(record)}
         >
           {t('update')}

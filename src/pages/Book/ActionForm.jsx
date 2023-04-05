@@ -68,7 +68,7 @@ export default () => {
     return options;
   }, [accounts, action, currentRow]);
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories', currentRow?.id), { manual: true });
   const expenseCategoryOptions = useMemo(() => {
     let options = categories.filter(i => i.canExpense);
     if (action !== 1) {
@@ -96,9 +96,11 @@ export default () => {
     if (visible) {
       loadCurrencies();
       loadAccounts();
-      loadCategories();
+      if (action === 2) {
+        loadCategories();
+      }
     }
-  }, [visible]);
+  }, [visible, action]);
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
