@@ -1,6 +1,7 @@
+import { history } from '@umijs/max';
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
-import { history } from '@umijs/max';
+import HeaderContent from "@/components/HeaderContent";
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import { getInitState } from './services/user';
@@ -42,6 +43,7 @@ export async function getInitialState() {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout = ({ initialState, setInitialState }) => {
   return {
+    headerContentRender: () => <HeaderContent />,
     rightContentRender: () => <RightContent />,
     footerRender: () => <Footer />,
     onPageChange: () => {

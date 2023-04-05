@@ -80,14 +80,6 @@ export default () => {
     actionRef.current?.reload();
   }
 
-  const addHandler = () => {
-    show(<ActionForm />);
-  };
-
-  function copyHandler(record) {
-    show(<ActionForm />, 3, record);
-  }
-
   const updateHandler = (record) => {
     if (record.type === 'ADJUST') {
       show(<AdjustForm actionRef={actionRef} />, 2, record);
@@ -96,17 +88,9 @@ export default () => {
     }
   };
 
-  const refundHandler = (record) => {
-    show(<ActionForm />, 4, record);
-  };
-
   const confirmHandler = async (record) => {
     await confirm(record.id);
     successHandler();
-  };
-
-  const updateTagAmountHandler = (record, relation) => {
-    show(<TagForm flow={record} />, 2, relation);
   };
 
   const messageDeleteConfirm = t('delete.confirm', { name: '' });
@@ -293,7 +277,7 @@ export default () => {
       hideInSearch: true,
       fixed: 'right',
       render: (_, record) => [
-        <Button type="link" disabled={record.type === 'ADJUST'} onClick={() => copyHandler(record)}>
+        <Button type="link" disabled={record.type === 'ADJUST'} onClick={() => show(<ActionForm />, 3, record)}>
           {t('copy')}
         </Button>,
         <Dropdown
@@ -321,7 +305,7 @@ export default () => {
                 label: (
                   <Button
                     type="text"
-                    onClick={() => refundHandler(record)}
+                    onClick={() => show(<ActionForm />, 4, record)}
                     disabled={record.type === 'ADJUST'}
                   >
                     {t('refund')}
@@ -352,7 +336,7 @@ export default () => {
         return (
           <Tooltip title={`${t('flow.label.amount')}: ${relation.amount}, ${t('click.edit')}`}>
             <Tag
-              onClick={() => updateTagAmountHandler(record, relation)}
+              onClick={() => show(<TagForm flow={record} />, 2, relation)}
               style={{ cursor: 'pointer' }}
               color="blue"
             >
@@ -416,7 +400,7 @@ export default () => {
         actionRef={actionRef}
         tableExtraRender={extraRender}
         toolBarRender={() => [
-          <Button type="primary" onClick={addHandler}>
+          <Button type="primary" onClick={() => show(<ActionForm />)}>
             <PlusOutlined />
             {t('add')}
           </Button>,

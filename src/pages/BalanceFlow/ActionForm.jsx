@@ -18,23 +18,23 @@ import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
 
-export default () => {
+export default ({ initType = 'EXPENSE' }) => {
 
   const { actionRef } = useModel('BalanceFlow.model');
   const { initialState } = useModel('@@initialState');
   const { action, currentRow } = useModel('modal');
-  const [tabKey, setTabKey] = useState('EXPENSE');
+  const [tabKey, setTabKey] = useState(initType);
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   // 确保每次新增都是默认账单，修复先点击复制，之后再新增，遗留之前的数据。
   useEffect(() => {
     if (action === 1) {
       setCurrentBook(initialState.currentBook);
-      setTabKey('EXPENSE');
+      setTabKey(initType);
     } else {
       setCurrentBook(currentRow.book);
       setTabKey(currentRow.type);
     }
-  }, [action, currentRow]);
+  }, [action, currentRow, initType]);
 
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
   const accountOptions = useMemo(() => {
