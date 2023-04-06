@@ -34,7 +34,7 @@ export const treeSelectSingleProp = {
   filterTreeNode: true,
   treeNodeFilterProp: 'label',
   labelInValue: false,
-  treeCheckStrictly: false,
+  treeCheckStrictly: true,
   fieldNames: {
     label: 'label',
   },

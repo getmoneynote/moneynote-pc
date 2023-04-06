@@ -22,7 +22,7 @@ export default ({ initType = 'EXPENSE' }) => {
 
   const { actionRef } = useModel('BalanceFlow.model');
   const { initialState } = useModel('@@initialState');
-  const { action, currentRow } = useModel('modal');
+  const { action, currentRow, visible } = useModel('modal');
   const [tabKey, setTabKey] = useState(initType);
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   // 确保每次新增都是默认账单，修复先点击复制，之后再新增，遗留之前的数据。
@@ -35,6 +35,15 @@ export default ({ initType = 'EXPENSE' }) => {
       setTabKey(currentRow.type);
     }
   }, [action, currentRow, initType]);
+
+  // 为了解决默认值的问题，加visible是为了每次打开都重新加载。
+  useEffect(() => {
+    if (visible && action === 1) {
+      loadBooks();
+      loadAccounts();
+      loadCategories();
+    }
+  }, [visible, currentBook]);
 
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
   const accountOptions = useMemo(() => {
@@ -120,19 +129,23 @@ export default ({ initType = 'EXPENSE' }) => {
     if (tabKey === 'TRANSFER') {
       options = tags.filter(i => i.canTransfer);
     }
-    currentRow?.tags.forEach(e => {
-      if (!options.some(e1 => e1.id === e.tag.id)) {
-        options.unshift(e.tag);
-      }
-    });
+    if (action !== 1) {
+      currentRow?.tags.forEach(e => {
+        if (!options.some(e1 => e1.id === e.tag.id)) {
+          options.unshift(e.tag);
+        }
+      });
+    }
     return options;
   }, [tabKey, tags, currentRow]);
 
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => getAll('books'), { manual: true });
   const bookOptions = useMemo(() => {
     let options = books;
-    if (!options.some(e => e.id === currentBook.id)) {
-      options.unshift(currentBook);
+    if (action !== 1) {
+      if (!options.some(e => e.id === currentBook.id)) {
+        options.unshift(currentBook);
+      }
     }
     return options;
   }, [books, currentBook]);

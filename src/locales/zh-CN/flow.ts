@@ -15,7 +15,7 @@ export default {
   'flow.label.account': '账户',
   'flow.label.category': '分类',
   'flow.label.tag': '标签',
-  'flow.label.payee': '付款对象',
+  'flow.label.payee': '交易对象',
   'flow.label.confirm': '是否确认',
   'flow.label.include': '是否统计',
   'flow.label.transfer.from.account': '转出账户',

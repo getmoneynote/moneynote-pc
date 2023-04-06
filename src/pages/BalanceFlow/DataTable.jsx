@@ -210,6 +210,7 @@ export default () => {
       dataIndex: 'categories',
       render: (_, record) => record.categoryName,
       valueType: 'treeSelect',
+      search: { transform: e => ({categories : e.map(e2 => e2.value) }) },
       fieldProps: {
         options: categoryOptions,
         loading: categoriesLoading,
@@ -222,6 +223,7 @@ export default () => {
       dataIndex: 'tags',
       render: (_, record) => tagColumnRender(record),
       valueType: 'treeSelect',
+      search: { transform: e => ({tags : e.map(e2 => e2.value) }) },
       fieldProps: {
         options: tagOptions,
         loading: tagsLoading,
@@ -235,7 +237,7 @@ export default () => {
       sorter: true,
       render: (_, record) => <>{record.payee ? record.payee.name : '-'}</>,
       valueType: 'select',
-      search: { transform: (value) => ({ payees: value }) },
+      search: { transform: value => ({ payees: value }) },
       fieldProps: {
         options: payeeOptions,
         loading: payeesLoading,
@@ -414,7 +416,10 @@ export default () => {
           statistics(params).then((res) => {
             setStatisticsData(res.data);
           });
-          return query('balance-flows', { ...params, ...{ sort: tableSortFormat(sort) } });
+          return query('balance-flows', {
+            ...params,
+            ...{ sort: tableSortFormat(sort) }
+          });
         }}
       />
     </>
