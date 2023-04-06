@@ -39,37 +39,18 @@ export default ({ initType = 'EXPENSE' }) => {
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
   const accountOptions = useMemo(() => {
     let options = [];
+    // 默认的支出账户不可能是禁用的。
     if (tabKey === 'EXPENSE') {
       options = accounts.filter(i => i.canExpense);
-      if (action === 1) {
-        if (currentBook.defaultExpenseAccount) {
-          if (!options.some(e => e.id === currentBook.defaultExpenseAccount.id)) {
-            options.unshift(currentBook.defaultExpenseAccount);
-          }
-        }
-      }
     }
     if (tabKey === 'INCOME') {
       options = accounts.filter(i => i.canIncome);
-      if (action === 1) {
-        if (currentBook.defaultIncomeAccount) {
-          if (!options.some(e => e.id === currentBook.defaultIncomeAccount.id)) {
-            options.unshift(currentBook.defaultIncomeAccount);
-          }
-        }
-      }
     }
     if (tabKey === 'TRANSFER') {
       options = accounts.filter(i => i.canTransferFrom);
-      if (action === 1) {
-        if (currentBook.defaultTransferFromAccount) {
-          if (!options.some(e => e.id === currentBook.defaultTransferFromAccount.id)) {
-            options.unshift(currentBook.defaultTransferFromAccount);
-          }
-        }
-      }
     }
     if (action !== 1) {
+      // 处理修改的账号是禁用状态的情况
       if (!options.some(e => e.id === currentRow.account.id)) {
         options.unshift(currentRow.account);
       }
@@ -80,13 +61,7 @@ export default ({ initType = 'EXPENSE' }) => {
     let options = [];
     if (tabKey === 'TRANSFER') {
       options = accounts.filter(i => i.canTransferTo)
-      if (action === 1) {
-        if (currentBook.defaultTransferToAccount) {
-          if (!options.some(e => e.id === currentBook.defaultTransferToAccount.id)) {
-            options.unshift(currentBook.defaultTransferToAccount);
-          }
-        }
-      } else {
+      if (action !== 1) {
         if (!options.some(e => e.id === currentRow.to.id)) {
           options.unshift(currentRow.to);
         }
@@ -118,23 +93,10 @@ export default ({ initType = 'EXPENSE' }) => {
     if (tabKey === 'EXPENSE') {
       options = categories.filter(i => i.canExpense);
       // 新增时，默认的支出类别可能已禁用，需要处理。
-      if (action === 1) {
-        if (currentBook.defaultExpenseCategory) {
-          if (!options.some(e => e.id === currentBook.defaultExpenseCategory.id)) {
-            options.unshift(currentBook.defaultExpenseCategory);
-          }
-        }
-      }
+      // 上面的情况在后端已经处理。
     }
     if (tabKey === 'INCOME') {
       options = categories.filter(i => i.canIncome);
-      if (action === 1) {
-        if (currentBook.defaultIncomeCategory) {
-          if (!options.some(e => e.id === currentBook.defaultIncomeCategory.id)) {
-            options.unshift(currentBook.defaultIncomeCategory);
-          }
-        }
-      }
     }
     if (action !== 1) {
       currentRow.categories.forEach(e => {
