@@ -13,7 +13,7 @@ export default {
   'flow.label.amount': '金额',
   'flow.label.createTime': '时间',
   'flow.label.account': '账户',
-  'flow.label.category': '类别',
+  'flow.label.category': '分类',
   'flow.label.tag': '标签',
   'flow.label.payee': '付款对象',
   'flow.label.confirm': '是否确认',

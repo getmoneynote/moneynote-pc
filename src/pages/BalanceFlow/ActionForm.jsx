@@ -207,6 +207,7 @@ export default ({ initType = 'EXPENSE' }) => {
       });
     } else {
       // let initialValues = structuredClone(currentRow);
+      // 一定要深度复制
       let initialValues = JSON.parse(JSON.stringify(currentRow));
       initialValues.bookId = initialValues.book.id;
       initialValues.accountId = initialValues.account.id;
