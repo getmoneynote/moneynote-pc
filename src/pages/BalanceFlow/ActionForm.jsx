@@ -260,6 +260,7 @@ export default ({ initType = 'EXPENSE' }) => {
   };
 
   const requestHandler = async (values) => {
+    // values.tags里面的数据带了label labelInValue
     if (values.tags) values.tags = values.tags.map((i) => i?.value || i);
     if (action !== 2) {
       await create('balance-flows', values);

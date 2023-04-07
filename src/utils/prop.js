@@ -25,7 +25,7 @@ export const spaceVProp = {
 };
 
 export const treeSelectSingleProp = {
-  treeDataSimpleMode: true,
+  treeDataSimpleMode: false,
   multiple: false,
   allowClear: true,
   treeCheckable: false,
@@ -34,7 +34,7 @@ export const treeSelectSingleProp = {
   filterTreeNode: true,
   treeNodeFilterProp: 'label',
   labelInValue: false,
-  treeCheckStrictly: true,
+  treeCheckStrictly: false,
   fieldNames: {
     label: 'label',
   },
@@ -47,6 +47,7 @@ export const treeSelectMultipleProp = {
   ...{
     multiple: true,
     treeCheckable: true,
+    treeCheckStrictly: true,
   }
 }
 
