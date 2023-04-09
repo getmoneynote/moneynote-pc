@@ -14,7 +14,7 @@ import {
 } from '@/services/account';
 import { useMsg } from '@/utils/hooks';
 import MySwitch from '@/components/MySwitch';
-import {selectMultipleProp, tableProp} from '@/utils/prop';
+import {selectMultipleProp, selectSingleProp, tableProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from './AdjustForm';
@@ -95,11 +95,11 @@ export default ({ type, actionRef }) => {
         sorter: true,
         valueType: 'select',
         fieldProps: {
+          ...selectSingleProp,
           options: currencyOptions,
           loading: currencyLoading,
           onFocus: loadCurrencies,
-          ...selectMultipleProp,
-          mode: false,
+          labelInValue: false,
         },
       },
     ];

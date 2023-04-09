@@ -3,6 +3,7 @@ import {useModel, useRequest} from '@umijs/max';
 import {ProFormText, ProFormTextArea, ProFormSelect, ProFormSwitch} from '@ant-design/pro-components';
 import {create, queryAll, update} from '@/services/common';
 import {translateAccountType, translateAction} from '@/utils/util';
+import {selectSingleProp} from '@/utils/prop';
 import {amountRequiredRules, requiredRules} from "@/utils/rules";
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
@@ -84,10 +85,10 @@ export default ({ type, actionRef }) => {
           rules={requiredRules()}
           disabled={action !== 1}
           fieldProps={{
+            ...selectSingleProp,
             onFocus: loadCurrencies,
             loading: currenciesLoading,
             options: currencies,
-            showSearch: true,
             allowClear: false
           }}
         />

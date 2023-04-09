@@ -1,4 +1,5 @@
-import {request} from "@umijs/max";
+import { request  } from "@umijs/max";
+// import {request} from "@/utils/http";
 
 export async function create(prefix, data) {
   return request(prefix, {
