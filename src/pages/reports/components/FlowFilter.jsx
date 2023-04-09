@@ -54,32 +54,32 @@ export default ({ type, cat, run }) => {
           name="payees"
           label={t('flow.label.payee')}
           fieldProps={{
+            ...selectMultipleProp,
             options: type === 1 ? payees.filter(i => i.canExpense) : payees.filter(i => i.canIncome),
             loading: payeesLoading,
             onFocus: loadPayees,
-            ...selectMultipleProp,
           }}
         />
         <ProFormTreeSelect
           name="categories"
           label={t('flow.label.category')}
           fieldProps={{
+            ...treeSelectMultipleProp,
             options: type === 1 ? categories.filter(i => i.canExpense) : categories.filter(i => i.canIncome),
             loading: categoriesLoading,
             onFocus: loadCategories,
-            ...treeSelectMultipleProp,
-            treeCheckStrictly: cat === 1,
+            // treeCheckStrictly: cat === 1,
           }}
         />
         <ProFormTreeSelect
           name="tags"
           label={t('flow.label.tag')}
           fieldProps={{
+            ...treeSelectMultipleProp,
             loading: tagsLoading,
             options: type === 1 ? tags.filter(i => i.canExpense) : tags.filter(i => i.canIncome),
             onFocus: loadTags,
-            ...treeSelectMultipleProp,
-            treeCheckStrictly: cat === 2,
+            // treeCheckStrictly: cat === 2,
           }}
         />
       </QueryFilter>

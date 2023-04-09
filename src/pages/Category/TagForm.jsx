@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import {useModel} from '@umijs/max';
+import {useModel, useRequest} from '@umijs/max';
 import {
   ProFormSwitch,
   ProFormText,
   ProFormTextArea,
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
-import {create, queryAll, update} from '@/services/common';
+import {create, query, queryAll, update} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import {translateAction} from "@/utils/util";
@@ -17,6 +17,11 @@ export default () => {
 
   const { tagActionRef } = useModel('Category.model');
   const { action, currentRow } = useModel('modal');
+
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
+    // 'bookId': currentBook.id,
+    'enable': true,
+  }), { manual: true });
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
@@ -37,10 +42,12 @@ export default () => {
   };
 
   const requestHandler = async (values) => {
+    let form = JSON.parse(JSON.stringify(values));
+    form.pId = form.pId.value;
     if (action === 1) {
-      await create('tags', values);
+      await create('tags', form);
     } else if (action === 2) {
-      await update('tags', currentRow.id, values);
+      await update('tags', currentRow.id, form);
     }
   };
 
@@ -55,9 +62,11 @@ export default () => {
       <ProFormTreeSelect
         name="pId"
         label={t('label.parent.tag')}
-        request={ () => queryAll('tags') }
         fieldProps={{
           ...treeSelectSingleProp,
+          onFocus: loadTags,
+          loading: tagsLoading,
+          options: tags,
         }}
       />
       <ProFormText name="name" label={t('label.name')} rules={requiredRules()} />

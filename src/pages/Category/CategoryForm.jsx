@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ProFormText, ProFormTextArea, ProFormTreeSelect } from '@ant-design/pro-components';
-import {useModel} from '@umijs/max';
+import {useModel, useRequest} from '@umijs/max';
 import MyModalForm from '@/components/MyModalForm';
-import {create, update, queryAll} from '@/services/common';
+import {create, update, query} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import {translateAction} from "@/utils/util";
@@ -12,13 +12,20 @@ export default ({ type, actionRef }) => {
 
   const { action, currentRow } = useModel('modal');
 
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
+    // 'bookId': currentBook.id,
+    'type': type,
+    'enable': true,
+  }), { manual: true });
+
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (action === 1) {
       setInitialValues({
-        pId: currentRow?.id,
+        pId: currentRow,
       });
     } else if (action === 2) {
+      console.log(currentRow);
       setInitialValues({ ...currentRow });
     }
   }, [action, currentRow]);
@@ -28,10 +35,12 @@ export default ({ type, actionRef }) => {
   };
 
   const requestHandler = async (values) => {
+    let form = JSON.parse(JSON.stringify(values));
+    form.pId = form.pId.value;
     if (action === 1) {
-      await create('categories', {...values, ...{ type: type }});
+      await create('categories', {...form, ...{ type: type }});
     } else if (action === 2) {
-      await update('categories', currentRow.id, values);
+      await update('categories', currentRow.id, form);
     }
   };
 
@@ -56,9 +65,11 @@ export default ({ type, actionRef }) => {
       <ProFormTreeSelect
         name="pId"
         label={t('label.parent.category')}
-        request={ () => queryAll('categories', { type: type }) }
         fieldProps={{
           ...treeSelectSingleProp,
+          onFocus: loadCategories,
+          loading: categoriesLoading,
+          options: categories,
         }}
       />
       <ProFormText name="name" label={t('label.name')} rules={requiredRules()} />

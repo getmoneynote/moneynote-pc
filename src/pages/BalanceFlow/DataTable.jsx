@@ -7,7 +7,7 @@ import moment from 'moment';
 import { confirm, statistics } from '@/services/flow';
 import { queryAll, query, remove } from '@/services/common';
 import { useMsg } from '@/utils/hooks';
-import { selectMultipleProp, tableProp, treeSelectMultipleProp } from '@/utils/prop';
+import {selectMultipleProp, selectSingleProp, tableProp, treeSelectMultipleProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from '../Account/AdjustForm';
@@ -27,13 +27,13 @@ export default () => {
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => queryAll('accounts'), { manual: true });
 
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
-    'bookId': currentBook.id,
+    'bookId': currentBook?.id,
     'type': type,
     'enable': true,
   }), { manual: true });
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
-    'bookId': currentBook.id,
+    'bookId': currentBook?.id,
     'canExpense': type === 'EXPENSE' ? true : null,
     'canIncome': type === 'INCOME' ? true : null,
     'canTransfer': type === 'TRANSFER' ? true : null,
@@ -41,12 +41,12 @@ export default () => {
   }), { manual: true });
 
   const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {
-    'bookId': currentBook.id,
+    'bookId': currentBook?.id,
     'canExpense': type === 'EXPENSE' ? true : null,
     'canIncome': type === 'INCOME' ? true : null,
   }), { manual: true });
 
-  const { data : books = [], loading : booksLoading} = useRequest(() => queryAll('books'));
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
 
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
 
@@ -88,13 +88,14 @@ export default () => {
       render: (_, record) => record.book.name,
       hideInTable: false,
       valueType: 'select',
-      initialValue: initialState.currentBook.id,
+      initialValue: initialState.currentBook,
+      search: { transform: value => ({ book: value.value }) },
       fieldProps: {
+        ...selectSingleProp,
+        onFocus: loadBooks,
         options: books,
         loading: booksLoading,
         onChange: (_, option) => setCurrentBook(option),
-        ...selectMultipleProp,
-        mode: false,
       },
     },
     {
@@ -173,11 +174,11 @@ export default () => {
       render: (_, record) => record.accountName,
       valueType: 'select',
       fieldProps: {
+        ...selectSingleProp,
         options: accounts,
         loading: accountsLoading,
         onFocus: loadAccounts,
-        ...selectMultipleProp,
-        mode: false,
+        labelInValue: false,
       },
     },
     {
@@ -187,10 +188,10 @@ export default () => {
       valueType: 'treeSelect',
       search: { transform: e => ({categories : e.map(e2 => e2.value) }) },
       fieldProps: {
+        ...treeSelectMultipleProp,
+        onFocus: loadCategories,
         options: categories,
         loading: categoriesLoading,
-        onFocus: loadCategories,
-        ...treeSelectMultipleProp,
       },
     },
     {
@@ -200,10 +201,10 @@ export default () => {
       valueType: 'treeSelect',
       search: { transform: e => ({tags : e.map(e2 => e2.value) }) },
       fieldProps: {
-        options: tags,
-        loading: tagsLoading,
         onFocus: loadTags,
         ...treeSelectMultipleProp,
+        options: tags,
+        loading: tagsLoading,
       },
     },
     {
@@ -214,10 +215,11 @@ export default () => {
       valueType: 'select',
       search: { transform: value => ({ payees: value }) },
       fieldProps: {
+        ...selectMultipleProp,
         options: payees,
         loading: payeesLoading,
         onFocus: loadPayees,
-        ...selectMultipleProp,
+        labelInValue: false,
       },
     },
     {

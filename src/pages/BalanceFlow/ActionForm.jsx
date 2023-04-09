@@ -37,22 +37,6 @@ export default ({ initType = 'EXPENSE' }) => {
     }
   }, [action, currentRow, initType, visible]);
 
-  // 为了解决默认值的问题，加visible是为了每次打开都重新加载。
-  // useEffect(() => {
-  //   if (visible) {
-  //     loadBooks();
-  //     //loadAccounts();
-  //     if (tabKey !== 'TRANSFER') {
-  //       loadCategories();
-  //       loadPayees();
-  //     }
-  //     if (tabKey === 'TRANSFER') {
-  //       loadToAccounts();
-  //     }
-  //     loadTags();
-  //   }
-  // }, [visible, currentBook, tabKey]);
-
   // 默认的支出账户不可能是禁用的。
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => queryAll('accounts', {
     'canExpense': tabKey === 'EXPENSE' ? true : null,
@@ -89,9 +73,7 @@ export default ({ initType = 'EXPENSE' }) => {
     // 'keeps': action === 1 ? [] : currentRow.tags.map(e => e.tag.id),
   }), { manual: true });
 
-  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books', {
-    // 'keep': action === 1 ? [] : currentBook.id,
-  }), { manual: true });
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
@@ -208,7 +190,7 @@ export default ({ initType = 'EXPENSE' }) => {
     if (form.tags) {
       form.tags = form.tags.map((i) => i?.value || i);
     }
-    form.bookId = form.book.id;
+    form.bookId = form.book.value;
     delete form.book;
     form.accountId = form.account.value;
     delete form.account;
@@ -227,7 +209,18 @@ export default ({ initType = 'EXPENSE' }) => {
       await create('balance-flows', form);
     } else {
       //优化
-      if (isEqual(currentRow.categories, form.categories)) {
+      if (isEqual(
+        currentRow.categories.map(e => ({
+          'categoryId': e.categoryId,
+          'amount': e.amount,
+          'convertedAmount': e.convertedAmount
+        })),
+        form.categories.map(e=>({
+          'categoryId': e.categoryId,
+          'amount': e.amount,
+          'convertedAmount': e.convertedAmount
+        }))
+      )) {
         delete form.categories;
       }
       if (isEqual(currentRow.tags.map((i) => i.tag.id), form.tags)) {
