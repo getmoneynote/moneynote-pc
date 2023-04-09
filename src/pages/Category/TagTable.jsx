@@ -156,7 +156,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={ () => query('tags') }
+      request={ (params = {}, __, _) => query('tags', { ...params}) }
       actionRef={tagActionRef}
     />
   );

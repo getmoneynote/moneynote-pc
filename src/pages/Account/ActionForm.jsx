@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useModel, useRequest} from '@umijs/max';
 import {ProFormText, ProFormTextArea, ProFormSelect, ProFormSwitch} from '@ant-design/pro-components';
-import {create, getAll, update} from '@/services/common';
+import {create, queryAll, update} from '@/services/common';
 import {translateAccountType, translateAction} from '@/utils/util';
 import {amountRequiredRules, requiredRules} from "@/utils/rules";
 import MyModalForm from '@/components/MyModalForm';
@@ -12,7 +12,7 @@ export default ({ type, actionRef }) => {
   const { action, currentRow } = useModel('modal');
   const { initialState } = useModel('@@initialState');
 
-  const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(() => getAll('currencies'), { manual: true });
+  const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(() => queryAll('currencies'), { manual: true });
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {

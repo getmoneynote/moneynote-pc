@@ -33,7 +33,7 @@ export const treeSelectSingleProp = {
   showSearch: true,
   filterTreeNode: true,
   treeNodeFilterProp: 'label',
-  labelInValue: false,
+  labelInValue: true,
   treeCheckStrictly: false,
   fieldNames: {
     label: 'label',
@@ -47,13 +47,20 @@ export const treeSelectMultipleProp = {
   ...{
     multiple: true,
     treeCheckable: true,
+    labelInValue: true,//只能是true
     treeCheckStrictly: true,
   }
 }
 
-export const selectSearchProp = {
+export const selectSingleProp = {
+  labelInValue: true, //设置为true，可以方便修改时禁用了的也可以显示
   showArrow: true,
   showSearch: true,
   allowClear: true,
-  mode: 'multiple',
-};
+}
+export const selectMultipleProp = {
+  ...selectSingleProp,
+  ...{
+    mode: 'multiple',
+  }
+}

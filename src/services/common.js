@@ -27,21 +27,11 @@ export async function remove(prefix, id) {
   });
 }
 
-export async function getAll(prefix, bookId) {
-  return request(`${prefix}/all`, {
-    method: 'GET',
-    params: {
-      'bookId': bookId,
-    },
-  });
-}
-
 export async function queryAll(prefix, params) {
-  const response = await request(`${prefix}/all`, {
+  return await request(`${prefix}/all`, {
     method: 'GET',
     params: params,
   });
-  return response.data;
 }
 
 export async function toggle(prefix, id) {

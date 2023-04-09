@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { Col, Form, Row, Space, Tabs } from 'antd';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import {
@@ -12,8 +12,8 @@ import {
 import { useModel, useRequest } from '@umijs/max';
 import moment from 'moment';
 import { isEqual, translateAction, translateFlowType } from '@/utils/util';
-import { getAll, create, update } from '@/services/common';
-import { treeSelectSingleProp, treeSelectMultipleProp } from '@/utils/prop';
+import { queryAll, query, create, update } from '@/services/common';
+import { treeSelectSingleProp, treeSelectMultipleProp, selectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
@@ -27,6 +27,7 @@ export default ({ initType = 'EXPENSE' }) => {
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   // 确保每次新增都是默认账单，修复先点击复制，之后再新增，遗留之前的数据。
   useEffect(() => {
+    if (!visible) return;
     if (action === 1) {
       setCurrentBook(initialState.currentBook);
       setTabKey(initType);
@@ -34,161 +35,103 @@ export default ({ initType = 'EXPENSE' }) => {
       setCurrentBook(currentRow.book);
       setTabKey(currentRow.type);
     }
-  }, [action, currentRow, initType]);
+  }, [action, currentRow, initType, visible]);
 
   // 为了解决默认值的问题，加visible是为了每次打开都重新加载。
-  useEffect(() => {
-    if (visible && action === 1) {
-      loadBooks();
-      loadAccounts();
-      loadCategories();
-    }
-  }, [visible, currentBook]);
+  // useEffect(() => {
+  //   if (visible) {
+  //     loadBooks();
+  //     //loadAccounts();
+  //     if (tabKey !== 'TRANSFER') {
+  //       loadCategories();
+  //       loadPayees();
+  //     }
+  //     if (tabKey === 'TRANSFER') {
+  //       loadToAccounts();
+  //     }
+  //     loadTags();
+  //   }
+  // }, [visible, currentBook, tabKey]);
 
-  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
-  const accountOptions = useMemo(() => {
-    let options = [];
-    // 默认的支出账户不可能是禁用的。
-    if (tabKey === 'EXPENSE') {
-      options = accounts.filter(i => i.canExpense);
-    }
-    if (tabKey === 'INCOME') {
-      options = accounts.filter(i => i.canIncome);
-    }
-    if (tabKey === 'TRANSFER') {
-      options = accounts.filter(i => i.canTransferFrom);
-    }
-    if (action !== 1) {
-      // 处理修改的账号是禁用状态的情况
-      if (!options.some(e => e.id === currentRow.account.id)) {
-        options.unshift(currentRow.account);
-      }
-    }
-    return options;
-  }, [tabKey, accounts, action, currentBook, currentRow]);
-  const toAccountOptions = useMemo(() => {
-    let options = [];
-    if (tabKey === 'TRANSFER') {
-      options = accounts.filter(i => i.canTransferTo)
-      if (action !== 1) {
-        if (!options.some(e => e.id === currentRow.to.id)) {
-          options.unshift(currentRow.to);
-        }
-      }
-    }
-    return options;
-  }, [tabKey, accounts, action, currentBook, currentRow]);
+  // 默认的支出账户不可能是禁用的。
+  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => queryAll('accounts', {
+    'canExpense': tabKey === 'EXPENSE' ? true : null,
+    'canIncome': tabKey === 'INCOME' ? true : null,
+    'canTransferFrom': tabKey === 'TRANSFER' ? true : null,
+    // 'keep': action === 1 ? null : currentRow.account.id,
+  }), { manual: true });
 
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees', currentBook.id), { manual: true });
-  const payeeOptions = useMemo(() => {
-    let options = [];
-    if (tabKey === 'EXPENSE') {
-      options = payees.filter(i => i.canExpense);
-    }
-    if (tabKey === 'INCOME') {
-      options = payees.filter(i => i.canIncome);
-    }
-    if (action !== 1 && currentRow.payee) {
-      if (!options.some(e => e.id === currentRow.payee.id)) {
-        options.unshift(currentRow.payee);
-      }
-    }
-    return options;
-  }, [tabKey, payees, action, currentRow]);
+  const { data : toAccounts = [], loading : toAccountsLoading, run : loadToAccounts} = useRequest(() => queryAll('accounts', {
+    'canTransferTo': tabKey === 'TRANSFER' ? true : null,
+    // 'keep': action === 1 ? null : currentRow.to.id,
+  }), { manual: true });
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories', currentBook.id), { manual: true });
-  const categoryOptions = useMemo(() => {
-    let options = [];
-    if (tabKey === 'EXPENSE') {
-      options = categories.filter(i => i.canExpense);
-      // 新增时，默认的支出类别可能已禁用，需要处理。
-      // 上面的情况在后端已经处理。
-    }
-    if (tabKey === 'INCOME') {
-      options = categories.filter(i => i.canIncome);
-    }
-    if (action !== 1) {
-      currentRow.categories.forEach(e => {
-        if (!options.some(e1 => e1.id === e.category.id)) {
-          options.unshift(e.category);
-        }
-      });
-    }
-    return options;
-  }, [tabKey, categories, action, currentBook, currentRow]);
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {
+    'bookId': currentBook.id,
+    'canExpense': tabKey === 'EXPENSE' ? true : null,
+    'canIncome': tabKey === 'INCOME' ? true : null,
+    // 'keep': action === 1 ? null : currentRow.payee?.id,
+  }), { manual: true });
 
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags', currentBook.id), { manual: true });
-  const tagOptions = useMemo(() => {
-    let options = [];
-    if (tabKey === 'EXPENSE') {
-      options = tags.filter(i => i.canExpense);
-    }
-    if (tabKey === 'INCOME') {
-      options = tags.filter(i => i.canIncome);
-    }
-    if (tabKey === 'TRANSFER') {
-      options = tags.filter(i => i.canTransfer);
-    }
-    if (action !== 1) {
-      currentRow?.tags.forEach(e => {
-        if (!options.some(e1 => e1.id === e.tag.id)) {
-          options.unshift(e.tag);
-        }
-      });
-    }
-    return options;
-  }, [tabKey, tags, currentRow]);
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
+    'bookId': currentBook.id,
+    'type': tabKey,
+    'enable': true,
+    // 'keeps': action === 1 ? [] : currentRow.categories.map(e => e.category.id),
+  }), { manual: true });
 
-  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => getAll('books'), { manual: true });
-  const bookOptions = useMemo(() => {
-    let options = books;
-    if (action !== 1) {
-      if (!options.some(e => e.id === currentBook.id)) {
-        options.unshift(currentBook);
-      }
-    }
-    return options;
-  }, [books, currentBook]);
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
+    'bookId': currentBook.id,
+    'canExpense': tabKey === 'EXPENSE' ? true : null,
+    'canIncome': tabKey === 'INCOME' ? true : null,
+    'canTransfer': tabKey === 'TRANSFER' ? true : null,
+    'enable': true,
+    // 'keeps': action === 1 ? [] : currentRow.tags.map(e => e.tag.id),
+  }), { manual: true });
+
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books', {
+    // 'keep': action === 1 ? [] : currentBook.id,
+  }), { manual: true });
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (action === 1) {
       // if (!currentBook) return;
-      let accountId = null;
+      let account = null;
       let categories = [{}];
-      let toId = null;
+      let to = null;
       if (tabKey === 'EXPENSE') {
-        accountId = currentBook.defaultExpenseAccount?.id;
+        account = currentBook.defaultExpenseAccount;
         if (currentBook.defaultExpenseCategory) {
-          categories = [{ categoryId: currentBook.defaultExpenseCategory.id }];
+          categories = [{ category: currentBook.defaultExpenseCategory }];
         }
       } else if (tabKey === 'INCOME') {
-        accountId = currentBook.defaultIncomeAccount?.id;
+        account = currentBook.defaultIncomeAccount;
         if (currentBook.defaultIncomeCategory) {
-          categories = [{ categoryId: currentBook.defaultIncomeCategory.id }];
+          categories = [{ category: currentBook.defaultIncomeCategory }];
         }
       } else if (tabKey === 'TRANSFER') {
-        accountId = currentBook.defaultTransferFromAccount?.id;
-        toId = currentBook.defaultTransferToAccount?.id;
+        account = currentBook.defaultTransferFromAccount;
+        to = currentBook.defaultTransferToAccount;
       }
       setInitialValues({
-        bookId: currentBook.id,
+        book: currentBook,
         createTime: moment(),
-        accountId: accountId,
+        account: account,
         categories: categories,
         confirm: true,
         include: true,
-        toId: toId,
+        to: to,
       });
     } else {
       // let initialValues = structuredClone(currentRow);
       // 一定要深度复制
       let initialValues = JSON.parse(JSON.stringify(currentRow));
-      initialValues.bookId = initialValues.book.id;
-      initialValues.accountId = initialValues.account.id;
-      initialValues.toId = initialValues.to?.id;
-      initialValues.payeeId = initialValues.payee?.id;
-      initialValues.tags = initialValues.tags ? initialValues.tags.map((item) => item.tag.id) : null;
+      // initialValues.bookId = initialValues.book;
+      // initialValues.accountId = initialValues.account;
+      // initialValues.toId = initialValues.to;
+      // initialValues.payeeId = initialValues.payee;
+      initialValues.tags = initialValues.tags?.map((item) => item.tag);
       if (action !== 2) {
         initialValues.notes = null;
         initialValues.createTime = moment();
@@ -260,24 +203,37 @@ export default ({ initType = 'EXPENSE' }) => {
   };
 
   const requestHandler = async (values) => {
+    let form = JSON.parse(JSON.stringify(values));
     // values.tags里面的数据带了label labelInValue
-    if (values.tags) values.tags = values.tags.map((i) => i?.value || i);
+    if (form.tags) {
+      form.tags = form.tags.map((i) => i?.value || i);
+    }
+    form.bookId = form.book.id;
+    delete form.book;
+    form.accountId = form.account.value;
+    delete form.account;
+    form.payeeId = form.payee?.value;
+    delete form.payee;
+    form.toId = form.to?.value;
+    delete form.to;
+    if (form.categories) {
+      form.categories = form.categories.map((e) => ({
+        ...e,
+        'categoryId': e.category.id,
+      }));
+      form.categories.forEach(e => delete e.category);
+    }
     if (action !== 2) {
-      await create('balance-flows', values);
+      await create('balance-flows', form);
     } else {
       //优化
-      if (isEqual(currentRow.categories, values.categories)) {
-        delete values.categories;
+      if (isEqual(currentRow.categories, form.categories)) {
+        delete form.categories;
       }
-      if (
-        isEqual(
-          currentRow.tags.map((i) => i.tag.id),
-          values.tags,
-        )
-      ) {
-        delete values.tags;
+      if (isEqual(currentRow.tags.map((i) => i.tag.id), form.tags)) {
+        delete form.tags;
       }
-      await update('balance-flows', currentRow.id, values);
+      await update('balance-flows', currentRow.id, form);
     }
   };
 
@@ -319,7 +275,7 @@ export default ({ initType = 'EXPENSE' }) => {
         initialValues={initialValues}
       >
         <ProFormSelect
-          name="bookId"
+          name="book"
           label={t('flow.label.book')}
           rules={requiredRules()}
           onChange={(_, option) => {
@@ -327,11 +283,12 @@ export default ({ initType = 'EXPENSE' }) => {
           }}
           disabled={action !== 1}
           fieldProps={{
+            ...selectSingleProp,
             onFocus: loadBooks,
-            options: bookOptions,
+            options: books,
             loading: booksLoading,
-            showSearch: true,
             allowClear: false,
+            labelInValue: true,
           }}
         />
         <ProFormText name="title" label={t('flow.label.title')} />
@@ -343,32 +300,34 @@ export default ({ initType = 'EXPENSE' }) => {
           rules={requiredRules()}
         />
         <ProFormSelect
-          name="accountId"
+          name="account"
           label={
             tabKey !== 'TRANSFER' ? t('flow.label.account') : t('flow.label.transfer.from.account')
           }
           rules={requiredRules()}
           onChange={accountChangeHandler}
           fieldProps={{
+            ...selectSingleProp,
             onFocus: loadAccounts,
-            options: accountOptions,
+            options: accounts,
             loading: accountsLoading,
-            showSearch: true,
             allowClear: false,
+            labelInValue: true,
           }}
         />
         {tabKey === 'TRANSFER' && (
           <>
             <ProFormSelect
-              name="toId"
+              name="to"
               label={t('flow.label.transfer.to.account')}
               rules={requiredRules()}
               onChange={toAccountChangeHandler}
               fieldProps={{
-                onFocus: loadAccounts,
-                options: toAccountOptions,
-                loading: accountsLoading,
-                showSearch: true,
+                ...selectSingleProp,
+                onFocus: loadToAccounts,
+                options: toAccounts,
+                loading: toAccountsLoading,
+                labelInValue: true,
                 allowClear: false,
               }}
             />
@@ -390,14 +349,15 @@ export default ({ initType = 'EXPENSE' }) => {
                   <Row key={field.key} gutter={8} style={{ alignItems: 'baseline' }}>
                     <Col flex="auto">
                       <ProFormTreeSelect
-                        name={[field.name, 'categoryId']}
+                        name={[field.name, 'category']}
                         label={categoryLabelMsg}
                         rules={requiredRules()}
                         fieldProps={{
                           ...treeSelectSingleProp,
                           onFocus: loadCategories,
                           loading: categoriesLoading,
-                          options: categoryOptions,
+                          options: categories,
+                          labelInValue: true,
                         }}
                       />
                     </Col>
@@ -435,13 +395,14 @@ export default ({ initType = 'EXPENSE' }) => {
         )}
         {tabKey !== 'TRANSFER' && (
           <ProFormSelect
-            name="payeeId"
+            name="payee"
             label={t('flow.label.payee')}
             fieldProps={{
+              ...selectSingleProp,
               onFocus: loadPayees,
-              options: payeeOptions,
+              options: payees,
               loading: payeesLoading,
-              showSearch: true
+              labelInValue: true,
             }}
           />
         )}
@@ -449,10 +410,11 @@ export default ({ initType = 'EXPENSE' }) => {
           name="tags"
           label={t('flow.label.tag')}
           fieldProps={{
+            ...treeSelectMultipleProp,
             onFocus: loadTags,
             loading: tagsLoading,
-            options: tagOptions,
-            ...treeSelectMultipleProp,
+            options: tags,
+            labelInValue: true,
           }}
         />
         <ProFormSwitch

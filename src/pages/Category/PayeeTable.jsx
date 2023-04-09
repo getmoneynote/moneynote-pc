@@ -134,7 +134,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={ () => query('payees') }
+      request={ (params = {}, __, _) => query('payees', { ...params}) }
       actionRef={payeeActionRef}
     />
   );

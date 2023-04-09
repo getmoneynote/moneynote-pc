@@ -3,7 +3,7 @@ import {Alert, Button, Form, Input, message, Modal, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import {useIntl, useModel, useRequest} from '@umijs/max';
-import {getAll, query, remove, toggle} from '@/services/common';
+import {queryAll, query, remove, toggle} from '@/services/common';
 import {
   statistics,
   toggleCanExpense,
@@ -14,7 +14,7 @@ import {
 } from '@/services/account';
 import { useMsg } from '@/utils/hooks';
 import MySwitch from '@/components/MySwitch';
-import {selectSearchProp, tableProp} from '@/utils/prop';
+import {selectMultipleProp, tableProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from './AdjustForm';
@@ -27,7 +27,7 @@ export default ({ type, actionRef }) => {
   const { successMsg } = useMsg();
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
 
-  const { data : currencyOptions = [], loading : currencyLoading, run : loadCurrencies} = useRequest(() => getAll('currencies'), { manual: true });
+  const { data : currencyOptions = [], loading : currencyLoading, run : loadCurrencies} = useRequest(() => queryAll('currencies'), { manual: true });
 
   function successHandler() {
     message.success(successMsg);
@@ -98,7 +98,7 @@ export default ({ type, actionRef }) => {
           options: currencyOptions,
           loading: currencyLoading,
           onFocus: loadCurrencies,
-          ...selectSearchProp,
+          ...selectMultipleProp,
           mode: false,
         },
       },

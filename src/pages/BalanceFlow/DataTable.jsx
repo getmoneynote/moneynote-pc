@@ -1,13 +1,13 @@
-import {useMemo, useState} from 'react';
+import {useState} from 'react';
 import { Alert, Button, Dropdown, Form, Input, message, Modal, Space, Tag, Tooltip } from 'antd';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import {useModel, useRequest} from '@umijs/max';
 import moment from 'moment';
 import { confirm, statistics } from '@/services/flow';
-import { getAll, query, remove } from '@/services/common';
+import { queryAll, query, remove } from '@/services/common';
 import { useMsg } from '@/utils/hooks';
-import { selectSearchProp, tableProp, treeSelectMultipleProp } from '@/utils/prop';
+import { selectMultipleProp, tableProp, treeSelectMultipleProp } from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from '../Account/AdjustForm';
@@ -23,55 +23,30 @@ export default () => {
 
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   const [type, setType] = useState();
-  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => getAll('accounts'), { manual: true });
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories', currentBook.id), { manual: true });
-  const categoryOptions = useMemo(() => {
-    let options = categories;
-    if (!type) return options;
-    if (type === 'EXPENSE') {
-      options = categories.filter(i => i.canExpense);
-    } else if (type === 'INCOME') {
-      options = categories.filter(i => i.canIncome);
-    } else {
-      options = [];
-    }
-    return options;
-  }, [type, categories]);
+  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => queryAll('accounts'), { manual: true });
 
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
+    'bookId': currentBook.id,
+    'type': type,
+    'enable': true,
+  }), { manual: true });
 
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags', currentBook.id), { manual: true });
-  const tagOptions = useMemo(() => {
-    let options = tags;
-    if (!type) return options;
-    if (type === 'EXPENSE') {
-      options = tags.filter(i => i.canExpense);
-    } else if (type === 'INCOME') {
-      options = tags.filter(i => i.canIncome);
-    } else if (type === 'TRANSFER') {
-      options = tags.filter(i => i.canTransfer);
-    } else {
-      options = [];
-    }
-    return options;
-  }, [type, tags]);
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
+    'bookId': currentBook.id,
+    'canExpense': type === 'EXPENSE' ? true : null,
+    'canIncome': type === 'INCOME' ? true : null,
+    'canTransfer': type === 'TRANSFER' ? true : null,
+    'enable': true,
+  }), { manual: true });
 
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {
+    'bookId': currentBook.id,
+    'canExpense': type === 'EXPENSE' ? true : null,
+    'canIncome': type === 'INCOME' ? true : null,
+  }), { manual: true });
 
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees', currentBook.id), { manual: true });
-  const payeeOptions = useMemo(() => {
-    let options = payees;
-    if (!type) return options;
-    if (type === 'EXPENSE') {
-      options = payees.filter(i => i.canExpense);
-    } else if (type === 'INCOME') {
-      options = payees.filter(i => i.canIncome);
-    } else {
-      options = [];
-    }
-    return options;
-  }, [type, payees]);
-
-  const { data : books = [], loading : booksLoading} = useRequest(() => getAll('books'));
+  const { data : books = [], loading : booksLoading} = useRequest(() => queryAll('books'));
 
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
 
@@ -118,7 +93,7 @@ export default () => {
         options: books,
         loading: booksLoading,
         onChange: (_, option) => setCurrentBook(option),
-        ...selectSearchProp,
+        ...selectMultipleProp,
         mode: false,
       },
     },
@@ -201,7 +176,7 @@ export default () => {
         options: accounts,
         loading: accountsLoading,
         onFocus: loadAccounts,
-        ...selectSearchProp,
+        ...selectMultipleProp,
         mode: false,
       },
     },
@@ -212,7 +187,7 @@ export default () => {
       valueType: 'treeSelect',
       search: { transform: e => ({categories : e.map(e2 => e2.value) }) },
       fieldProps: {
-        options: categoryOptions,
+        options: categories,
         loading: categoriesLoading,
         onFocus: loadCategories,
         ...treeSelectMultipleProp,
@@ -225,7 +200,7 @@ export default () => {
       valueType: 'treeSelect',
       search: { transform: e => ({tags : e.map(e2 => e2.value) }) },
       fieldProps: {
-        options: tagOptions,
+        options: tags,
         loading: tagsLoading,
         onFocus: loadTags,
         ...treeSelectMultipleProp,
@@ -239,10 +214,10 @@ export default () => {
       valueType: 'select',
       search: { transform: value => ({ payees: value }) },
       fieldProps: {
-        options: payeeOptions,
+        options: payees,
         loading: payeesLoading,
         onFocus: loadPayees,
-        ...selectSearchProp,
+        ...selectMultipleProp,
       },
     },
     {

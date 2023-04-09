@@ -63,40 +63,54 @@ export default () => {
     {
       title: t('account.label.currencyCode'),
       dataIndex: 'defaultCurrencyCode',
+      hideInSearch: true,
     },
     {
       title: t('book.label.default.expense.account'),
       dataIndex: 'defaultExpenseAccount',
       render: (value) => value?.name ?? '-',
+      hideInSearch: true,
     },
     {
       title: t('book.label.default.income.account'),
       dataIndex: 'defaultIncomeAccount',
       render: (value) => value?.name ?? '-',
+      hideInSearch: true,
     },
     {
       title: t('book.label.default.expense.category'),
       dataIndex: 'defaultExpenseCategory',
       render: (value) => value?.name ?? '-',
+      hideInSearch: true,
     },
     {
       title: t('book.label.default.income.category'),
       dataIndex: 'defaultIncomeCategory',
       render: (value) => value?.name ?? '-',
+      hideInSearch: true,
     },
     {
       title: t('book.label.default.transfer.from.account'),
       dataIndex: 'defaultTransferFromAccount',
       render: (value) => value?.name ?? '-',
+      hideInSearch: true,
     },
     {
       title: t('book.label.default.transfer.to.account'),
       dataIndex: 'defaultTransferToAccount',
       render: (value) => value?.name ?? '-',
+      hideInSearch: true,
     },
     {
       title: t('label.enable'),
       dataIndex: 'enable',
+      valueType: 'select',
+      fieldProps: {
+        options: [
+          { label: t('yes'), value: true },
+          { label: t('no'), value: false },
+        ],
+      },
       render: (_, record) => (
         <MySwitch
           disabled={initialState.currentBook.id === record.id}
@@ -109,6 +123,7 @@ export default () => {
     {
       title: t('operation'),
       align: 'center',
+      hideInSearch: true,
       render: (_, record) => [
         <Button
           size="small"
@@ -153,7 +168,6 @@ export default () => {
     <>
       <ProTable
         {...tableProp}
-        search={false}
         actionRef={actionRef}
         toolBarRender={() => [
           <Button type="primary" onClick={() => addHandler()}>
@@ -166,7 +180,7 @@ export default () => {
           expandedRowRender: (record) => expandedRowRender(record),
           rowExpandable: (record) => expandedRowRender(record),
         }}
-        request={() => query('books')}
+        request={ (params = {}, __, _) => query('books', { ...params}) }
       />
     </>
   );

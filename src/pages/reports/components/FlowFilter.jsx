@@ -8,16 +8,16 @@ import {
 } from '@ant-design/pro-components';
 import { useRequest } from "@umijs/max";
 import moment from 'moment/moment';
-import { selectSearchProp, treeSelectMultipleProp } from '@/utils/prop';
-import { getAll } from '@/services/common';
+import { selectMultipleProp, treeSelectMultipleProp } from '@/utils/prop';
+import { queryAll, query } from '@/services/common';
 import t from '@/utils/i18n';
 
 
 export default ({ type, cat, run }) => {
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => getAll('categories'), { manual: true });
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => getAll('tags'), { manual: true });
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => getAll('payees'), { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories'), { manual: true });
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags'), { manual: true });
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees'), { manual: true });
 
   return (
     <Card>
@@ -57,7 +57,7 @@ export default ({ type, cat, run }) => {
             options: type === 1 ? payees.filter(i => i.canExpense) : payees.filter(i => i.canIncome),
             loading: payeesLoading,
             onFocus: loadPayees,
-            ...selectSearchProp,
+            ...selectMultipleProp,
           }}
         />
         <ProFormTreeSelect
