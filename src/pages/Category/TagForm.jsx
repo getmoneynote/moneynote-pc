@@ -6,7 +6,7 @@ import {
   ProFormTextArea,
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
-import {create, query, queryAll, update} from '@/services/common';
+import {create, query, update} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import {translateAction} from "@/utils/util";
@@ -16,12 +16,18 @@ import t from '@/utils/i18n';
 export default () => {
 
   const { tagActionRef } = useModel('Category.model');
-  const { action, currentRow } = useModel('modal');
+  const { action, currentRow, visible } = useModel('modal');
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
     // 'bookId': currentBook.id,
     'enable': true,
+    'keeps': action === 1 ? [] : currentRow.pId,
   }), { manual: true });
+  useEffect(() => {
+    if (visible) {
+      loadTags();
+    }
+  }, [visible]);
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
@@ -64,7 +70,6 @@ export default () => {
         label={t('label.parent.tag')}
         fieldProps={{
           ...treeSelectSingleProp,
-          onFocus: loadTags,
           loading: tagsLoading,
           options: tags,
         }}

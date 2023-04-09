@@ -10,13 +10,19 @@ import t from '@/utils/i18n';
 
 export default ({ type, actionRef }) => {
 
-  const { action, currentRow } = useModel('modal');
+  const { action, currentRow, visible } = useModel('modal');
 
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
     // 'bookId': currentBook.id,
     'type': type,
     'enable': true,
+    'keeps': action === 1 ? [] : currentRow.pId,
   }), { manual: true });
+  useEffect(() => {
+    if (visible) {
+      loadCategories();
+    }
+  }, [visible]);
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
@@ -25,7 +31,6 @@ export default ({ type, actionRef }) => {
         pId: currentRow,
       });
     } else if (action === 2) {
-      console.log(currentRow);
       setInitialValues({ ...currentRow });
     }
   }, [action, currentRow]);
@@ -67,7 +72,6 @@ export default ({ type, actionRef }) => {
         label={t('label.parent.category')}
         fieldProps={{
           ...treeSelectSingleProp,
-          onFocus: loadCategories,
           loading: categoriesLoading,
           options: categories,
         }}
