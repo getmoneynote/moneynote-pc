@@ -1,11 +1,10 @@
-import { Button, message, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import { useIntl, useModel } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import moment from 'moment';
 import { query, remove } from '@/services/common'
 import { recall, runOnce } from '@/services/note-day';
-import { useMsg } from '@/utils/hooks';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
 import t from '@/utils/i18n';
@@ -14,10 +13,8 @@ export default () => {
 
   const { actionRef } = useModel('NoteDay.model');
   const { show } = useModel('modal');
-  const { successMsg } = useMsg();
 
   function successHandler() {
-    message.success(successMsg);
     actionRef.current?.reload();
   }
 

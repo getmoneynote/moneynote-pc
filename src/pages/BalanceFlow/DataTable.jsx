@@ -1,12 +1,11 @@
 import {useState} from 'react';
-import { Alert, Button, Dropdown, Form, Input, message, Modal, Space, Tag, Tooltip } from 'antd';
+import { Alert, Button, Dropdown, Form, Input, Modal, Space, Tag, Tooltip } from 'antd';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import {useModel, useRequest} from '@umijs/max';
 import moment from 'moment';
 import { confirm, statistics } from '@/services/flow';
 import { queryAll, query, remove } from '@/services/common';
-import { useMsg } from '@/utils/hooks';
 import {selectMultipleProp, selectSingleProp, tableProp, treeSelectMultipleProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
@@ -19,7 +18,6 @@ export default () => {
   const { actionRef } = useModel('BalanceFlow.model');
   const { initialState } = useModel('@@initialState');
   const { show } = useModel('modal');
-  const { successMsg } = useMsg();
 
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   const [type, setType] = useState();
@@ -51,7 +49,6 @@ export default () => {
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
 
   function successHandler() {
-    message.success(successMsg);
     actionRef.current?.reload();
   }
 

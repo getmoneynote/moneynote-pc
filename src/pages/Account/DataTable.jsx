@@ -12,9 +12,8 @@ import {
   toggleCanTransferTo,
   toggleInclude,
 } from '@/services/account';
-import { useMsg } from '@/utils/hooks';
 import MySwitch from '@/components/MySwitch';
-import {selectMultipleProp, selectSingleProp, tableProp} from '@/utils/prop';
+import {selectSingleProp, tableProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from './AdjustForm';
@@ -24,13 +23,11 @@ import t from '@/utils/i18n';
 export default ({ type, actionRef }) => {
 
   const { show } = useModel('modal');
-  const { successMsg } = useMsg();
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
 
   const { data : currencyOptions = [], loading : currencyLoading, run : loadCurrencies} = useRequest(() => queryAll('currencies'), { manual: true });
 
   function successHandler() {
-    message.success(successMsg);
     actionRef.current?.reload();
   }
 

@@ -1,10 +1,9 @@
-import { Button, message, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import { query, remove, toggle } from '@/services/common';
 import { setDefaultBook } from '@/services/user';
-import { useMsg } from '@/utils/hooks';
 import MySwitch from '@/components/MySwitch';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
@@ -14,11 +13,9 @@ export default () => {
 
   const { actionRef } = useModel('Book.model');
   const { show } = useModel('modal');
-  const { successMsg } = useMsg();
   const { initialState, setInitialState } = useModel('@@initialState');
 
   function successHandler() {
-    message.success(successMsg);
     actionRef.current?.reload();
   }
 

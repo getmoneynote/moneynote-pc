@@ -1,10 +1,9 @@
-import { Button, message, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max';
 import { query, remove, toggle } from '@/services/common';
 import { toggleCanExpense, toggleCanIncome } from '@/services/payee';
-import { useMsg } from '@/utils/hooks';
 import { tableProp } from '@/utils/prop';
 import MySwitch from '@/components/MySwitch';
 import PayeeForm from './PayeeForm';
@@ -14,7 +13,6 @@ export default () => {
 
   const { payeeActionRef } = useModel('Category.model');
   const { show } = useModel('modal');
-  const { successMsg } = useMsg();
 
   const addHandler = (record) => {
     show(<PayeeForm />, 1, record);
@@ -25,7 +23,6 @@ export default () => {
   };
 
   function successHandler() {
-    message.success(successMsg);
     payeeActionRef.current?.reload();
   }
 

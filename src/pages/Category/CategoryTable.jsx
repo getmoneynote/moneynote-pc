@@ -1,9 +1,8 @@
-import { Button, message, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max';
 import { query, remove, toggle } from '@/services/common';
-import { useMsg } from '@/utils/hooks';
 import { tableProp } from '@/utils/prop';
 import MySwitch from '@/components/MySwitch';
 import CategoryForm from './CategoryForm';
@@ -13,7 +12,6 @@ export default ({ type, actionRef }) => {
 
   const { show } = useModel('modal');
   const intl = useIntl();
-  const { successMsg } = useMsg();
 
   const addHandler = (record) => {
     show(<CategoryForm type={type} actionRef={actionRef} />, 1, record)
@@ -24,7 +22,6 @@ export default ({ type, actionRef }) => {
   };
 
   function successHandler() {
-    message.success(successMsg);
     actionRef.current?.reload();
   }
 

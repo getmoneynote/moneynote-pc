@@ -21,10 +21,8 @@ export default (props) => {
   const formRef = useRef();
   const { visible, setVisible } = useModel('modal');
 
-  const successMsg = t('message.operation.success');
   const finishHandler = async (values) => {
     await request({...values, ...params});
-    message.success(successMsg);
     formRef.current?.resetFields();
     if (onSuccess) onSuccess();
     return true;

@@ -22,7 +22,6 @@ export default {
   'label.enable': '是否可用',
   'label.notes': '备注',
 
-  'message.operation.success': '操作成功',
   'delete.confirm': '删除之后无法恢复，确定删除{name}吗？',
   'click.edit': '点击修改',
 
