@@ -199,9 +199,10 @@ export default ({ initType = 'EXPENSE' }) => {
     form.toId = form.to?.value;
     delete form.to;
     if (form.categories) {
+      console.log(form.categories);
       form.categories = form.categories.map((e) => ({
         ...e,
-        'categoryId': e.category.id,
+        'categoryId': e.category.value,
       }));
       form.categories.forEach(e => delete e.category);
     }

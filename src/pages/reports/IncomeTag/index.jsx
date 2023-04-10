@@ -12,7 +12,7 @@ export default () => {
   return (
     <PageContainer title={false}>
       <Space {...spaceVProp}>
-        <FlowFilter type={2} cat={2} run={run} />
+        <FlowFilter type='INCOME' run={run} />
         <Chart />
       </Space>
     </PageContainer>

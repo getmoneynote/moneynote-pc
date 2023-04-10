@@ -1,3 +1,4 @@
+import {useState} from "react";
 import { Card } from 'antd';
 import {
   ProFormDateRangePicker,
@@ -6,29 +7,66 @@ import {
   ProFormTreeSelect,
   QueryFilter,
 } from '@ant-design/pro-components';
-import { useRequest } from "@umijs/max";
+import {useModel, useRequest} from "@umijs/max";
 import moment from 'moment/moment';
-import { selectMultipleProp, treeSelectMultipleProp } from '@/utils/prop';
+import {selectMultipleProp, selectSingleProp, treeSelectMultipleProp} from '@/utils/prop';
 import { queryAll, query } from '@/services/common';
+import {requiredRules} from "@/utils/rules";
 import t from '@/utils/i18n';
 
+// type是支出和收入，cat是分类还是标签
+export default ({ type, run }) => {
 
-export default ({ type, cat, run }) => {
+  const { initialState } = useModel('@@initialState');
+  const [currentBook, setCurrentBook] = useState(initialState.currentBook);
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories'), { manual: true });
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags'), { manual: true });
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees'), { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
+    'bookId': currentBook.id,
+    'type': type,
+    'enable': true,
+  }), { manual: true });
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
+    'bookId': currentBook.id,
+    'canExpense': type === 'EXPENSE' ? true : null,
+    'canIncome': type === 'INCOME' ? true : null,
+    'enable': true,
+  }), { manual: true });
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {
+    'bookId': currentBook.id,
+    'canExpense': type === 'EXPENSE' ? true : null,
+    'canIncome': type === 'INCOME' ? true : null,
+  }), { manual: true });
 
   return (
     <Card>
       <QueryFilter
         defaultCollapsed={false}
         onFinish={(values) => {
-          if (values.categories) values.categories = values.categories.map((i) => i?.value || i);
-          if (values.tags) values.tags = values.tags.map((i) => i?.value || i);
-          run(values);
+          let form = JSON.parse(JSON.stringify(values));
+          form.bookId = values.bookId.id;
+          if (values.categories) form.categories = values.categories.map((i) => i?.value || i);
+          if (values.tags) form.tags = values.tags.map((i) => i?.value || i);
+          run(form);
         }}
       >
+        <ProFormSelect
+          name="bookId"
+          label={t('flow.label.book')}
+          rules={requiredRules()}
+          onChange={(_, option) => {
+            setCurrentBook(option);
+          }}
+          initialValue={currentBook}
+          fieldProps={{
+            ...selectSingleProp,
+            onFocus: loadBooks,
+            options: books,
+            loading: booksLoading,
+            allowClear: false,
+            labelInValue: true,
+          }}
+        />
         <ProFormDateRangePicker
           name="dateRange"
           label={t('flow.label.createTime')}
@@ -55,7 +93,7 @@ export default ({ type, cat, run }) => {
           label={t('flow.label.payee')}
           fieldProps={{
             ...selectMultipleProp,
-            options: type === 1 ? payees.filter(i => i.canExpense) : payees.filter(i => i.canIncome),
+            options: payees,
             loading: payeesLoading,
             onFocus: loadPayees,
           }}
@@ -65,7 +103,7 @@ export default ({ type, cat, run }) => {
           label={t('flow.label.category')}
           fieldProps={{
             ...treeSelectMultipleProp,
-            options: type === 1 ? categories.filter(i => i.canExpense) : categories.filter(i => i.canIncome),
+            options: categories,
             loading: categoriesLoading,
             onFocus: loadCategories,
             // treeCheckStrictly: cat === 1,
@@ -77,7 +115,7 @@ export default ({ type, cat, run }) => {
           fieldProps={{
             ...treeSelectMultipleProp,
             loading: tagsLoading,
-            options: type === 1 ? tags.filter(i => i.canExpense) : tags.filter(i => i.canIncome),
+            options: tags,
             onFocus: loadTags,
             // treeCheckStrictly: cat === 2,
           }}
