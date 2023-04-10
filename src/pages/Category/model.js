@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import {useRef, useState} from 'react';
 
 export default () => {
 
@@ -6,12 +6,14 @@ export default () => {
   const incomeCategoryActionRef = useRef();
   const tagActionRef = useRef();
   const payeeActionRef = useRef();
+  const [bookId, setBookId] = useState();
 
   return {
     expenseCategoryActionRef,
     incomeCategoryActionRef,
     tagActionRef,
     payeeActionRef,
+    bookId, setBookId,
   };
 
 };

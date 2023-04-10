@@ -15,11 +15,11 @@ import t from '@/utils/i18n';
 
 export default () => {
 
-  const { tagActionRef } = useModel('Category.model');
+  const { tagActionRef, bookId } = useModel('Category.model');
   const { action, currentRow, visible } = useModel('modal');
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
-    // 'bookId': currentBook.id,
+    'bookId': bookId,
     'enable': true,
     'keeps': action === 1 ? [] : currentRow.pId,
   }), { manual: true });
@@ -48,11 +48,10 @@ export default () => {
   };
 
   const requestHandler = async (values) => {
-    console.log(values);
     let form = JSON.parse(JSON.stringify(values));
     form.pId = values.pId?.value;
     if (action === 1) {
-      await create('tags', form);
+      await create('tags', {...form, ...{ bookId: bookId } });
     } else if (action === 2) {
       await update('tags', currentRow.id, form);
     }

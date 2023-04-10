@@ -11,7 +11,7 @@ import t from '@/utils/i18n';
 
 export default () => {
 
-  const { tagActionRef } = useModel('Category.model');
+  const { tagActionRef, bookId } = useModel('Category.model');
   const { show } = useModel('modal');
 
   const addHandler = (record) => {
@@ -153,7 +153,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={ (params = {}, __, _) => query('tags', { ...params}) }
+      request={ (params = {}, __, _) => query('tags', { ...params, ...{ bookId: bookId }}) }
       actionRef={tagActionRef}
     />
   );

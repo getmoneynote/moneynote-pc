@@ -9,7 +9,7 @@ import t from '@/utils/i18n';
 
 export default () => {
 
-  const { payeeActionRef } = useModel('Category.model');
+  const { payeeActionRef, bookId } = useModel('Category.model');
   const { action, currentRow } = useModel('modal');
 
   const [initialValues, setInitialValues] = useState({});
@@ -30,7 +30,7 @@ export default () => {
 
   const requestHandler = async (values) => {
     if (action === 1) {
-      await create('payees', values);
+      await create('payees', {...values, ...{ bookId: bookId } });
     } else if (action === 2) {
       await update('payees', currentRow.id, values);
     }

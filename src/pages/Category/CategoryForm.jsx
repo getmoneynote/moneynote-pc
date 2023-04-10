@@ -11,9 +11,10 @@ import t from '@/utils/i18n';
 export default ({ type, actionRef }) => {
 
   const { action, currentRow, visible } = useModel('modal');
+  const { bookId } = useModel('Category.model');
 
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
-    // 'bookId': currentBook.id,
+    'bookId': bookId,
     'type': type,
     'enable': true,
     'keeps': action === 1 ? [] : currentRow.pId,
@@ -40,11 +41,10 @@ export default ({ type, actionRef }) => {
   };
 
   const requestHandler = async (values) => {
-    console.log(values)
     let form = JSON.parse(JSON.stringify(values));
     form.pId = values.pId?.value;
     if (action === 1) {
-      await create('categories', {...form, ...{ type: type }});
+      await create('categories', {...form, ...{ bookId: bookId, type: type }});
     } else if (action === 2) {
       await update('categories', currentRow.id, form);
     }

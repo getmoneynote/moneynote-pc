@@ -85,7 +85,7 @@ export default () => {
       render: (_, record) => record.book.name,
       hideInTable: false,
       valueType: 'select',
-      initialValue: initialState.currentBook,
+      // initialValue: initialState.currentBook,
       search: { transform: value => ({ book: value.value }) },
       fieldProps: {
         ...selectSingleProp,

@@ -11,7 +11,7 @@ import t from '@/utils/i18n';
 
 export default () => {
 
-  const { payeeActionRef } = useModel('Category.model');
+  const { payeeActionRef, bookId } = useModel('Category.model');
   const { show } = useModel('modal');
 
   const addHandler = (record) => {
@@ -131,7 +131,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={ (params = {}, __, _) => query('payees', { ...params}) }
+      request={ (params = {}, __, _) => query('payees', { ...params, ...{ bookId: bookId }}) }
       actionRef={payeeActionRef}
     />
   );

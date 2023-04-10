@@ -1,6 +1,6 @@
 import { Button, Modal } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
-import { useIntl, useModel } from '@umijs/max';
+import { useIntl, useModel, history } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import { query, remove, toggle } from '@/services/common';
 import { setDefaultBook } from '@/services/user';
@@ -136,6 +136,13 @@ export default () => {
           onClick={() => updateHandler(record)}
         >
           {t('update')}
+        </Button>,
+        <Button
+          size="small"
+          type="link"
+          onClick={() => history.push(`/categories?bookId=${record.id}&bookName=${record.name}`, { book: record })}
+        >
+          {t('book.config')}
         </Button>,
         <Button
           size="small"
