@@ -25,7 +25,8 @@ export const errorConfig = {
   responseInterceptors: [
     (response) => {
       // 拦截响应数据，进行个性化处理
-      const { data } = response;
+      const { data, config } = response;
+      if (config.skipErrorHandler) return response;
       if (data.showType === 4) {
         message.success(data.message);
       }

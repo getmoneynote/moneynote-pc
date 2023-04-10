@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import { SelectLang } from '@umijs/max';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
@@ -9,13 +8,11 @@ import t from '@/utils/i18n';
 import styles from '../index.less';
 
 export default () => {
-  const defaultLoginSuccessMessage = t('pages.login.success');
   const handleSubmit = async (values) => {
     const response = await login({ ...values });
     if (response.data.remember) {
       localStorage.setItem('accessToken', response.data.accessToken);
     }
-    message.success(defaultLoginSuccessMessage);
     window.location.href = '/report';
   };
 

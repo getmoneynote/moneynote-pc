@@ -1,7 +1,4 @@
 export default {
-  'pages.login.accountLogin.errorMessage': '错误的用户名和密码(admin/ant.design)',
-  'pages.login.failure': '登录失败，请重试！',
-  'pages.login.success': '登录成功！',
 
   'pages.login.username.required': '用户名是必填项！',
 
