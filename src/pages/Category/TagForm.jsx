@@ -33,7 +33,7 @@ export default () => {
   useEffect(() => {
     if (action === 1) {
       setInitialValues({
-        pId: currentRow?.id,
+        pId: currentRow,
         canExpense: true,
         canIncome: false,
         canTransfer: false,
@@ -48,8 +48,9 @@ export default () => {
   };
 
   const requestHandler = async (values) => {
+    console.log(values);
     let form = JSON.parse(JSON.stringify(values));
-    form.pId = form.pId.value;
+    form.pId = values.pId?.value;
     if (action === 1) {
       await create('tags', form);
     } else if (action === 2) {

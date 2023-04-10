@@ -40,8 +40,9 @@ export default ({ type, actionRef }) => {
   };
 
   const requestHandler = async (values) => {
+    console.log(values)
     let form = JSON.parse(JSON.stringify(values));
-    form.pId = form.pId.value;
+    form.pId = values.pId?.value;
     if (action === 1) {
       await create('categories', {...form, ...{ type: type }});
     } else if (action === 2) {

@@ -101,7 +101,7 @@ export default ({ type, actionRef }) => {
       actionRef={actionRef}
       pagination={false}
       toolBarRender={() => [
-        <Button type="primary" onClick={ addHandler }>
+        <Button type="primary" onClick={ () => addHandler() }>
           <PlusOutlined />
           {t('add')}
         </Button>,

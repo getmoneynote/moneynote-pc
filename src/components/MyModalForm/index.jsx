@@ -1,8 +1,6 @@
 import {useRef,useEffect} from "react";
-import {message} from "antd";
 import { ModalForm } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
-import t from "@/utils/i18n";
 
 export default (props) => {
 
