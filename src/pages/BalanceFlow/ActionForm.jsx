@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useMemo} from 'react';
 import { Col, Form, Row, Space, Tabs } from 'antd';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import {
@@ -73,37 +73,45 @@ export default ({ initType = 'EXPENSE' }) => {
 
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
 
+  const [account, setAccount] = useState();
+  const [toAccount, setToAccount] = useState();
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (action === 1) {
       // if (!currentBook) return;
-      let account = null;
+      let initAccount;
+      let initToAccount;
       let categories = [{}];
-      let to = null;
       if (tabKey === 'EXPENSE') {
-        account = currentBook.defaultExpenseAccount;
+        initAccount = currentBook.defaultExpenseAccount;
+        setAccount(currentBook.defaultExpenseAccount);
         if (currentBook.defaultExpenseCategory) {
-          categories = [{ category: currentBook.defaultExpenseCategory }];
+          categories = [{category: currentBook.defaultExpenseCategory}];
         }
       } else if (tabKey === 'INCOME') {
-        account = currentBook.defaultIncomeAccount;
+        initAccount = currentBook.defaultIncomeAccount;
+        setAccount(currentBook.defaultIncomeAccount);
         if (currentBook.defaultIncomeCategory) {
           categories = [{ category: currentBook.defaultIncomeCategory }];
         }
       } else if (tabKey === 'TRANSFER') {
-        account = currentBook.defaultTransferFromAccount;
-        to = currentBook.defaultTransferToAccount;
+        initAccount = currentBook.defaultTransferFromAccount;
+        initToAccount = currentBook.defaultTransferToAccount;
+        setAccount(currentBook.defaultTransferFromAccount);
+        setToAccount(currentBook.defaultTransferToAccount);
       }
       setInitialValues({
         book: currentBook,
         createTime: moment(),
-        account: account,
+        account: initAccount, //account 和 to是受控组件。
         categories: categories,
         confirm: true,
         include: true,
-        to: to,
+        to: initToAccount,
       });
     } else {
+      setAccount(currentRow.account);
+      setToAccount(currentRow.to);
       // let initialValues = structuredClone(currentRow);
       // 一定要深度复制
       let initialValues = JSON.parse(JSON.stringify(currentRow));
@@ -135,48 +143,26 @@ export default ({ initType = 'EXPENSE' }) => {
     }
   }, [action, tabKey, currentRow, currentBook]);
 
-  const [accountCurrencyCode, setAccountCurrencyCode] = useState();
-  const [toAccountCurrencyCode, setToAccountCurrencyCode] = useState();
-  useEffect(() => {
-    if (action === 1) {
-      if (tabKey === 'EXPENSE') {
-        setAccountCurrencyCode(currentBook.defaultExpenseAccount?.currencyCode);
-      } else if (tabKey === 'INCOME') {
-        setAccountCurrencyCode(currentBook.defaultIncomeAccount?.currencyCode);
-      } else if (tabKey === 'TRANSFER') {
-        setAccountCurrencyCode(currentBook.defaultTransferFromAccount?.currencyCode);
-        setToAccountCurrencyCode(currentBook.defaultTransferToAccount?.currencyCode);
-      }
-    } else {
-      setAccountCurrencyCode(currentRow.account.currencyCode);
-      setToAccountCurrencyCode(currentRow.to?.currencyCode);
+  const currencyConvert = useMemo(() => {
+    if (!account) {
+      return { 'needConvert': false };
     }
-  }, [action, tabKey, currentRow, currentBook]);
-  const accountChangeHandler = (_, option) => {
-    setAccountCurrencyCode(option.currencyCode);
-  };
-  const toAccountChangeHandler = (_, option) => {
-    setToAccountCurrencyCode(option.currencyCode);
-  };
-  const [isConvert, setIsConvert] = useState(false);
-  const [convertCode, setConvertCode] = useState('');
-  useEffect(() => {
-    if (!accountCurrencyCode) return;
-    if (tabKey === 'EXPENSE') {
-      setIsConvert(accountCurrencyCode !== currentBook.defaultCurrencyCode);
-      setConvertCode(currentBook.defaultCurrencyCode);
-    } else if (tabKey === 'INCOME') {
-      setIsConvert(accountCurrencyCode !== currentBook.defaultCurrencyCode);
-      setConvertCode(currentBook.defaultCurrencyCode);
+    if (tabKey === 'EXPENSE' || tabKey === 'INCOME') {
+      return {
+        'needConvert': account.currencyCode !== currentBook.defaultCurrencyCode,
+        'convertCode': currentBook.defaultCurrencyCode
+      }
     } else if (tabKey === 'TRANSFER') {
-      if (toAccountCurrencyCode) {
-        setIsConvert(accountCurrencyCode !== toAccountCurrencyCode);
-        setConvertCode(toAccountCurrencyCode);
+      if (!toAccount) {
+        return { 'needConvert': false };
       } else {
-        setIsConvert(false);
+        return {
+          'needConvert': account.currencyCode !== toAccount?.currencyCode,
+          'convertCode': toAccount.currencyCode
+        }
       }
     }
-  }, [tabKey, accountCurrencyCode, toAccountCurrencyCode, currentBook]);
+  }, [tabKey, account?.currencyCode, toAccount?.currencyCode, currentBook.defaultCurrencyCode]);
 
   const successHandler = () => {
     actionRef.current?.reload();
@@ -270,9 +256,7 @@ export default ({ initType = 'EXPENSE' }) => {
           name="book"
           label={t('flow.label.book')}
           rules={requiredRules()}
-          onChange={(_, option) => {
-            setCurrentBook(option);
-          }}
+          onChange={ (_, option) => setCurrentBook(option) }
           disabled={action !== 1}
           fieldProps={{
             ...selectSingleProp,
@@ -280,7 +264,6 @@ export default ({ initType = 'EXPENSE' }) => {
             options: books,
             loading: booksLoading,
             allowClear: false,
-            labelInValue: true,
           }}
         />
         <ProFormText name="title" label={t('flow.label.title')} />
@@ -293,18 +276,15 @@ export default ({ initType = 'EXPENSE' }) => {
         />
         <ProFormSelect
           name="account"
-          label={
-            tabKey !== 'TRANSFER' ? t('flow.label.account') : t('flow.label.transfer.from.account')
-          }
+          label={ tabKey !== 'TRANSFER' ? t('flow.label.account') : t('flow.label.transfer.from.account') }
           rules={requiredRules()}
-          onChange={accountChangeHandler}
+          onChange={ (_, option) => setAccount(option) }
           fieldProps={{
             ...selectSingleProp,
             onFocus: loadAccounts,
             options: accounts,
             loading: accountsLoading,
             allowClear: false,
-            labelInValue: true,
           }}
         />
         {tabKey === 'TRANSFER' && (
@@ -313,21 +293,20 @@ export default ({ initType = 'EXPENSE' }) => {
               name="to"
               label={t('flow.label.transfer.to.account')}
               rules={requiredRules()}
-              onChange={toAccountChangeHandler}
+              onChange={ (_, option) => setToAccount(option) }
               fieldProps={{
                 ...selectSingleProp,
                 onFocus: loadToAccounts,
                 options: toAccounts,
                 loading: toAccountsLoading,
-                labelInValue: true,
                 allowClear: false,
               }}
             />
             <ProFormText name="amount" label={t('flow.label.amount')} rules={requiredRules()} />
-            {isConvert && (
+            {currencyConvert.needConvert && (
               <ProFormText
                 name="convertedAmount"
-                label={convertCurrencyMsg + convertCode}
+                label={convertCurrencyMsg + currencyConvert.convertCode}
                 rules={requiredRules()}
               />
             )}
@@ -349,7 +328,6 @@ export default ({ initType = 'EXPENSE' }) => {
                           onFocus: loadCategories,
                           loading: categoriesLoading,
                           options: categories,
-                          labelInValue: true,
                         }}
                       />
                     </Col>
@@ -361,11 +339,11 @@ export default ({ initType = 'EXPENSE' }) => {
                         labelCol={{ span: 8 }}
                       />
                     </Col>
-                    {isConvert && (
+                    {currencyConvert.needConvert && (
                       <Col flex="195px">
                         <ProFormText
                           name={[field.name, 'convertedAmount']}
-                          label={convertCurrencyMsg + convertCode}
+                          label={convertCurrencyMsg + currencyConvert.convertCode}
                           rules={requiredRules()}
                           labelCol={{ span: 10 }}
                         />
@@ -394,7 +372,6 @@ export default ({ initType = 'EXPENSE' }) => {
               onFocus: loadPayees,
               options: payees,
               loading: payeesLoading,
-              labelInValue: true,
             }}
           />
         )}
@@ -406,7 +383,6 @@ export default ({ initType = 'EXPENSE' }) => {
             onFocus: loadTags,
             loading: tagsLoading,
             options: tags,
-            labelInValue: true,
           }}
         />
         <ProFormSwitch
