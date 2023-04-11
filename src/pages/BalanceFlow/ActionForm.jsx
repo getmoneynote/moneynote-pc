@@ -12,7 +12,7 @@ import {
 import { useModel, useRequest } from '@umijs/max';
 import moment from 'moment';
 import { isEqual, translateAction, translateFlowType } from '@/utils/util';
-import { queryAll, query, create, update } from '@/services/common';
+import { queryAll, create, update } from '@/services/common';
 import { treeSelectSingleProp, treeSelectMultipleProp, selectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
@@ -57,19 +57,17 @@ export default ({ initType = 'EXPENSE' }) => {
     // 'keep': action === 1 ? null : currentRow.payee?.id,
   }), { manual: true });
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => queryAll('categories', {
     'bookId': currentBook.id,
     'type': tabKey,
-    'enable': true,
     // 'keeps': action === 1 ? [] : currentRow.categories.map(e => e.category.id),
   }), { manual: true });
 
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
     'bookId': currentBook.id,
     'canExpense': tabKey === 'EXPENSE' ? true : null,
     'canIncome': tabKey === 'INCOME' ? true : null,
     'canTransfer': tabKey === 'TRANSFER' ? true : null,
-    'enable': true,
     // 'keeps': action === 1 ? [] : currentRow.tags.map(e => e.tag.id),
   }), { manual: true });
 

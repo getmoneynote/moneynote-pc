@@ -6,7 +6,7 @@ import {
   ProFormTextArea,
   ProFormTreeSelect,
 } from '@ant-design/pro-components';
-import {create, query, update} from '@/services/common';
+import {create, queryAll, update} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import {translateAction} from "@/utils/util";
@@ -18,9 +18,8 @@ export default () => {
   const { tagActionRef, bookId } = useModel('Category.model');
   const { action, currentRow, visible } = useModel('modal');
 
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
     'bookId': bookId,
-    'enable': true,
     'keeps': action === 1 ? [] : currentRow.pId,
   }), { manual: true });
   useEffect(() => {

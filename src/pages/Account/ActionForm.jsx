@@ -63,10 +63,12 @@ export default ({ type, actionRef }) => {
   }
 
   const requestHandler = async (values) => {
+    let form = JSON.parse(JSON.stringify(values));
     if (action === 1) {
-      await create('accounts', { ...values, ...{ type: type } });
+      form.currencyCode = form.currencyCode.value;
+      await create('accounts', { ...form, ...{ type: type } });
     } else if (action === 2) {
-      await update('accounts', currentRow.id, values);
+      await update('accounts', currentRow.id, form);
     }
   }
 

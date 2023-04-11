@@ -16,26 +16,23 @@ import t from '@/utils/i18n';
 export default () => {
 
   const { actionRef } = useModel('BalanceFlow.model');
-  const { initialState } = useModel('@@initialState');
   const { show } = useModel('modal');
 
-  const [currentBook, setCurrentBook] = useState(initialState.currentBook);
+  const [currentBook, setCurrentBook] = useState();
   const [type, setType] = useState();
 
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => queryAll('accounts'), { manual: true });
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => queryAll('categories', {
     'bookId': currentBook?.id,
     'type': type,
-    'enable': true,
   }), { manual: true });
 
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
     'bookId': currentBook?.id,
     'canExpense': type === 'EXPENSE' ? true : null,
     'canIncome': type === 'INCOME' ? true : null,
     'canTransfer': type === 'TRANSFER' ? true : null,
-    'enable': true,
   }), { manual: true });
 
   const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {

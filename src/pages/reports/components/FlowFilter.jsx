@@ -21,16 +21,14 @@ export default ({ type, run }) => {
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => queryAll('categories', {
     'bookId': currentBook.id,
     'type': type,
-    'enable': true,
   }), { manual: true });
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => query('tags', {
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
     'bookId': currentBook.id,
     'canExpense': type === 'EXPENSE' ? true : null,
     'canIncome': type === 'INCOME' ? true : null,
-    'enable': true,
   }), { manual: true });
   const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {
     'bookId': currentBook.id,

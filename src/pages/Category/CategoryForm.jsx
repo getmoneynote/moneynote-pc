@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ProFormText, ProFormTextArea, ProFormTreeSelect } from '@ant-design/pro-components';
 import {useModel, useRequest} from '@umijs/max';
 import MyModalForm from '@/components/MyModalForm';
-import {create, update, query} from '@/services/common';
+import {create, update, queryAll} from '@/services/common';
 import { treeSelectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import {translateAction} from "@/utils/util";
@@ -13,10 +13,9 @@ export default ({ type, actionRef }) => {
   const { action, currentRow, visible } = useModel('modal');
   const { bookId } = useModel('Category.model');
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => query('categories', {
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => queryAll('categories', {
     'bookId': bookId,
     'type': type,
-    'enable': true,
     'keeps': action === 1 ? [] : currentRow.pId,
   }), { manual: true });
   useEffect(() => {
