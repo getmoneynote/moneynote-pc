@@ -77,6 +77,7 @@ export default ({ initType = 'EXPENSE' }) => {
   const [toAccount, setToAccount] = useState();
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
+    if (!visible) return;
     if (action === 1) {
       // if (!currentBook) return;
       let initAccount;
@@ -141,7 +142,7 @@ export default ({ initType = 'EXPENSE' }) => {
       }
       setInitialValues(initialValues);
     }
-  }, [action, tabKey, currentRow, currentBook]);
+  }, [action, tabKey, currentRow, currentBook, visible]);
 
   const currencyConvert = useMemo(() => {
     if (!account) {
@@ -155,11 +156,10 @@ export default ({ initType = 'EXPENSE' }) => {
     } else if (tabKey === 'TRANSFER') {
       if (!toAccount) {
         return { 'needConvert': false };
-      } else {
-        return {
-          'needConvert': account.currencyCode !== toAccount?.currencyCode,
-          'convertCode': toAccount.currencyCode
-        }
+      }
+      return {
+        'needConvert': account.currencyCode !== toAccount?.currencyCode,
+        'convertCode': toAccount.currencyCode
       }
     }
   }, [tabKey, account?.currencyCode, toAccount?.currencyCode, currentBook.defaultCurrencyCode]);
