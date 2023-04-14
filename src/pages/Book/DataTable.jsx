@@ -49,7 +49,8 @@ export default () => {
     setInitialState(prevState => ({
       ...prevState,
       currentBook: response.book,
-    }))
+    }));
+    successHandler();
   };
 
   const columns = [
@@ -125,7 +126,7 @@ export default () => {
         <Button
           size="small"
           type="link"
-          disabled={initialState.currentBook.id === record.id || !record.enable}
+          disabled={record.default || !record.enable}
           onClick={() => setDefaultHandler(record)}
         >
           {t('book.set.default')}
