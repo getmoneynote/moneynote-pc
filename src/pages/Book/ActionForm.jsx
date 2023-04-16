@@ -62,12 +62,12 @@ export default () => {
 
   const requestHandler = async (values) => {
     let form = JSON.parse(JSON.stringify(values));
-    form.defaultExpenseAccountId = form.defaultExpenseAccountId.id;
-    form.defaultIncomeAccountId = form.defaultIncomeAccountId.id;
-    form.defaultTransferFromAccountId = form.defaultTransferFromAccountId.id;
-    form.defaultTransferToAccountId = form.defaultTransferToAccountId.id;
-    form.defaultExpenseCategoryId = form.defaultExpenseCategoryId.id;
-    form.defaultIncomeCategoryId = form.defaultIncomeCategoryId.id;
+    form.defaultExpenseAccountId = form.defaultExpenseAccountId?.id;
+    form.defaultIncomeAccountId = form.defaultIncomeAccountId?.id;
+    form.defaultTransferFromAccountId = form.defaultTransferFromAccountId?.id;
+    form.defaultTransferToAccountId = form.defaultTransferToAccountId?.id;
+    form.defaultExpenseCategoryId = form.defaultExpenseCategoryId?.id;
+    form.defaultIncomeCategoryId = form.defaultIncomeCategoryId?.id;
     if (action !== 2) {
       await create('books', form);
     } else {
