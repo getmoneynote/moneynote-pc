@@ -3,6 +3,7 @@ export default {
   'logout': '退出登录',
   'old.password': '原始密码',
   'new.password': '新密码',
+  'bind.user': '绑定账号',
 
   'username.placeholder': '用户名',
   'password.placeholder': '密码',

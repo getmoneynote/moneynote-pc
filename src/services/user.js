@@ -7,9 +7,22 @@ export async function login(data) {
   });
 }
 
+export async function logout() {
+  return request('logout', {
+    method: 'POST',
+  });
+}
+
 export async function register(data) {
   return request('register', {
     method: 'POST',
+    data: data,
+  });
+}
+
+export async function bind(data) {
+  return request('bind', {
+    method: 'PUT',
     data: data,
   });
 }
@@ -30,5 +43,11 @@ export async function getInitState() {
 export async function setDefaultBook(id) {
   return request(`setDefaultBook/${id}`, {
     method: 'PATCH',
+  });
+}
+
+export async function wxLoginUrl() {
+  return request('loginWechat/url', {
+    method: 'GET',
   });
 }

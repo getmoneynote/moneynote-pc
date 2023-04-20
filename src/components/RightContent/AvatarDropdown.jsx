@@ -1,9 +1,11 @@
 import { useCallback } from 'react';
-import { Avatar, Menu, Spin } from 'antd';
-import { LogoutOutlined } from '@ant-design/icons';
+import { Avatar, Spin } from 'antd';
+import {LockOutlined, LogoutOutlined, UserAddOutlined} from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import HeaderDropdown from '../HeaderDropdown';
 import ChangePasswordForm from './ChangePasswordForm';
+import BindUserForm from './BindUserForm';
+import { logout } from '@/services/user';
 import t from '@/utils/i18n';
 import styles from './index.less';
 
@@ -13,13 +15,19 @@ const AvatarDropdown = () => {
   const { show } = useModel('modal');
 
   const onMenuClick = useCallback(
-    (event) => {
+    async (event) => {
       const { key } = event;
       if (key === 'logout') {
         localStorage.removeItem('accessToken');
+        sessionStorage.removeItem('accessToken');
+        // await logout();
         window.location.href = '/user/login';
-      } else if (key === 'changePassword') {
+      }
+      if (key === 'changePassword') {
         show(<ChangePasswordForm />);
+      }
+      if (key === 'bind') {
+        show(<BindUserForm />);
       }
     },
     [setInitialState],
@@ -49,9 +57,15 @@ const AvatarDropdown = () => {
 
   const menuItems = [
     {
+      key: 'bind',
+      icon: <UserAddOutlined />,
+      label: t('bind.user'),
+    },
+    {
       key: 'changePassword',
-      icon: <LogoutOutlined />,
+      icon: <LockOutlined />,
       label: t('change.password'),
+      disabled: !currentUser.username
     },
     {
       key: 'logout',
@@ -67,7 +81,7 @@ const AvatarDropdown = () => {
       items: menuItems,
     }}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
+        <Avatar size="small" className={styles.avatar} src={currentUser.headimgurl} alt="avatar" />
         <span className={`${styles.name} anticon`}>{currentUser.name}</span>
       </span>
     </HeaderDropdown>
