@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { Avatar, Spin } from 'antd';
 import {LockOutlined, LogoutOutlined, UserAddOutlined} from '@ant-design/icons';
 import { useModel } from '@umijs/max';
@@ -11,27 +10,23 @@ import styles from './index.less';
 
 const AvatarDropdown = () => {
 
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { initialState } = useModel('@@initialState');
   const { show } = useModel('modal');
 
-  const onMenuClick = useCallback(
-    async (event) => {
-      const { key } = event;
-      if (key === 'logout') {
-        localStorage.removeItem('accessToken');
-        sessionStorage.removeItem('accessToken');
-        // await logout();
-        window.location.href = '/user/login';
-      }
-      if (key === 'changePassword') {
-        show(<ChangePasswordForm />);
-      }
-      if (key === 'bind') {
-        show(<BindUserForm />);
-      }
-    },
-    [setInitialState],
-  );
+  const onMenuClick = async ({ key }) => {
+    if (key === 'logout') {
+      localStorage.removeItem('accessToken');
+      sessionStorage.removeItem('accessToken');
+      // await logout();
+      window.location.href = '/user/login';
+    }
+    if (key === 'changePassword') {
+      show(<ChangePasswordForm />);
+    }
+    if (key === 'bind') {
+      show(<BindUserForm />);
+    }
+  };
 
   const loading = (
     <span className={`${styles.action} ${styles.account}`}>
