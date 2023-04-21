@@ -7,7 +7,6 @@ export default {
   'menu.report.income.tag': '收入标签',
   'menu.accounts': '账户列表',
   'menu.statement': '账单列表',
-  'menu.categories': '分类管理',
   'menu.books': '账本管理',
   'menu.bookTemplates': '账本模板',
   'menu.noteDays': '提醒事项',

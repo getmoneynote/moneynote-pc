@@ -77,6 +77,7 @@ export default [
     path: '/categories',
     name: 'categories',
     icon: 'apartment',
+    hideInMenu: true,
     component: './Category',
   },
   {

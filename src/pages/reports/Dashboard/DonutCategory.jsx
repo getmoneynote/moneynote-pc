@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useRequest } from '@umijs/max';
+import {useModel, useRequest} from '@umijs/max';
 import CardPie from '@/components/CardPie';
 import { radioValueToTimeRange } from '@/utils/util';
 import CardExtra from './CardExtra';
 
 export default ({ request, title }) => {
+
+  const { initialState } = useModel('@@initialState');
 
   const [timeRange, setTimeRange] = useState(7);
   function timeRangeChangeHandler(value) {
@@ -14,9 +16,11 @@ export default ({ request, title }) => {
   const { data = [], loading, run } = useRequest(request, { manual: true });
 
   useEffect(() => {
-    const rangeValues = radioValueToTimeRange(timeRange);
-    run({ minTime: rangeValues[0].valueOf(), maxTime: rangeValues[1].valueOf() });
-  }, [timeRange]);
+    if (initialState.currentBook?.id) {
+      const rangeValues = radioValueToTimeRange(timeRange);
+      run({ bookId: initialState.currentBook.id, minTime: rangeValues[0].valueOf(), maxTime: rangeValues[1].valueOf() });
+    }
+  }, [timeRange, initialState.currentBook?.id]);
 
   return (
     <CardPie

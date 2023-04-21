@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect, useRef} from "react";
 import { Card } from 'antd';
 import {
   ProFormDateRangePicker,
@@ -17,6 +17,7 @@ import t from '@/utils/i18n';
 // type是支出和收入，cat是分类还是标签
 export default ({ type, run }) => {
 
+  const formRef = useRef();
   const { initialState } = useModel('@@initialState');
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
@@ -36,9 +37,16 @@ export default ({ type, run }) => {
     'canIncome': type === 'INCOME' ? true : null,
   }), { manual: true });
 
+  useEffect(() => {
+    if (initialState.currentBook?.id) {
+      formRef.current?.submit();
+    }
+  }, []);
+
   return (
     <Card>
       <QueryFilter
+        formRef={formRef}
         defaultCollapsed={false}
         onFinish={(values) => {
           let form = JSON.parse(JSON.stringify(values));
