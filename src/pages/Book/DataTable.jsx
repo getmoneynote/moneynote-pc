@@ -111,7 +111,7 @@ export default () => {
       },
       render: (_, record) => (
         <MySwitch
-          disabled={initialState.currentBook.id === record.id}
+          disabled={initialState.currentBook?.id === record.id}
           value={record.enable}
           request={() => toggle('books', record.id)}
           onSuccess={successHandler}
@@ -148,7 +148,7 @@ export default () => {
         <Button
           size="small"
           type="link"
-          disabled={initialState.currentBook.id === record.id}
+          disabled={initialState.currentBook?.id === record.id}
           onClick={() => deleteHandler(record)}
         >
           {t('delete')}
