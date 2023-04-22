@@ -176,7 +176,7 @@ export default ({ initType = 'EXPENSE' }) => {
     }
     form.bookId = form.book.value;
     delete form.book;
-    form.accountId = form.account.value;
+    form.accountId = form.account?.value;
     delete form.account;
     form.payeeId = form.payee?.value;
     delete form.payee;
@@ -277,14 +277,13 @@ export default ({ initType = 'EXPENSE' }) => {
         <ProFormSelect
           name="account"
           label={ tabKey !== 'TRANSFER' ? t('flow.label.account') : t('flow.label.transfer.from.account') }
-          rules={requiredRules()}
+          rules={ tabKey === 'TRANSFER' ? requiredRules() : null }
           onChange={ (_, option) => setAccount(option) }
           fieldProps={{
             ...selectSingleProp,
             onFocus: loadAccounts,
             options: accounts,
             loading: accountsLoading,
-            allowClear: false,
           }}
         />
         {tabKey === 'TRANSFER' && (

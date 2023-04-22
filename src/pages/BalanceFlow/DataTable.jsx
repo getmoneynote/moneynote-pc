@@ -205,7 +205,7 @@ export default () => {
       title: t('flow.label.payee'),
       dataIndex: 'payee',
       sorter: true,
-      render: (_, record) => <>{record.payee ? record.payee.name : '-'}</>,
+      render: (_, record) => record.payee?.name,
       valueType: 'select',
       search: { transform: value => ({ payees: value }) },
       fieldProps: {
