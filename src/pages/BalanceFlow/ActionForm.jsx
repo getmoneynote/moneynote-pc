@@ -11,7 +11,7 @@ import {
 } from '@ant-design/pro-components';
 import { useModel, useRequest } from '@umijs/max';
 import moment from 'moment';
-import { isEqual, translateAction, translateFlowType } from '@/utils/util';
+import { translateAction, translateFlowType } from '@/utils/util';
 import { queryAll, create, update } from '@/services/common';
 import { treeSelectSingleProp, treeSelectMultipleProp, selectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
@@ -193,24 +193,6 @@ export default ({ initType = 'EXPENSE' }) => {
     if (action !== 2) {
       await create('balance-flows', form);
     } else {
-      //优化
-      if (isEqual(
-        currentRow.categories.map(e => ({
-          'categoryId': e.categoryId,
-          'amount': e.amount,
-          'convertedAmount': e.convertedAmount
-        })),
-        form.categories.map(e=>({
-          'categoryId': e.categoryId,
-          'amount': e.amount,
-          'convertedAmount': e.convertedAmount
-        }))
-      )) {
-        delete form.categories;
-      }
-      if (isEqual(currentRow.tags.map((i) => i.tag.id), form.tags)) {
-        delete form.tags;
-      }
       await update('balance-flows', currentRow.id, form);
     }
   };
