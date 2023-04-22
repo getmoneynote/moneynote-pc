@@ -10,7 +10,7 @@ export default () => {
 
   const { currentRow } = useModel('modal');
 
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues] = useState({});
 
   const requestHandler = async (values) => {
     await createByTemplate({

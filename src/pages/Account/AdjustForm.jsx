@@ -1,20 +1,27 @@
 import {useEffect, useState} from "react";
-import { useModel } from '@umijs/max';
-import { ProFormText, ProFormTextArea, ProFormDateTimePicker } from '@ant-design/pro-components';
+import {useModel, useRequest} from '@umijs/max';
+import {ProFormText, ProFormTextArea, ProFormDateTimePicker, ProFormSelect} from '@ant-design/pro-components';
+import MyModalForm from '@/components/MyModalForm';
 import moment from "moment/moment";
 import { createAdjust, updateAdjust } from '@/services/account';
 import {amountRequiredRules, requiredRules} from "@/utils/rules";
-import MyModalForm from '@/components/MyModalForm';
+import {selectSingleProp} from "@/utils/prop";
+import {queryAll} from "@/services/common";
 import t from '@/utils/i18n';
+
 
 export default ({ actionRef }) => {
 
   const { action, currentRow } = useModel('modal');
+  const { initialState } = useModel('@@initialState');
+
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
 
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (action === 1) {
       setInitialValues({
+        'book': initialState.currentBook,
         'createTime': moment(),
         'balance': currentRow.balance.toString(),
       });
@@ -30,10 +37,13 @@ export default ({ actionRef }) => {
   }
 
   const requestHandler = async (values) => {
+    let form = JSON.parse(JSON.stringify(values));
+    form.bookId = form.book.value;
+    delete form.book;
     if (action === 1) {
-      await createAdjust(currentRow.id, values);
+      await createAdjust(currentRow.id, form);
     } else if (action === 2) {
-      await updateAdjust(currentRow.id, values);
+      await updateAdjust(currentRow.id, form);
     }
   }
 
@@ -46,6 +56,18 @@ export default ({ actionRef }) => {
         onSuccess={successHandler}
         initialValues={initialValues}
       >
+        <ProFormSelect
+          name="book"
+          label={t('flow.label.book')}
+          rules={requiredRules()}
+          fieldProps={{
+            ...selectSingleProp,
+            onFocus: loadBooks,
+            options: books,
+            loading: booksLoading,
+            allowClear: false,
+          }}
+        />
         <ProFormText name="title" label={t('flow.label.title')} />
         <ProFormDateTimePicker name="createTime" format="YYYY-MM-DD HH:mm" label={t('flow.label.createTime')} allowClear={false} rules={requiredRules()} />
         {
