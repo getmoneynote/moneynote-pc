@@ -15,10 +15,11 @@ import t from '@/utils/i18n';
 
 export default () => {
 
+  const { initialState } = useModel('@@initialState');
   const { actionRef } = useModel('BalanceFlow.model');
   const { show } = useModel('modal');
 
-  const [currentBook, setCurrentBook] = useState();
+  const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   const [type, setType] = useState();
 
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => queryAll('accounts'), { manual: true });
@@ -82,7 +83,7 @@ export default () => {
       render: (_, record) => record.book.name,
       hideInTable: false,
       valueType: 'select',
-      // initialValue: initialState.currentBook,
+      initialValue: initialState.currentBook,
       search: { transform: value => ({ book: value.value }) },
       fieldProps: {
         ...selectSingleProp,
