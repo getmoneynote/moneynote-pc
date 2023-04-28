@@ -101,7 +101,6 @@ export default () => {
       title: t('operation'),
       align: 'center',
       hideInSearch: true,
-      fixed: 'right',
       width: 250,
       render: (_, record) => [
         <Button size="small" type="link" onClick={() => runHandler(record)}>
