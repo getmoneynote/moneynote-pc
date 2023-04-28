@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Alert, Button, Form, Input, message, Modal, Space} from 'antd';
+import {Alert, Button, Form, Input, Modal, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import {useIntl, useModel, useRequest} from '@umijs/max';
@@ -63,7 +63,6 @@ export default ({ type, actionRef }) => {
       {
         title: t('label.name'),
         dataIndex: 'name',
-        fixed: 'left',
       },
       {
         title: t('account.label.balance'),
@@ -267,8 +266,6 @@ export default ({ type, actionRef }) => {
         title: t('operation'),
         align: 'center',
         hideInSearch: true,
-        fixed: 'right',
-        width: 250,
         render: (_, record) => [
           <Button type="link" onClick={() => updateHandler(record)}>
             {t('update')}

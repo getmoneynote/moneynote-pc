@@ -76,6 +76,7 @@ export default ({ type, actionRef }) => {
     <>
       <MyModalForm
         title={ translateAction(action) + translateAccountType(type) }
+        width={700}
         labelWidth={85}
         request={requestHandler}
         onSuccess={successHandler}

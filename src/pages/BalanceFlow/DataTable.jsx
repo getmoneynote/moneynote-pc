@@ -249,7 +249,6 @@ export default () => {
       align: 'center',
       width: 160,
       hideInSearch: true,
-      fixed: 'right',
       render: (_, record) => [
         <Button type="link" disabled={record.type === 'ADJUST'} onClick={() => show(<ActionForm />, 3, record)}>
           {t('copy')}
