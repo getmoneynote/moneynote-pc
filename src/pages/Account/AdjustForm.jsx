@@ -50,7 +50,7 @@ export default ({ actionRef }) => {
   return (
     <>
       <MyModalForm
-        title={`${action ===2 ? t('update') : ''}${action === 1 ? currentRow.name : currentRow.account.name}${t('adjust.balance')}`}
+        title={`${action ===2 ? t('update') : ''}${action === 1 ? currentRow.name + ' ' : ''}${t('adjust.balance')}`}
         labelWidth={80}
         request={requestHandler}
         onSuccess={successHandler}
