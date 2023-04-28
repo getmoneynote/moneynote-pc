@@ -1,4 +1,5 @@
 export default {
+  'login.remember': '7天内自动登录',
   'change.password': '修改密码',
   'logout': '退出登录',
   'old.password': '原始密码',
@@ -10,4 +11,5 @@ export default {
   'register.account': '注册账户',
   'has.account.login': '已有账户，登录',
   'register.success': '注册成功！',
+  'wechat.login': '微信扫码登录',
 };

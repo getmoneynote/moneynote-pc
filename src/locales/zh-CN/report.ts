@@ -1,6 +1,6 @@
 export default {
-  asset: '资产',
-  debt: '负债',
+  'asset': '资产',
+  'debt': '负债',
   'net.worth': '净资产',
 
   'gross.amount': '总金额',

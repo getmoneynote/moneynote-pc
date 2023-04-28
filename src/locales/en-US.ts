@@ -1,25 +1,23 @@
-import component from './en-US/component';
-import globalHeader from './en-US/globalHeader';
+import account from './en-US/account';
+import book from './en-US/book';
+import category from './en-US/category';
+import common from './en-US/common';
+import flow from './en-US/flow';
+import footer from './en-US/footer';
 import menu from './en-US/menu';
-import pages from './en-US/pages';
-import pwa from './en-US/pwa';
-import settingDrawer from './en-US/settingDrawer';
-import settings from './en-US/settings';
+import noteDay from './en-US/noteDay';
+import report from './en-US/report';
+import user from './en-US/user';
 
 export default {
-  'navBar.lang': 'Languages',
-  'layout.user.link.help': 'Help',
-  'layout.user.link.privacy': 'Privacy',
-  'layout.user.link.terms': 'Terms',
-  'app.copyright.produced': 'Produced by Ant Financial Experience Department',
-  'app.preview.down.block': 'Download this page to your local project',
-  'app.welcome.link.fetch-blocks': 'Get all block',
-  'app.welcome.link.block-list': 'Quickly build standard, pages based on `block` development',
-  ...globalHeader,
   ...menu,
-  ...settingDrawer,
-  ...settings,
-  ...pwa,
-  ...component,
-  ...pages,
+  ...common,
+  ...account,
+  ...category,
+  ...user,
+  ...flow,
+  ...book,
+  ...noteDay,
+  ...report,
+  ...footer,
 };

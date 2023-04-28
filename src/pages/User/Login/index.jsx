@@ -70,7 +70,7 @@ export default () => {
           formRef={formRef}
           logo={<img alt="logo" src="/logo.svg" />}
           title="九快记账"
-          subTitle="记账管理系统"
+          subTitle="记账是一种生活态度"
           initialValues={{
             remember: false,
           }}
@@ -97,15 +97,11 @@ export default () => {
             placeholder={t('password.placeholder')}
           />
           <div style={{ marginBottom: 24 }}>
-            <ProFormCheckbox noStyle name="remember">
-              {t('pages.login.rememberMe')}
-            </ProFormCheckbox>
+            <ProFormCheckbox noStyle name="remember">{t('login.remember')}</ProFormCheckbox>
           </div>
         </LoginForm>
         <div style={{ textAlign: 'center' }}>
-          <Button type="link" icon={<WechatOutlined />} onClick={handleWechat}>
-            微信扫码登录
-          </Button>
+          <Button type="link" icon={<WechatOutlined />} onClick={handleWechat}>{t('wechat.login')}</Button>
         </div>
       </div>
       <Footer />

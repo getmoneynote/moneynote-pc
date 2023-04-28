@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { SelectLang } from '@umijs/max';
@@ -10,10 +9,8 @@ import styles from '../index.less';
 
 export default () => {
 
-  const regSuccessMsg = t('register.success');
   const handleSubmit = async (values) => {
     await register({ ...values });
-    message.success(regSuccessMsg);
     window.location.href = '/user/login';
   };
 

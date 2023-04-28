@@ -5,8 +5,6 @@ export default {
   'transfer': '转账',
   'adjust.balance': '余额调整',
 
-  'flow.type': '交易类型',
-
   'flow.label.book': '所属账本',
   'flow.label.title': '标题',
   'flow.label.type': '交易类型',

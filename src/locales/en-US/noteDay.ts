@@ -1,0 +1,20 @@
+export default {
+  'note.day.label.title': 'Title',
+  'note.day.label.start.date': 'Start Date',
+  'note.day.label.end.date': 'End Date',
+  'note.day.label.date.range': 'Date Range',
+  'note.day.label.repeatType': 'Repeat Type',
+  'note.day.label.interval': 'Interval',
+  'note.day.label.repeatDescription': 'Repeat Frequency',
+  'note.day.label.nextDate': 'Next Date',
+  'note.day.label.countDown': 'Count Down Day',
+  'note.day.label.totalCount': 'Total Count',
+  'note.day.label.runCount': 'Executed Count',
+  'note.day.label.remainCount': 'Remain Count',
+
+  'note.day.add.type': 'Type',
+  'note.day.add.type1': 'Single',
+  'note.day.add.type2': 'Multiple',
+  'note.day.run': 'Execute',
+  'note.day.recall': 'Recall',
+};

@@ -11,6 +11,7 @@ export const errorConfig = {
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'Accept-Language': localStorage.getItem("umi_locale"),
     'Authorization': `Bearer ${localStorage.getItem("accessToken") ?? ''}`,
   },
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
