@@ -9,8 +9,11 @@ export default {
   'book.label.default.transfer.to.account': '默认转入账户',
   'book.set.default': '设为默认',
   'book.config': '配置',
+  'book.export': '导出账单',
+  'book.export.fail': '导出失败，请稍后重试。',
 
-  'template.label.previewUrl': '预览地址',
+  'template.label.previewUrl': '账本结构',
+  'template.label.preview.click': '点击查看',
   'book.copy.name': '账本名称'
 
 }

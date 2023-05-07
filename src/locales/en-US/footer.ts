@@ -1,5 +1,5 @@
 export default {
-  'company.name': '武汉九快科技有限公司',
+  'company.name': 'moneywhere.com',
   'footer.no': '鄂ICP备2021015799号-1',
   'footer.contact': 'Contact',
   'footer.about': 'About',

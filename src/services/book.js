@@ -8,3 +8,10 @@ export async function createByTemplate(data) {
     data: data,
   });
 }
+
+export async function exportFlow(id) {
+  return request(`${prefix}/${id}/export`, {
+    method: 'GET',
+    responseType: 'blob',
+  });
+}

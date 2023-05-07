@@ -1,9 +1,11 @@
-import { Button, Modal } from 'antd';
+import {useState} from "react";
+import { Button, Modal, message } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel, history } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import { query, remove, toggle } from '@/services/common';
 import { setDefaultBook } from '@/services/user';
+import { exportFlow } from '@/services/book';
 import MySwitch from '@/components/MySwitch';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
@@ -52,6 +54,28 @@ export default () => {
     }));
     successHandler();
   };
+
+  const [exportingBook, setExportingBook] = useState();
+  const messageFailExport = t('book.export.fail');
+  const exportFlowHandler = async (record) => {
+    setExportingBook(record);
+    try {
+      const response = await exportFlow(record.id);
+      // 构造文件下载链接
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'data.xlsx');
+
+      // 模拟点击链接以下载文件
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      message.error(messageFailExport);
+    }
+    setExportingBook(null);
+  }
 
   const columns = [
     {
@@ -144,6 +168,14 @@ export default () => {
           onClick={() => history.push(`/categories?bookId=${record.id}&bookName=${record.name}`, { book: record })}
         >
           {t('book.config')}
+        </Button>,
+        <Button
+          size="small"
+          type="link"
+          loading={record.id === exportingBook?.id}
+          onClick={() => exportFlowHandler(record)}
+        >
+          {t('book.export')}
         </Button>,
         <Button
           size="small"
