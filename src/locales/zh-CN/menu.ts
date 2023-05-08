@@ -9,5 +9,6 @@ export default {
   'menu.statement': '账单列表',
   'menu.books': '账本管理',
   'menu.bookTemplates': '账本模板',
+  'menu.groups': '分组管理',
   'menu.noteDays': '提醒事项',
 };

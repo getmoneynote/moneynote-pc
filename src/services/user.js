@@ -46,8 +46,17 @@ export async function setDefaultBook(id) {
   });
 }
 
+export async function setDefaultGroup(id) {
+  return request(`setDefaultGroup/${id}`, {
+    method: 'PATCH',
+  });
+}
+
 export async function wxLoginUrl() {
   return request('loginWechat/url', {
     method: 'GET',
   });
 }
+
+
+

@@ -1,5 +1,6 @@
 import account from './zh-CN/account';
 import book from './zh-CN/book';
+import group from './zh-CN/group';
 import category from './zh-CN/category';
 import common from './zh-CN/common';
 import flow from './zh-CN/flow';
@@ -17,6 +18,7 @@ export default {
   ...user,
   ...flow,
   ...book,
+  ...group,
   ...noteDay,
   ...report,
   ...footer,

@@ -87,6 +87,12 @@ export default [
     component: './Book',
   },
   {
+    path: '/groups',
+    name: 'groups',
+    icon: 'team',
+    component: './Group',
+  },
+  {
     path: '/book-templates',
     name: 'bookTemplates',
     icon: 'copy',
