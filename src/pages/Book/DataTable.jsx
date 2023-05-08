@@ -56,25 +56,38 @@ export default () => {
   };
 
   const [exportingBook, setExportingBook] = useState();
-  const messageFailExport = t('book.export.fail');
   const exportFlowHandler = async (record) => {
-    setExportingBook(record);
-    try {
-      const response = await exportFlow(record.id);
-      // 构造文件下载链接
-      const url = window.URL.createObjectURL(new Blob([response]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'data.xlsx');
+    const messageFailExport = intl.formatMessage({ id: 'book.export.fail' });
+    const messageConfirmExport = intl.formatMessage({ id: 'book.export.confirm' });
+    Modal.confirm({
+      title: messageConfirmExport,
+      onOk: async () => {
+        setExportingBook(record);
+        try {
+          const response = await exportFlow(record.id);
+          console.log(response);
+          // 构造文件下载链接
+          const url = window.URL.createObjectURL(new Blob([response]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'data.xlsx');
 
-      // 模拟点击链接以下载文件
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      message.error(messageFailExport);
-    }
-    setExportingBook(null);
+          // 模拟点击链接以下载文件
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } catch (error) {
+          const responseObj = await error.response.data.text();
+          const responseJson = JSON.parse(responseObj)
+          if (responseJson?.message) {
+            message.error(responseJson?.message);
+          } else {
+            message.error(messageFailExport)
+          }
+        }
+        setExportingBook(null);
+      }
+    });
   }
 
   const columns = [

@@ -10,6 +10,7 @@ export default {
   'book.set.default': '设为默认',
   'book.config': '配置',
   'book.export': '导出账单',
+  'book.export.confirm': '每个账本24小时内只能操作1次导出，确认此操作吗？',
   'book.export.fail': '导出失败，请稍后重试。',
 
   'template.label.previewUrl': '账本结构',

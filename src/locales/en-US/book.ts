@@ -10,6 +10,7 @@ export default {
   'book.set.default': 'Set as Default',
   'book.config': 'Config',
   'book.export': 'Export Transactions',
+  'book.export.confirm': 'Are you sure? You can only export each book once every 24 hours.',
   'book.export.fail': 'Export failed, please try again later.',
 
   'template.label.previewUrl': 'Preview',
