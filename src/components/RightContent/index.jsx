@@ -20,8 +20,8 @@ const GlobalHeaderRight = () => {
   }
   return (
     <Space className={className}>
-      <Button type="link" icon={<DownloadOutlined />} href="https://docs.jz.jiukuaitech.com/%E4%B8%8B%E8%BD%BD%E5%AE%A2%E6%88%B7%E7%AB%AF.html" target="_blank">{t('footer.download.app')}</Button>
-      <Button type="link" icon={<QuestionCircleOutlined />} href="https://docs.jz.jiukuaitech.com" target="_blank">{t('footer.help.doc')}</Button>
+      <Button type="link" icon={<DownloadOutlined />} href="https://help.moneywhere.com/app.html" target="_blank">{t('footer.download.app')}</Button>
+      <Button type="link" icon={<QuestionCircleOutlined />} href="https://help.moneywhere.com" target="_blank">{t('footer.help.doc')}</Button>
       <Avatar />
       <SelectLang className={styles.action} />
     </Space>

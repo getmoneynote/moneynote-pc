@@ -1,6 +1,7 @@
 import { useIntl } from '@umijs/max';
 import { Button, message, notification } from 'antd';
 import defaultSettings from '../config/defaultSettings';
+import * as Sentry from "@sentry/react";
 
 const { pwa } = defaultSettings;
 const isHttps = document.location.protocol === 'https:';
@@ -89,3 +90,13 @@ if (pwa) {
 
   clearCache();
 }
+
+Sentry.init({
+  dsn: "https://6f1a6cec58264a91a56e48378815c36d@o506813.ingest.sentry.io/4505153439006720",
+  integrations: [new Sentry.BrowserTracing(), new Sentry.Replay()],
+  // Performance Monitoring
+  tracesSampleRate: 1.0, // Capture 100% of the transactions, reduce in production!
+  // Session Replay
+  replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+  replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+});
