@@ -83,29 +83,24 @@ export default () => {
   const moreOperationItems = (record) => {
     return [
       {
-        key: 1,
         label: t('update'),
         onClick: () => updateHandler(record)
       },
       {
-        key: 2,
-        label: t('confirm'),
-        disabled: record.type === 'ADJUST' || record.confirm,
-        onClick: () => confirmHandler(record)
-      },
-      {
-        key: 3,
         label: t('refund'),
         disabled: record.type === 'ADJUST',
         onClick: () => show(<ActionForm />, 4, record)
       },
       {
-        key: 4,
+        label: t('confirm'),
+        disabled: record.type === 'ADJUST' || record.confirm,
+        onClick: () => confirmHandler(record)
+      },
+      {
         label: t('flow.delete.update.balance'),
         onClick: () => deleteHandler(record, true)
       },
       {
-        key: 5,
         label: t('flow.delete.no.update.balance'),
         onClick: () => deleteHandler(record, false)
       },
