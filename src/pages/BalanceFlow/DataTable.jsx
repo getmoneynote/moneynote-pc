@@ -80,6 +80,38 @@ export default () => {
     });
   };
 
+  const moreOperationItems = (record) => {
+    return [
+      {
+        key: 1,
+        label: t('update'),
+        onClick: () => updateHandler(record)
+      },
+      {
+        key: 2,
+        label: t('confirm'),
+        disabled: record.type === 'ADJUST' || record.confirm,
+        onClick: () => confirmHandler(record)
+      },
+      {
+        key: 3,
+        label: t('refund'),
+        disabled: record.type === 'ADJUST',
+        onClick: () => show(<ActionForm />, 4, record)
+      },
+      {
+        key: 4,
+        label: t('flow.delete.update.balance'),
+        onClick: () => deleteHandler(record, true)
+      },
+      {
+        key: 5,
+        label: t('flow.delete.no.update.balance'),
+        onClick: () => deleteHandler(record, false)
+      },
+    ]
+  };
+
   const columns = [
     {
       title: t('flow.label.book'),
@@ -260,56 +292,12 @@ export default () => {
         </Button>,
         <Dropdown
           menu={{
-            items: [
-              {
-                label: (
-                  <Button type="text" onClick={() => updateHandler(record)}>
-                    {t('update')}
-                  </Button>
-                ),
-              },
-              {
-                label: (
-                  <Button
-                    type="text"
-                    onClick={() => confirmHandler(record)}
-                    disabled={record.type === 'ADJUST' || record.confirm}
-                  >
-                    {t('confirm')}
-                  </Button>
-                ),
-              },
-              {
-                label: (
-                  <Button
-                    type="text"
-                    onClick={() => show(<ActionForm />, 4, record)}
-                    disabled={record.type === 'ADJUST'}
-                  >
-                    {t('refund')}
-                  </Button>
-                ),
-              },
-              {
-                label: (
-                  <Button type="text" onClick={() => deleteHandler(record, true)}>
-                    {t('flow.delete.update.balance')}
-                  </Button>
-                ),
-              },
-              {
-                label: (
-                  <Button type="text" onClick={() => deleteHandler(record, false)}>
-                    {t('flow.delete.no.update.balance')}
-                  </Button>
-                ),
-              },
-            ],
+            items: moreOperationItems(record),
           }}
         >
-          <a>
+          <Button type="text">
             {t('more')} <DownOutlined />
-          </a>
+          </Button>
         </Dropdown>,
       ],
     },
