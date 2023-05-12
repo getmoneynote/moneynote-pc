@@ -75,6 +75,7 @@ export default ({ initType = 'EXPENSE' }) => {
 
   const [account, setAccount] = useState();
   const [toAccount, setToAccount] = useState();
+  const [confirm, setConfirm] = useState(true);
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (!visible) return;
@@ -101,6 +102,7 @@ export default ({ initType = 'EXPENSE' }) => {
         setAccount(currentBook.defaultTransferFromAccount);
         setToAccount(currentBook.defaultTransferToAccount);
       }
+      setConfirm(true);
       setInitialValues({
         book: currentBook,
         createTime: moment(),
@@ -108,11 +110,13 @@ export default ({ initType = 'EXPENSE' }) => {
         categories: categories,
         confirm: true,
         include: true,
+        updateBalance: true,
         to: initToAccount,
       });
     } else {
       setAccount(currentRow.account);
       setToAccount(currentRow.to);
+      setConfirm(currentRow.confirm);
       // let initialValues = structuredClone(currentRow);
       // 一定要深度复制
       let initialValues = JSON.parse(JSON.stringify(currentRow));
@@ -126,6 +130,7 @@ export default ({ initType = 'EXPENSE' }) => {
         initialValues.createTime = moment();
         initialValues.confirm = true;
         initialValues.include = true;
+        setConfirm(true);
       }
       if (action === 4) {
         if (initialValues.type === 'EXPENSE' || initialValues.type === 'INCOME') {
@@ -140,6 +145,7 @@ export default ({ initType = 'EXPENSE' }) => {
           initialValues.convertedAmount = initialValues.convertedAmount * -1;
         }
       }
+      initialValues.updateBalance = true;
       setInitialValues(initialValues);
     }
   }, [action, tabKey, currentRow, currentBook, visible]);
@@ -371,8 +377,14 @@ export default ({ initType = 'EXPENSE' }) => {
           name="confirm"
           label={t('flow.label.confirm')}
           colProps={{ xl: 6 }}
+          fieldProps={{
+            onChange: checked => setConfirm(checked)
+          }}
         />
         <ProFormSwitch name="include" label={t('flow.label.include')} colProps={{ xl: 6 }} />
+        {
+          confirm && (<ProFormSwitch name="updateBalance" label={t('flow.add.update.balance')} colProps={{ xl: 6 }} />)
+        }
         <ProFormTextArea name="notes" label={t('label.notes')} />
       </MyModalForm>
     </>

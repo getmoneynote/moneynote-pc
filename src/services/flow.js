@@ -14,3 +14,9 @@ export async function confirm(id) {
     method: 'PATCH',
   });
 }
+
+export async function removeWithAccount(id) {
+  return request(`${prefix}/${id}/deleteWithAccount`, {
+    method: 'DELETE',
+  });
+}

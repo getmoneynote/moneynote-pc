@@ -6,6 +6,7 @@ import {useModel, useRequest} from '@umijs/max';
 import moment from 'moment';
 import { confirm, statistics } from '@/services/flow';
 import { queryAll, query, remove } from '@/services/common';
+import { removeWithAccount } from '@/services/flow';
 import {selectMultipleProp, selectSingleProp, tableProp, treeSelectMultipleProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
@@ -65,11 +66,15 @@ export default () => {
 
   const messageDeleteConfirm = t('delete.confirm', { name: '' });
   const messageDeleteConfirmBalance = t('delete.confirm.balance');
-  const deleteHandler = (record) => {
+  const deleteHandler = (record, withAccount) => {
     Modal.confirm({
-      title: record.confirm ? messageDeleteConfirmBalance : messageDeleteConfirm,
+      title: record.confirm && withAccount ? messageDeleteConfirmBalance : messageDeleteConfirm,
       onOk: async () => {
-        await remove('balance-flows', record.id);
+        if (withAccount) {
+          await removeWithAccount(record.id);
+        } else {
+          await remove('balance-flows', record.id);
+        }
         successHandler();
       },
     });
@@ -287,8 +292,15 @@ export default () => {
               },
               {
                 label: (
-                  <Button type="text" onClick={() => deleteHandler(record)}>
-                    {t('delete')}
+                  <Button type="text" onClick={() => deleteHandler(record, true)}>
+                    {t('flow.delete.update.balance')}
+                  </Button>
+                ),
+              },
+              {
+                label: (
+                  <Button type="text" onClick={() => deleteHandler(record, false)}>
+                    {t('flow.delete.no.update.balance')}
                   </Button>
                 ),
               },
