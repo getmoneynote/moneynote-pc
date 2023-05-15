@@ -19,7 +19,9 @@ export default () => {
     if (response.data.remember) {
       localStorage.setItem('accessToken', response.data.accessToken);
     }
-    window.location.href = '/report';
+    setTimeout(() => {
+      window.location.href = '/report';
+    }, 300);
   };
 
   const windowRef = useRef(null);

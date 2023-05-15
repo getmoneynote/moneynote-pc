@@ -8,6 +8,7 @@ export default {
   'menu.accounts': 'Accounts',
   'menu.statement': 'Flow Statement',
   'menu.books': 'Books',
+  'menu.categories': 'Book Configuration',
   'menu.groups': 'Groups',
   'menu.bookTemplates': 'Book Templates',
   'menu.noteDays': 'Note Days',

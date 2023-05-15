@@ -47,7 +47,7 @@ export default (props) => {
       onOpenChange={setVisible}
       onFinish={finishHandler}
       dateFormatter={value => value.valueOf()}
-      modalProps={{destroyOnClose: false}}
+      modalProps={{ destroyOnClose: false, maskClosable: false }}
       autoFocusFirstInput={autoFocusFirstInput}
       isKeyPressSubmit={isKeyPressSubmit}
       // submitter={{
