@@ -20,7 +20,7 @@ export default () => {
         <Divider type="vertical" />
         <a target="_blank" href="https://beian.miit.gov.cn/" rel="noreferrer">{t('footer.no')}</a>
         <Divider type="vertical" />
-        v1.0.12
+        v1.0.13
       </div>
       <ModalContainer />
     </Space>
