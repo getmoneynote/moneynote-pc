@@ -12,8 +12,8 @@
 export default {
   dev: {
     '/api/v1': {
-      // target: 'http://127.0.0.1:9092/',
-      target: 'https://web.moneywhere.com/',
+      target: 'http://127.0.0.1:9092/',
+      // target: 'https://web.moneywhere.com/',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
