@@ -1,57 +1,15 @@
-# Ant Design Pro
+# 九快记账
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+个人财务管理解决方案.
 
-## Environment Prepare
+- 示例站点 - [https://demo.moneywhere.com](https://demo.moneywhere.com) (username: 111, pass: 111111)
+- 帮助文档 - [https://help.moneywhere.com](https://help.moneywhere.com)
 
-Install `node_modules`:
+可以在[release页面](https://github.com/getmoneynote/moneynote-api/releases/tag/1.0.0)直接下载jar包运行,  执行命令java -jar.
+或者可以下载[docker镜像](https://hub.docker.com/r/markliu2018/moneywhere)，然后执行docker run。
 
-```bash
-npm install
-```
+## 功能
 
-or
-
-```bash
-yarn
-```
-
-## Provided Scripts
-
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
-
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
-
-```bash
-npm start
-```
-
-### Build project
-
-```bash
-npm run build
-```
-
-### Check code style
-
-```bash
-npm run lint
-```
-
-You can also use script to auto fix some lint error:
-
-```bash
-npm run lint:fix
-```
-
-### Test code
-
-```bash
-npm test
-```
-
-## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+- 账户余额监控
+- 支出收入记录
+- 数据统计
