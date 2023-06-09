@@ -8,6 +8,7 @@ export default {
 
   'username.placeholder': 'Username',
   'password.placeholder': 'Password',
+  'invite.code.placeholder': 'Invite Code',
   'register.account': 'Register',
   'has.account.login': 'Has account, Login',
   'wechat.login': 'Wechat Login',

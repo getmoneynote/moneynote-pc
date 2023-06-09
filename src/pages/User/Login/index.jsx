@@ -102,8 +102,9 @@ export default () => {
             <ProFormCheckbox noStyle name="remember">{t('login.remember')}</ProFormCheckbox>
           </div>
         </LoginForm>
-        <div style={{ textAlign: 'center' }}>
+        <div className={styles.loginFormAction}>
           <Button type="link" icon={<WechatOutlined />} onClick={handleWechat}>{t('wechat.login')}</Button>
+          <a href="/user/register">{t('register.account')}</a>
         </div>
       </div>
       <Footer />

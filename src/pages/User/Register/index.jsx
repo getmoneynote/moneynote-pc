@@ -1,4 +1,4 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined, VerifiedOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { SelectLang } from '@umijs/max';
 import { register } from '@/services/user';
@@ -11,7 +11,6 @@ export default () => {
 
   const handleSubmit = async (values) => {
     await register({ ...values });
-    window.location.href = '/user/login';
   };
 
   return (
@@ -23,7 +22,7 @@ export default () => {
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
           title="九快记账"
-          subTitle="记账管理系统"
+          subTitle="记账是一种生活态度"
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
@@ -50,6 +49,15 @@ export default () => {
             }}
             rules={requiredRules()}
             placeholder={t('password.placeholder')}
+          />
+          <ProFormText
+            name="inviteCode"
+            fieldProps={{
+              size: 'large',
+              prefix: <VerifiedOutlined className={styles.prefixIcon} />,
+            }}
+            rules={requiredRules()}
+            placeholder={t('invite.code.placeholder')}
           />
         </LoginForm>
         <div style={{ textAlign: 'center' }}>

@@ -8,6 +8,7 @@ import { getInitState } from './services/user';
 
 // const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+const regPath = '/user/register';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -23,7 +24,7 @@ export async function getInitialState() {
     return undefined;
   };
   // 如果不是登录页面，执行
-  if (window.location.pathname !== loginPath) {
+  if (window.location.pathname !== loginPath && window.location.pathname !== regPath) {
     const response = await fetchUserInfo();
     return {
       fetchUserInfo,
