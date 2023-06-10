@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useModel } from '@umijs/max';
-import { ProFormText,} from '@ant-design/pro-components';
+import { ProFormText } from '@ant-design/pro-components';
 import { createByTemplate } from '@/services/book';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';

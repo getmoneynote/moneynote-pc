@@ -1,9 +1,28 @@
-import { request as umiRequst } from "@umijs/max";
+import axios from 'axios';
 
-export const request = async (uri, params) => {
-  try {
-    return await umiRequst(uri, params);
-  } catch (error) {
-    // console.log(error);
-  }
+const config = {
+  baseURL: "/user-api",
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+}
+
+const instance = axios.create(config);
+
+export const post = async (url, data) => {
+  return await instance.post(url, data).then(response => {
+    return response;
+  }).catch(error => {
+    return error;
+  });
+}
+
+export const get = async (url, params) => {
+  return await instance.get(url, {params: params}).then(response => {
+    console.log(response);
+    return response;
+  }).catch(error => {
+    return error;
+  });
 }

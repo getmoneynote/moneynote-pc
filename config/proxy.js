@@ -17,10 +17,10 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
-    '/templates/': {
-      target: 'http://127.0.0.1:9094/api/v1/',
+    '/user-api/': {
+      target: 'http://127.0.0.1:9096/api/v1/',
       changeOrigin: true,
-      pathRewrite: { '^/templates/': '' },
+      // pathRewrite: { '^/user-api/': '' },
     },
   },
   /**

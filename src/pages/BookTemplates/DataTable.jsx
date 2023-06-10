@@ -1,7 +1,7 @@
 import {Button} from "antd";
 import { ProTable } from '@ant-design/pro-components';
 import { useModel } from "@umijs/max";
-import { query } from '@/services/common';
+import { queryBookTemplates } from '@/services/api';
 import { tableProp } from '@/utils/prop';
 import CopyForm from './CopyForm';
 import t from '@/utils/i18n';
@@ -51,7 +51,7 @@ export default () => {
       {...tableProp}
       search={false}
       columns={columns}
-      request={ () => query('book-templates') }
+      request={ queryBookTemplates }
     />
   );
 };
