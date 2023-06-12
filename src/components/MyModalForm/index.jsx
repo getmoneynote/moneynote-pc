@@ -8,7 +8,7 @@ export default (props) => {
     title,
     width = 600,
     labelWidth,
-    initialValues,
+    initialValues = { },
     request,
     params,
     onSuccess,

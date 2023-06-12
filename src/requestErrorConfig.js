@@ -19,9 +19,10 @@ export const errorConfig = {
     // 错误接收及处理
     errorHandler: (error, opts) => {
       if (opts?.skipErrorHandler) throw error;
-      if (error.response.data?.message) {
-        message.error(error.response.data?.message)
-      }
+      console.log(error);
+      // if (error.response.data?.message) {
+      //   message.error(error.response.data?.message)
+      // }
     },
   },
 

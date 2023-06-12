@@ -3,9 +3,12 @@ import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import { query, remove } from '@/services/common';
+import { agree, reject } from '@/services/group';
 import { setDefaultGroup } from '@/services/user';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
+import InviteForm from './InviteForm';
+import UserListForm from './UserListForm';
 import t from '@/utils/i18n';
 
 export default () => {
@@ -24,6 +27,24 @@ export default () => {
 
   const updateHandler = (record) => {
     show(<ActionForm />, 2, record);
+  };
+
+  const inviteHandler = (record) => {
+    show(<InviteForm />, 1, record);
+  };
+
+  const userListHandler = async (record) => {
+    show(<UserListForm />, 1, record);
+  };
+
+  const agreeHandler = async (record) => {
+    await agree(record.id);
+    successHandler();
+  };
+
+  const rejectHandler = async (record) => {
+    await reject(record.id);
+    successHandler();
   };
 
   const intl = useIntl();
@@ -73,31 +94,68 @@ export default () => {
       title: t('operation'),
       align: 'center',
       hideInSearch: true,
-      render: (_, record) => [
-        <Button
-          size="small"
-          type="link"
-          disabled={record.default || !record.enable}
-          onClick={() => setDefaultHandler(record)}
-        >
-          {t('book.set.default')}
-        </Button>,
-        <Button
-          size="small"
-          type="link"
-          onClick={() => updateHandler(record)}
-        >
-          {t('update')}
-        </Button>,
-        <Button
-          size="small"
-          type="link"
-          disabled={initialState.currentGroup?.id === record.id}
-          onClick={() => deleteHandler(record)}
-        >
-          {t('delete')}
-        </Button>,
-      ],
+      render: (_, record) => {
+        if (record.roleId === 4) {
+          return [
+            <Button
+              size="small"
+              type="link"
+              onClick={() => agreeHandler(record)}
+            >
+              {t('group.agree')}
+            </Button>,
+            <Button
+              size="small"
+              type="link"
+              onClick={() => rejectHandler(record)}
+            >
+              {t('group.reject')}
+            </Button>,
+          ]
+        } else {
+          return [
+            <Button
+              size="small"
+              type="link"
+              disabled={record.default || !record.enable}
+              onClick={() => setDefaultHandler(record)}
+            >
+              {t('book.set.default')}
+            </Button>,
+            <Button
+              size="small"
+              type="link"
+              onClick={() => updateHandler(record)}
+            >
+              {t('update')}
+            </Button>,
+            <Button
+              size="small"
+              type="link"
+              disabled={initialState.currentGroup?.id === record.id}
+              onClick={() => deleteHandler(record)}
+            >
+              {t('delete')}
+            </Button>,
+            <Button
+              size="small"
+              type="link"
+              disabled={record.roleId !== 1}
+              onClick={() => inviteHandler(record)}
+            >
+              {t('group.invite')}
+            </Button>,
+            <Button
+              size="small"
+              type="link"
+              disabled={record.roleId !== 1}
+              onClick={() => userListHandler(record)}
+            >
+              {t('group.user.list')}
+            </Button>,
+          ]
+        }
+      },
     },
   ];
 
