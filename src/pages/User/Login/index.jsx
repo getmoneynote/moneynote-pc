@@ -103,7 +103,7 @@ export default () => {
           </div>
         </LoginForm>
         <div className={styles.loginFormAction}>
-          <Button type="link" icon={<WechatOutlined />} onClick={handleWechat}>{t('wechat.login')}</Button>
+          {/*<Button type="link" icon={<WechatOutlined />} onClick={handleWechat}>{t('wechat.login')}</Button>*/}
           <a href="/user/register">{t('register.account')}</a>
         </div>
       </div>
