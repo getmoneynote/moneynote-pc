@@ -30,4 +30,6 @@ export default {
   'update.tag.amount': '修改标签金额',
   'flow.label.tag.amount': '标签金额',
 
+  'placeholder.negative.refund': '负数代表退款',
+
 }

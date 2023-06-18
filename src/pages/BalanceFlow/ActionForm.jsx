@@ -229,6 +229,7 @@ export default ({ initType = 'EXPENSE' }) => {
   const categoryLabelMsg = t('flow.label.category');
   const amountLabelMsg = t('flow.label.amount');
   const convertCurrencyMsg = t('convertCurrency');
+  const placeholderRefundMsg = t('placeholder.negative.refund');
   return (
     <>
       <MyModalForm
@@ -318,16 +319,17 @@ export default ({ initType = 'EXPENSE' }) => {
                         }}
                       />
                     </Col>
-                    <Col flex="190px">
+                    <Col flex="210px">
                       <ProFormText
                         name={[field.name, 'amount']}
                         label={amountLabelMsg}
                         rules={requiredRules()}
-                        labelCol={{ span: 8 }}
+                        labelCol={{ span: 7 }}
+                        placeholder={placeholderRefundMsg}
                       />
                     </Col>
                     {currencyConvert.needConvert && (
-                      <Col flex="195px">
+                      <Col flex="210px">
                         <ProFormText
                           name={[field.name, 'convertedAmount']}
                           label={convertCurrencyMsg + currencyConvert.convertCode}

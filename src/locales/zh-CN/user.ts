@@ -1,5 +1,5 @@
 export default {
-  'login.remember': '7天内自动登录',
+  'login.remember': '30天内自动登录',
   'change.password': '修改密码',
   'logout': '退出登录',
   'old.password': '原始密码',

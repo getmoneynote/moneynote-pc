@@ -105,6 +105,7 @@ export default ({ type, actionRef }) => {
           name="balance"
           label={t('account.label.balance')}
           rules={amountRequiredRules()}
+          placeholder={t('placeholder.can.negative')}
         />
         {
           (type === 'CREDIT' || type === 'DEBT') &&

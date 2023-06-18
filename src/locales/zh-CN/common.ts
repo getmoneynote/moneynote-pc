@@ -40,4 +40,7 @@ export default {
 
   'rules.format.error': '格式错误',
   'rules.required': '请输入内容',
+
+  'placeholder.can.negative': '可输入负数',
+
 };

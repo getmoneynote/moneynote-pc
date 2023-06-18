@@ -30,4 +30,6 @@ export default {
   'update.tag.amount': 'Change Tag Amount',
   'flow.label.tag.amount': 'Tag Amount',
 
+  'placeholder.negative.refund': 'Negative number is refund',
+
 }

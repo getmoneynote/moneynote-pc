@@ -1,5 +1,5 @@
 export default {
-  'login.remember': 'Remember 7 days',
+  'login.remember': 'Remember 30 days',
   'change.password': 'Change Password',
   'logout': 'Logout',
   'old.password': 'Old Password',

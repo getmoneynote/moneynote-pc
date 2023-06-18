@@ -40,4 +40,7 @@ export default {
 
   'rules.format.error': 'Format error',
   'rules.required': 'This field is required',
+
+  'placeholder.can.negative': 'Negative numbers can be entered',
+
 };

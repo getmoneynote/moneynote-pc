@@ -11,7 +11,7 @@ export default () => {
         <Divider type="vertical" />
         <a href="https://help.moneywhere.com" target="_blank">{t('footer.help.doc')}</a>
         <Divider type="vertical" />
-        <a href="https://m.moneywhere.com" target="_blank">{t('footer.mobile.site')}</a>
+        <a href="https://space.bilibili.com/392661804/channel/seriesdetail?sid=3371573" target="_blank">B站视频</a>
         <Divider type="vertical" />
         <span>{t('footer.qq.group')}: 639653091</span>
       </div>
@@ -20,7 +20,7 @@ export default () => {
         <Divider type="vertical" />
         <a target="_blank" href="https://beian.miit.gov.cn/" rel="noreferrer">{t('footer.no')}</a>
         <Divider type="vertical" />
-        v1.0.16
+        v1.0.18
       </div>
       <ModalContainer />
     </Space>
