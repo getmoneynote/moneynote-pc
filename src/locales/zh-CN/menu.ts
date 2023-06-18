@@ -12,4 +12,5 @@ export default {
   'menu.bookTemplates': '账本模板',
   'menu.groups': '分组管理',
   'menu.noteDays': '提醒事项',
+  'menu.login': '登录页',
 };

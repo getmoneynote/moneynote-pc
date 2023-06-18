@@ -12,4 +12,5 @@ export default {
   'menu.groups': 'Groups',
   'menu.bookTemplates': 'Book Templates',
   'menu.noteDays': 'Note Days',
+  'menu.login': 'Login Page',
 };

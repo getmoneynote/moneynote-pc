@@ -25,15 +25,15 @@ export default (props) => {
   ];
 
   const legendClickHandler = (item, i) => {
-    const newItem = item;
-    newItem.checked = !newItem.checked;
-    const newLegendData = [...legendData];
-    newLegendData[i] = newItem;
-    const filteredLegendData = newLegendData.filter((l) => l.checked).map((l) => l.x);
-    if (chart) {
-      chart.filter('x', (val) => filteredLegendData.indexOf(`${val}`) > -1);
-    }
-    setLegendData(newLegendData);
+    // const newItem = item;
+    // newItem.checked = !newItem.checked;
+    // const newLegendData = [...legendData];
+    // newLegendData[i] = newItem;
+    // const filteredLegendData = newLegendData.filter((l) => l.checked).map((l) => l.x);
+    // if (chart) {
+    //   chart.filter('x', (val) => filteredLegendData.indexOf(`${val}`) > -1);
+    // }
+    // setLegendData(newLegendData);
   };
 
   const [chart, setChart] = useState();

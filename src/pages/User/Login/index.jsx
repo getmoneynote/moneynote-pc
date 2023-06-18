@@ -1,8 +1,9 @@
 import {useRef} from "react";
 import {Button} from "antd";
-import {SelectLang} from '@umijs/max';
+import {SelectLang, Helmet} from '@umijs/max';
 import {LockOutlined, UserOutlined, WechatOutlined} from '@ant-design/icons';
 import {LoginForm, ProFormCheckbox, ProFormText} from '@ant-design/pro-components';
+import Settings from '../../../../config/defaultSettings';
 import { login, wxLoginUrl } from '@/services/user';
 import { requiredRules } from '@/utils/rules';
 import Footer from '@/components/Footer';
@@ -64,6 +65,12 @@ export default () => {
 
   return (
     <div className={styles.container}>
+      <Helmet>
+        <title>
+          {t('menu.login')}
+          - {Settings.title}
+        </title>
+      </Helmet>
       <div className={styles.lang} data-lang>
         {SelectLang && <SelectLang />}
       </div>
