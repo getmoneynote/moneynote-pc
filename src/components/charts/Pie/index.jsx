@@ -24,16 +24,26 @@ export default (props) => {
     }),
   ];
 
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    setTotal(data.reduce((pre, now) => now.y + pre, 0).toFixed(2));
+  }, [data]);
+
   const legendClickHandler = (item, i) => {
-    // const newItem = item;
-    // newItem.checked = !newItem.checked;
-    // const newLegendData = [...legendData];
-    // newLegendData[i] = newItem;
-    // const filteredLegendData = newLegendData.filter((l) => l.checked).map((l) => l.x);
-    // if (chart) {
-    //   chart.filter('x', (val) => filteredLegendData.indexOf(`${val}`) > -1);
-    // }
-    // setLegendData(newLegendData);
+    const newItem = item;
+    newItem.checked = !newItem.checked;
+    const newLegendData = [...legendData];
+    newLegendData[i] = newItem;
+    const filteredLegendData = newLegendData.filter((l) => l.checked);
+
+    const filteredLegendDataX = filteredLegendData.map((l) => l.x);
+    if (chart) {
+      chart.filter('x', (val) => filteredLegendDataX.indexOf(`${val}`) > -1);
+    }
+    setLegendData(newLegendData);
+
+    setTotal(filteredLegendData.reduce((pre, now) => now.y + pre, 0).toFixed(2))
+
   };
 
   const [chart, setChart] = useState();
@@ -60,7 +70,6 @@ export default (props) => {
   };
 
   const totalMessage = t('gross.amount');
-  const total = data.reduce((pre, now) => now.y + pre, 0).toFixed(2);
   return (
     <Spin spinning={loading} size="large">
       <div className={styles['pie']}>
