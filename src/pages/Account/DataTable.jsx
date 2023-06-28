@@ -116,6 +116,7 @@ export default ({ type, actionRef }) => {
         {
           title: t('account.label.bill.day'),
           dataIndex: 'billDay',
+          sorter: true,
           hideInSearch: true,
         },
       ]);

@@ -16,10 +16,10 @@ export default () => {
         <span>{t('footer.qq.group')}: 639653091</span>
       </div>
       <div>
-        &copy; {new Date().getFullYear()} {t('company.name')}
+        &copy; {new Date().getFullYear()} <a href="https://www.moneywhere.com" target="_blank">moneywhere.com</a>
         <Divider type="vertical" />
-        <a target="_blank" href="https://beian.miit.gov.cn/" rel="noreferrer">{t('footer.no')}</a>
-        <Divider type="vertical" />
+        {/*<a target="_blank" href="https://beian.miit.gov.cn/" rel="noreferrer">{t('footer.no')}</a>*/}
+        {/*<Divider type="vertical" />*/}
         v1.0.19
       </div>
       <ModalContainer />
