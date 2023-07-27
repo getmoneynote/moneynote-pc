@@ -3,6 +3,8 @@ export default {
   'add': 'New ',
   'update': 'Update ',
   'delete': 'Delete',
+  'recover': 'Recover',
+  'delete.permanent': 'Delete Permanently',
   'reset': 'Reset',
   'search': 'Search',
   'more': 'More',
@@ -42,5 +44,7 @@ export default {
   'rules.required': 'This field is required',
 
   'placeholder.can.negative': 'Negative numbers can be entered',
+
+  'label.tab.deleted': 'Deleted',
 
 };

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import {Alert, Button, Form, Input, Modal, Space} from 'antd';
+import {Alert, Button, Form, Input, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import {useIntl, useModel, useRequest} from '@umijs/max';
-import {queryAll, query, remove, toggle} from '@/services/common';
+import {useModel, useRequest} from '@umijs/max';
+import {queryAll, query, toggle, removeSoft} from '@/services/common';
 import {
   statistics,
   toggleCanExpense,
@@ -31,19 +31,9 @@ export default ({ type, actionRef }) => {
     actionRef.current?.reload();
   }
 
-  const intl = useIntl();
-  const deleteHandler = (record) => {
-    const messageDeleteConfirm = intl.formatMessage(
-      { id: 'delete.confirm' },
-      { name: record.name },
-    );
-    Modal.confirm({
-      title: messageDeleteConfirm,
-      onOk: async () => {
-        await remove('accounts', record.id);
-        successHandler();
-      },
-    });
+  const deleteHandler = async (record) => {
+    await removeSoft('accounts', record.id);
+    successHandler();
   };
 
   const addHandler = () => {
@@ -357,7 +347,7 @@ export default ({ type, actionRef }) => {
           expandedRowRender: (record) => expandedRowRender(record),
           rowExpandable: (record) => expandedRowRender(record),
         }}
-        params={{ type: type }}
+        params={{ type: type, deleted: false, }}
         request={(params = {}, sort, _) => {
           statistics(params).then((res) => {
             setStatisticsData(res.data);

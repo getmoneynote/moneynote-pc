@@ -1,4 +1,5 @@
 export default {
+  'account.type': 'Account Type',
   'checking.account': 'Checking Account',
   'credit.account': 'Credit Account',
   'debt.account': 'Debt Account',

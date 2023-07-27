@@ -1,6 +1,7 @@
 import { useModel } from '@umijs/max';
 import { PageContainer } from "@ant-design/pro-components";
 import DataTable from "./DataTable";
+import DeletedTable from "./DeletedTable";
 import t from "@/utils/i18n";
 
 export default () => {
@@ -12,6 +13,7 @@ export default () => {
     { label: t('credit.account'), key: 2, children: <DataTable type='CREDIT' actionRef={creditActionRef} /> },
     { label: t('asset.account'), key: 3, children: <DataTable type='ASSET' actionRef={assetActionRef} /> },
     { label: t('debt.account'), key: 4, children: <DataTable type='DEBT' actionRef={debtActionRef} /> },
+    { label: t('label.tab.deleted'), key: 5, children: <DeletedTable /> },
   ];
 
   return(

@@ -3,6 +3,8 @@ export default {
   'add': '新增',
   'update': '修改',
   'delete': '删除',
+  'recover': '恢复',
+  'delete.permanent': '彻底删除',
   'reset': '重置',
   'search': '查询',
   'more': '更多',
@@ -42,5 +44,7 @@ export default {
   'rules.required': '请输入内容',
 
   'placeholder.can.negative': '可输入负数',
+
+  'label.tab.deleted': '已删除',
 
 };

@@ -22,9 +22,23 @@ export async function update(prefix, id, data) {
   });
 }
 
+// 彻底删除
 export async function remove(prefix, id) {
   return request(`${prefix}/${id}`, {
     method: 'DELETE',
+  });
+}
+
+// 软删除
+export async function removeSoft(prefix, id) {
+  return request(`${prefix}/${id}/delete`, {
+    method: 'PUT',
+  });
+}
+
+export async function recover(prefix, id) {
+  return request(`${prefix}/${id}/recover`, {
+    method: 'PUT',
   });
 }
 
