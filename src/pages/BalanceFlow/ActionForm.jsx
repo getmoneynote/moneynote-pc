@@ -1,6 +1,6 @@
 import {useEffect, useState, useMemo} from 'react';
-import { Col, Form, Row, Space, Tabs } from 'antd';
-import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {Col, Form, Row, Space, Tabs} from 'antd';
+import {MinusCircleOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {
   ProFormDateTimePicker,
   ProFormSelect,
@@ -16,6 +16,7 @@ import { queryAll, create, update } from '@/services/common';
 import { treeSelectSingleProp, treeSelectMultipleProp, selectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
+import AddTagModal from './AddTagModal';
 import t from '@/utils/i18n';
 
 export default ({ initType = 'EXPENSE' }) => {
@@ -364,16 +365,25 @@ export default ({ initType = 'EXPENSE' }) => {
             }}
           />
         )}
-        <ProFormTreeSelect
-          name="tags"
-          label={t('flow.label.tag')}
-          fieldProps={{
-            ...treeSelectMultipleProp,
-            onFocus: loadTags,
-            loading: tagsLoading,
-            options: tags,
-          }}
-        />
+        <Col span={24}>
+          <Row>
+            <Col flex="auto">
+              <ProFormTreeSelect
+                name="tags"
+                label={t('flow.label.tag')}
+                fieldProps={{
+                  ...treeSelectMultipleProp,
+                  onFocus: loadTags,
+                  loading: tagsLoading,
+                  options: tags,
+                }}
+              />
+            </Col>
+            <Col flex="50px">
+              <AddTagModal book={currentBook} type={tabKey} />
+            </Col>
+          </Row>
+        </Col>
         <ProFormSwitch
           disabled={action === 2}
           name="confirm"
