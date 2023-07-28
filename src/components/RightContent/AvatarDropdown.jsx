@@ -76,7 +76,7 @@ const AvatarDropdown = () => {
       items: menuItems,
     }}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.headimgurl} alt="avatar" />
+        <Avatar size="small" className={styles.avatar} src={currentUser.headimgurl ?? 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'} alt="avatar" />
         <span className={`${styles.name} anticon`}>{currentUser.name}</span>
       </span>
     </HeaderDropdown>
