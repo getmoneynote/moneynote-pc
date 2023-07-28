@@ -1,7 +1,7 @@
 import {Button} from "antd";
 import { ProTable } from '@ant-design/pro-components';
 import { useModel } from "@umijs/max";
-import { queryBookTemplates } from '@/services/api';
+import { queryBookTemplates } from '@/services/book';
 import { tableProp } from '@/utils/prop';
 import CopyForm from './CopyForm';
 import t from '@/utils/i18n';

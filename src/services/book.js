@@ -15,3 +15,10 @@ export async function exportFlow(id) {
     responseType: 'blob',
   });
 }
+
+export async function queryBookTemplates(params) {
+  return request('book-templates', {
+    method: 'GET',
+    params: params,
+  });
+}
