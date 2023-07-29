@@ -1,6 +1,6 @@
 import {useEffect, useState, useMemo} from 'react';
-import {Col, Form, Row, Space, Tabs} from 'antd';
-import {MinusCircleOutlined, PlusCircleOutlined} from '@ant-design/icons';
+import {Col, Divider, Form, Input, Row, Space, Tabs} from 'antd';
+import {MinusCircleOutlined, PlusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import {
   ProFormDateTimePicker,
   ProFormSelect,
@@ -17,6 +17,7 @@ import { treeSelectSingleProp, treeSelectMultipleProp, selectSingleProp } from '
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
 import AddTagModal from './AddTagModal';
+import AddPayeeModal from './AddPayeeModal';
 import t from '@/utils/i18n';
 
 export default ({ initType = 'EXPENSE' }) => {
@@ -354,16 +355,36 @@ export default ({ initType = 'EXPENSE' }) => {
           </Col>
         )}
         {tabKey !== 'TRANSFER' && (
-          <ProFormSelect
-            name="payee"
-            label={t('flow.label.payee')}
-            fieldProps={{
-              ...selectSingleProp,
-              onFocus: loadPayees,
-              options: payees,
-              loading: payeesLoading,
-            }}
-          />
+          <Col span={24}>
+            <Row>
+              <Col flex="auto">
+                <ProFormSelect
+                  name="payee"
+                  label={t('flow.label.payee')}
+                  fieldProps={{
+                    ...selectSingleProp,
+                    onFocus: loadPayees,
+                    options: payees,
+                    loading: payeesLoading,
+                    dropdownRender: menu =>
+                      <>
+                        {menu}
+                        <Divider style={{ margin: '4px 0' }} />
+                        <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 4 }}>
+                          <Input style={{ flex: 'auto' }} />
+                          <a style={{ flex: 'none', padding: '4px', display: 'block', cursor: 'pointer' }}>
+                            <PlusOutlined /> {t('add')}
+                          </a>
+                        </div>
+                      </>
+                  }}
+                />
+              </Col>
+              <Col flex="50px">
+                <AddPayeeModal book={currentBook} type={tabKey} />
+              </Col>
+            </Row>
+          </Col>
         )}
         <Col span={24}>
           <Row>
