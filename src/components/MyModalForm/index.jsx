@@ -14,9 +14,9 @@ export default (props) => {
     onSuccess,
     autoFocusFirstInput = false,
     isKeyPressSubmit = true,
+    formRef = useRef()
   } = props;
 
-  const formRef = useRef();
   const { visible, setVisible } = useModel('modal');
 
   const finishHandler = async (values) => {

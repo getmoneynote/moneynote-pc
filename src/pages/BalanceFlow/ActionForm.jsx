@@ -1,4 +1,4 @@
-import {useEffect, useState, useMemo} from 'react';
+import {useEffect, useState, useMemo, useRef} from 'react';
 import {Col, Divider, Form, Input, Row, Space, Tabs} from 'antd';
 import {MinusCircleOutlined, PlusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import {
@@ -16,6 +16,7 @@ import { queryAll, create, update } from '@/services/common';
 import { treeSelectSingleProp, treeSelectMultipleProp, selectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
+import PayeeInput from "./PayeeInput";
 import AddTagModal from './AddTagModal';
 import AddPayeeModal from './AddPayeeModal';
 import t from '@/utils/i18n';
@@ -23,6 +24,7 @@ import t from '@/utils/i18n';
 export default ({ initType = 'EXPENSE' }) => {
 
   const { actionRef } = useModel('BalanceFlow.model');
+  const formRef = useRef();
   const { initialState } = useModel('@@initialState');
   const { action, currentRow, visible } = useModel('modal');
   const [tabKey, setTabKey] = useState(initType);
@@ -50,13 +52,6 @@ export default ({ initType = 'EXPENSE' }) => {
   const { data : toAccounts = [], loading : toAccountsLoading, run : loadToAccounts} = useRequest(() => queryAll('accounts', {
     'canTransferTo': tabKey === 'TRANSFER' ? true : null,
     // 'keep': action === 1 ? null : currentRow.to.id,
-  }), { manual: true });
-
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {
-    'bookId': currentBook.id,
-    'canExpense': tabKey === 'EXPENSE' ? true : null,
-    'canIncome': tabKey === 'INCOME' ? true : null,
-    // 'keep': action === 1 ? null : currentRow.payee?.id,
   }), { manual: true });
 
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => queryAll('categories', {
@@ -119,13 +114,8 @@ export default ({ initType = 'EXPENSE' }) => {
       setAccount(currentRow.account);
       setToAccount(currentRow.to);
       setConfirm(currentRow.confirm);
-      // let initialValues = structuredClone(currentRow);
       // 一定要深度复制
       let initialValues = JSON.parse(JSON.stringify(currentRow));
-      // initialValues.bookId = initialValues.book;
-      // initialValues.accountId = initialValues.account;
-      // initialValues.toId = initialValues.to;
-      // initialValues.payeeId = initialValues.payee;
       initialValues.tags = initialValues.tags?.map((item) => item.tag);
       if (action !== 2) {
         initialValues.notes = null;
@@ -242,6 +232,7 @@ export default ({ initType = 'EXPENSE' }) => {
         request={requestHandler}
         onSuccess={successHandler}
         initialValues={initialValues}
+        formRef={formRef}
       >
         <ProFormSelect
           name="book"
@@ -358,27 +349,7 @@ export default ({ initType = 'EXPENSE' }) => {
           <Col span={24}>
             <Row>
               <Col flex="auto">
-                <ProFormSelect
-                  name="payee"
-                  label={t('flow.label.payee')}
-                  fieldProps={{
-                    ...selectSingleProp,
-                    onFocus: loadPayees,
-                    options: payees,
-                    loading: payeesLoading,
-                    dropdownRender: menu =>
-                      <>
-                        {menu}
-                        <Divider style={{ margin: '4px 0' }} />
-                        <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 4 }}>
-                          <Input style={{ flex: 'auto' }} />
-                          <a style={{ flex: 'none', padding: '4px', display: 'block', cursor: 'pointer' }}>
-                            <PlusOutlined /> {t('add')}
-                          </a>
-                        </div>
-                      </>
-                  }}
-                />
+                <PayeeInput currentBook={currentBook} tabKey={tabKey} formRef={formRef} />
               </Col>
               <Col flex="50px">
                 <AddPayeeModal book={currentBook} type={tabKey} />
