@@ -5,6 +5,5 @@ services:
     build: .
     environment:
       USER_API_HOST: http://192.168.2.4:9092
-      API_HOST: http://192.168.2.4:9096/api/v1/user-api
     ports:
       - "9000:80"
