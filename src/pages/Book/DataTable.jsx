@@ -65,7 +65,19 @@ export default () => {
         setExportingBook(record);
         try {
           const response = await exportFlow(record.id);
-          console.log(response);
+          if (response.type === 'application/json') {
+            let reader = new FileReader()
+            reader.onload = e => {
+              if (e.target.readyState === 2) {
+                let res = {}
+                res = JSON.parse(e.target.result)
+                message.error(res.message);
+              }
+            }
+            reader.readAsText(response);
+            setExportingBook(null);
+            return false;
+          }
           // 构造文件下载链接
           const url = window.URL.createObjectURL(new Blob([response]));
           const link = document.createElement('a');
