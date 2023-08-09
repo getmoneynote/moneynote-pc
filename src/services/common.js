@@ -54,3 +54,9 @@ export async function toggle(prefix, id) {
     method: 'PATCH',
   });
 }
+
+export async function apiVersion() {
+  return request('version', {
+    method: 'GET',
+  });
+}

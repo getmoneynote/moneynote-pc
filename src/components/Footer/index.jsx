@@ -1,9 +1,15 @@
 import {Divider, Space} from 'antd';
+import {useRequest} from "@umijs/max";
 import ModalContainer from "@/components/ModalContainer";
-import t from '@/utils/i18n';
+import {apiVersion} from "@/services/common";
 import styles from './index.less';
+import t from '@/utils/i18n';
+
 
 export default () => {
+
+  const { data: version } = useRequest(apiVersion);
+
   return (
     <Space className={styles['footer']} direction="vertical" size="small" style={{ width:"100%" }}>
       <div className={styles['footer-link']}>
@@ -20,7 +26,9 @@ export default () => {
         <Divider type="vertical" />
         {/*<a target="_blank" href="https://beian.miit.gov.cn/" rel="noreferrer">{t('footer.no')}</a>*/}
         {/*<Divider type="vertical" />*/}
-        v1.0.20
+        v1.0.21
+        <Divider type="vertical" />
+        api-version: {version}
       </div>
       <ModalContainer />
     </Space>

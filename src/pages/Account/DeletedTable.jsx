@@ -1,11 +1,9 @@
-import {useRef, useState} from 'react';
-import {Alert, Button, Form, Input, Modal, Space} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import {useRef} from 'react';
+import {Button, Modal} from 'antd';
 import { ProTable } from '@ant-design/pro-components';
-import {useIntl, useModel, useRequest} from '@umijs/max';
-import {queryAll, remove, toggle, recover, removeSoft, query} from '@/services/common';
+import { useIntl } from '@umijs/max';
+import {remove, toggle, recover, query} from '@/services/common';
 import {
-  statistics,
   toggleCanExpense,
   toggleCanIncome,
   toggleCanTransferFrom,
@@ -13,7 +11,7 @@ import {
   toggleInclude,
 } from '@/services/account';
 import MySwitch from '@/components/MySwitch';
-import {selectSingleProp, tableProp} from '@/utils/prop';
+import {tableProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import t from '@/utils/i18n';
 
