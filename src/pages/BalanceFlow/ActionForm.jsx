@@ -100,7 +100,6 @@ export default ({ initType = 'EXPENSE' }) => {
         setToAccount(currentBook.defaultTransferToAccount);
       }
       setConfirm(true);
-      console.log(currentBook);
       setInitialValues({
         book: currentBook,
         createTime: moment(),
@@ -182,7 +181,6 @@ export default ({ initType = 'EXPENSE' }) => {
     form.toId = form.to?.value;
     delete form.to;
     if (form.categories) {
-      console.log(form.categories);
       form.categories = form.categories.map((e) => ({
         ...e,
         'categoryId': e.category.value,
