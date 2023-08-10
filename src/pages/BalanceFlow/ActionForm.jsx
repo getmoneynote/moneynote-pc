@@ -1,6 +1,6 @@
 import {useEffect, useState, useMemo, useRef} from 'react';
-import {Col, Divider, Form, Input, Row, Space, Tabs} from 'antd';
-import {MinusCircleOutlined, PlusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import {Col, Form, Row, Space, Tabs} from 'antd';
+import {MinusCircleOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {
   ProFormDateTimePicker,
   ProFormSelect,
@@ -100,6 +100,7 @@ export default ({ initType = 'EXPENSE' }) => {
         setToAccount(currentBook.defaultTransferToAccount);
       }
       setConfirm(true);
+      console.log(currentBook);
       setInitialValues({
         book: currentBook,
         createTime: moment(),
