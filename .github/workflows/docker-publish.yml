@@ -1,0 +1,32 @@
+name: docker hub image
+
+# 触发条件：在 push 到 main 分支后
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Generate build
+		run: npm run build
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+         username: ${{ secrets.DOCKER_USERNAME }}
+         password: ${{ secrets.DOCKER_PASS }}
+      - name: Publish to Docker Hub
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: markliu2018/moneywhere-fe-user:latest
