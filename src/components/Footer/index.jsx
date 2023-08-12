@@ -26,7 +26,7 @@ export default () => {
         <Divider type="vertical" />
         {/*<a target="_blank" href="https://beian.miit.gov.cn/" rel="noreferrer">{t('footer.no')}</a>*/}
         {/*<Divider type="vertical" />*/}
-        v1.0.23
+        v1.0.24
         <Divider type="vertical" />
         api-version: {version}
       </div>

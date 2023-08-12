@@ -385,9 +385,6 @@ export default ({ initType = 'EXPENSE' }) => {
           }}
         />
         <ProFormSwitch name="include" label={t('flow.label.include')} colProps={{ xl: 6 }} />
-        {
-          confirm && (<ProFormSwitch name="updateBalance" label={t('flow.add.update.balance')} colProps={{ xl: 6 }} />)
-        }
         <ProFormTextArea name="notes" label={t('label.notes')} />
       </MyModalForm>
     </>

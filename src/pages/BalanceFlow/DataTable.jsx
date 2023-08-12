@@ -6,7 +6,6 @@ import {useModel, useRequest} from '@umijs/max';
 import moment from 'moment';
 import { confirm, statistics } from '@/services/flow';
 import { queryAll, query, remove } from '@/services/common';
-import { removeWithAccount } from '@/services/flow';
 import {selectMultipleProp, selectSingleProp, tableProp, treeSelectMultipleProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
@@ -66,15 +65,11 @@ export default () => {
 
   const messageDeleteConfirm = t('delete.confirm', { name: '' });
   const messageDeleteConfirmBalance = t('delete.confirm.balance');
-  const deleteHandler = (record, withAccount) => {
+  const deleteHandler = (record) => {
     Modal.confirm({
-      title: record.confirm && withAccount ? messageDeleteConfirmBalance : messageDeleteConfirm,
+      title: record.confirm ? messageDeleteConfirmBalance : messageDeleteConfirm,
       onOk: async () => {
-        if (withAccount) {
-          await removeWithAccount(record.id);
-        } else {
-          await remove('balance-flows', record.id);
-        }
+        await remove('balance-flows', record.id);
         successHandler();
       },
     });
@@ -97,12 +92,8 @@ export default () => {
         onClick: () => confirmHandler(record)
       },
       {
-        label: t('flow.delete.update.balance'),
-        onClick: () => deleteHandler(record, true)
-      },
-      {
-        label: t('flow.delete.no.update.balance'),
-        onClick: () => deleteHandler(record, false)
+        label: t('delete'),
+        onClick: () => deleteHandler(record)
       },
     ]
   };

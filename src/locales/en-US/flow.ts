@@ -18,9 +18,6 @@ export default {
   'flow.label.include': 'Included',
   'flow.label.transfer.from.account': 'Transfer From',
   'flow.label.transfer.to.account': 'Transfer To',
-  'flow.add.update.balance': 'Update Account',
-  'flow.delete.update.balance': 'Delete and Update Account',
-  'flow.delete.no.update.balance': 'Delete without Update Account',
 
   'flow.total.expense': 'Total Expense',
   'flow.total.income': 'Total Income',
