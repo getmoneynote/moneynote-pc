@@ -58,6 +58,7 @@ export const selectSingleProp = {
   showSearch: true,
   allowClear: true,
 }
+
 export const selectMultipleProp = {
   ...selectSingleProp,
   ...{

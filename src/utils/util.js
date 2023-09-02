@@ -122,3 +122,13 @@ export function translateAccountType(type) {
       return t('debt.account');
   }
 }
+
+export function datePickerRanges() {
+  return {
+    [t('today')]: [moment().startOf('day'), moment().endOf('day')],
+    [t('in.30.days')]: [moment().subtract(30, 'days'), moment()],
+    [t('this.month')]: [moment().startOf('month'), moment().endOf('month')],
+    [t('this.year')]: [moment().startOf('year'), moment().endOf('year')],
+    [t('last.year')]: [moment().add(-1, 'years').startOf('year'), moment().add(-1, 'years').endOf('year')],
+  }
+}

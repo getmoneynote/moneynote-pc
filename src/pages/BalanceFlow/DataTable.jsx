@@ -7,7 +7,7 @@ import moment from 'moment';
 import { confirm, statistics } from '@/services/flow';
 import { queryAll, query, remove } from '@/services/common';
 import {selectMultipleProp, selectSingleProp, tableProp, treeSelectMultipleProp} from '@/utils/prop';
-import { tableSortFormat } from '@/utils/util';
+import {datePickerRanges, tableSortFormat} from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from '../Account/AdjustForm';
 import TagForm from './TagForm';
@@ -174,15 +174,7 @@ export default () => {
       },
       fieldProps: {
         allowEmpty: [true, true],
-        ranges: {
-          Today: [moment().startOf('day'), moment().endOf('day')],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'This Year': [moment().startOf('year'), moment().endOf('year')],
-          'Last Year': [
-            moment().add(-1, 'years').startOf('year'),
-            moment().add(-1, 'years').endOf('year'),
-          ],
-        },
+        ranges: datePickerRanges(),
       },
     },
     {

@@ -10,7 +10,8 @@ import {
 import {useModel, useRequest} from "@umijs/max";
 import moment from 'moment/moment';
 import {selectMultipleProp, selectSingleProp, treeSelectMultipleProp} from '@/utils/prop';
-import { queryAll, query } from '@/services/common';
+import {datePickerRanges} from '@/utils/util';
+import { queryAll } from '@/services/common';
 import {requiredRules} from "@/utils/rules";
 import t from '@/utils/i18n';
 
@@ -82,15 +83,7 @@ export default ({ type, run }) => {
           })}
           fieldProps={{
             allowEmpty: [true, true],
-            ranges: {
-              Today: [moment().startOf('day'), moment().endOf('day')],
-              'This Month': [moment().startOf('month'), moment().endOf('month')],
-              'This Year': [moment().startOf('year'), moment().endOf('year')],
-              'Last Year': [
-                moment().add(-1, 'years').startOf('year'),
-                moment().add(-1, 'years').endOf('year'),
-              ],
-            },
+            ranges: datePickerRanges(),
           }}
         />
         <ProFormText name="title" label={t('flow.label.title')} />
