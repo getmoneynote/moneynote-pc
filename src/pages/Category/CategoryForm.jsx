@@ -41,9 +41,9 @@ export default ({ type, actionRef }) => {
 
   const requestHandler = async (values) => {
     let form = JSON.parse(JSON.stringify(values));
+    // 修改是pid为数值
+    form.pId = values.pId?.value;
     if (action === 1) {
-      // 修改是pid为数值
-      form.pId = values.pId?.value;
       await create('categories', {...form, ...{ bookId: bookId, type: type }});
     } else if (action === 2) {
       await update('categories', currentRow.id, form);
