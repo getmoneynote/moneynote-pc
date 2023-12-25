@@ -348,6 +348,7 @@ export default () => {
     <>
       <ProTable
         {...tableProp}
+        size="small"
         actionRef={actionRef}
         tableExtraRender={extraRender}
         toolBarRender={() => [
