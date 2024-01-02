@@ -28,5 +28,5 @@ jobs:
           password: "${{ secrets.ACR_PASSWORD }}"
       - name: Build and Push Docker Image
         run: |
-          docker build -t registry.cn-hangzhou.aliyuncs.com/moneywhere/moneywhere-api-fe:latest .
+          docker build -t registry.cn-hangzhou.aliyuncs.com/moneywhere/moneywhere-fe-user:latest .
           docker push registry.cn-hangzhou.aliyuncs.com/moneywhere/moneywhere-fe-user:latest
