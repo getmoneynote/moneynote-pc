@@ -29,4 +29,8 @@ export default {
 
   'placeholder.negative.refund': '负数代表退款',
 
+  'flow.operation.file': '文件',
+  'flow.modal.file.title': '账单文件',
+  'flow.file.size.error': '文件太大'
+
 }
