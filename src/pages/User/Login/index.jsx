@@ -21,7 +21,7 @@ export default () => {
       localStorage.setItem('accessToken', response.data.accessToken);
     }
     setTimeout(() => {
-      window.location.href = '/report';
+      window.location.href = '/';
     }, 300);
   };
 

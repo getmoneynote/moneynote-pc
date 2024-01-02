@@ -106,7 +106,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/report',
+    redirect: '/statement',
   },
   {
     path: '*',

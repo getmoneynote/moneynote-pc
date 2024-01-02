@@ -14,3 +14,15 @@ export async function confirm(id) {
     method: 'PATCH',
   });
 }
+
+export async function getFiles(id) {
+  return request(`${prefix}/${id}/files`, {
+    method: 'GET',
+  });
+}
+
+
+
+export function buildUrl(file) {
+  return `api/v1/flow-files/view?id=${file.id}&createTime=${file.createTime}`
+}
