@@ -1,4 +1,4 @@
-name: docker hub image
+name: docker acr image
 
 # 触发条件：在 push 到 main 分支后
 on:
@@ -14,7 +14,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '19.x'
+          node-version: '16.20.0'
       - name: Install dependencies
         run: npm install
       - name: Generate build
