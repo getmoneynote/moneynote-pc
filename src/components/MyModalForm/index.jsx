@@ -14,6 +14,7 @@ export default (props) => {
     onSuccess,
     autoFocusFirstInput = false,
     isKeyPressSubmit = true,
+    submitter = true,
     formRef = useRef()
   } = props;
 
@@ -47,9 +48,10 @@ export default (props) => {
       onOpenChange={setVisible}
       onFinish={finishHandler}
       dateFormatter={value => value.valueOf()}
-      modalProps={{ destroyOnClose: false, maskClosable: false }}
+      modalProps={{ destroyOnClose: false, maskClosable: true }}
       autoFocusFirstInput={autoFocusFirstInput}
       isKeyPressSubmit={isKeyPressSubmit}
+      submitter={submitter}
       // submitter={{
       //   render: (props, defaultDoms) => {
       //     return [

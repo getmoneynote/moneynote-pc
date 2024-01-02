@@ -29,4 +29,7 @@ export default {
 
   'placeholder.negative.refund': 'Negative number is refund',
 
+  'flow.operation.file': 'File',
+  'flow.file.size.error': 'Too Large'
+
 }

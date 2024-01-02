@@ -51,11 +51,11 @@ const AvatarDropdown = () => {
   }
 
   const menuItems = [
-    {
-      key: 'bind',
-      icon: <UserAddOutlined />,
-      label: t('bind.user'),
-    },
+    // {
+    //   key: 'bind',
+    //   icon: <UserAddOutlined />,
+    //   label: t('bind.user'),
+    // },
     {
       key: 'changePassword',
       icon: <LockOutlined />,

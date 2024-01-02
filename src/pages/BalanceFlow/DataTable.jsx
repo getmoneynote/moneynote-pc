@@ -11,6 +11,7 @@ import {datePickerRanges, tableSortFormat} from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from '../Account/AdjustForm';
 import TagForm from './TagForm';
+import FileUploadModal from './FileUploadModal';
 import t from '@/utils/i18n';
 
 export default () => {
@@ -90,6 +91,10 @@ export default () => {
         label: t('confirm'),
         disabled: record.type === 'ADJUST' || record.confirm,
         onClick: () => confirmHandler(record)
+      },
+      {
+        label: t('flow.operation.file'),
+        onClick: () => show(<FileUploadModal flowId={record.id} />)
       },
       {
         label: t('delete'),
