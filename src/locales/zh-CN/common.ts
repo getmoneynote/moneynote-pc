@@ -24,7 +24,8 @@ export default {
   'label.enable': '是否可用',
   'label.notes': '备注',
 
-  'delete.confirm': '删除之后无法恢复，确定删除{name}吗？',
+  'delete.confirm': '确定删除{name}吗？',
+  'delete.confirm2': '删除之后无法恢复，确定删除{name}吗？',
   'click.edit': '点击修改',
 
   'today': '今天',

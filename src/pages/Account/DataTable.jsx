@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import {Alert, Button, Form, Input, Space} from 'antd';
+import {Alert, Button, Form, Input, Modal, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import {useModel, useRequest} from '@umijs/max';
-import {queryAll, query, toggle, removeSoft} from '@/services/common';
+import {useIntl, useModel, useRequest} from '@umijs/max';
+import {queryAll, query, toggle, removeSoft, remove} from '@/services/common';
 import {
   statistics,
   toggleCanExpense,
@@ -24,6 +24,7 @@ export default ({ type, actionRef }) => {
 
   const { show } = useModel('modal');
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
+  const intl = useIntl();
 
   const { data : currencyOptions = [], loading : currencyLoading, run : loadCurrencies} = useRequest(() => queryAll('currencies'), { manual: true });
 
@@ -32,8 +33,17 @@ export default ({ type, actionRef }) => {
   }
 
   const deleteHandler = async (record) => {
-    await removeSoft('accounts', record.id);
-    successHandler();
+    const messageConfirm = intl.formatMessage(
+      { id: 'delete.confirm' },
+      { name: record.name },
+    );
+    Modal.confirm({
+      title: messageConfirm,
+      onOk: async () => {
+        await removeSoft('accounts', record.id);
+        successHandler();
+      },
+    });
   };
 
   const addHandler = () => {

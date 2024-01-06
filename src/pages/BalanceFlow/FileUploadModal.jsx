@@ -15,6 +15,7 @@ export default ({ flowId }) => {
   const maxFileCount = 6;
 
   const fileSizeError = t('flow.file.size.error');
+  const messageDeleteConfirm = t('delete.confirm', { name: '' });
 
   const uploadProps = {
     accept: 'image/jpeg, image/png, application/pdf',
@@ -53,11 +54,17 @@ export default ({ flowId }) => {
       return true;
     },
     onRemove(file) {
-      remove('flow-files', file.id).then(res => {
-        if (res.success) {
-          fetchFiles(flowId);
-        }
+      Modal.confirm({
+        title: messageDeleteConfirm,
+        onOk: async () => {
+          remove('flow-files', file.id).then(res => {
+            if (res.success) {
+              fetchFiles(flowId);
+            }
+          });
+        },
       });
+      return false;
     }
   }
 

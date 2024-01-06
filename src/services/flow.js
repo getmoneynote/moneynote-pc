@@ -21,8 +21,6 @@ export async function getFiles(id) {
   });
 }
 
-
-
 export function buildUrl(file) {
   return `api/v1/flow-files/view?id=${file.id}&createTime=${file.createTime}`
 }

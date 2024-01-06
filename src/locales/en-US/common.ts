@@ -24,7 +24,8 @@ export default {
   'label.enable': 'Enable',
   'label.notes': 'Notes',
 
-  'delete.confirm': 'This action can\'t redo，Are you sure to delete {name}?',
+  'delete.confirm': 'Are you sure to delete {name}?',
+  'delete.confirm2': 'This action can\'t redo，Are you sure to delete {name}?',
   'click.edit': 'Click to Edit',
 
   'today': 'Today',

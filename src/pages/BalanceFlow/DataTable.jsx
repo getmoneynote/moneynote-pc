@@ -64,7 +64,7 @@ export default () => {
     successHandler();
   };
 
-  const messageDeleteConfirm = t('delete.confirm', { name: '' });
+  const messageDeleteConfirm = t('delete.confirm2', { name: '' });
   const messageDeleteConfirmBalance = t('delete.confirm.balance');
   const deleteHandler = (record) => {
     Modal.confirm({
