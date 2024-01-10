@@ -9,6 +9,7 @@ import { exportFlow } from '@/services/book';
 import MySwitch from '@/components/MySwitch';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
+import CopyForm from "./CopyForm";
 import t from '@/utils/i18n';
 
 export default () => {
@@ -43,6 +44,10 @@ export default () => {
       },
     });
   };
+
+  const copyHandler = (record) => {
+    show(<CopyForm />, 1, record);
+  }
 
   const setDefaultHandler = async (record) => {
     await setDefaultBook(record.id);
@@ -209,6 +214,13 @@ export default () => {
           onClick={() => deleteHandler(record)}
         >
           {t('delete')}
+        </Button>,
+        <Button
+          size="small"
+          type="link"
+          onClick={ () => copyHandler(record) }
+        >
+          {t('copy')}
         </Button>,
       ],
     },

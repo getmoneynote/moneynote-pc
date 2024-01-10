@@ -9,6 +9,13 @@ export async function createByTemplate(data) {
   });
 }
 
+export async function copy(data) {
+  return request(`${prefix}/copy`, {
+    method: 'POST',
+    data: data,
+  });
+}
+
 export async function exportFlow(id) {
   return request(`${prefix}/${id}/export`, {
     method: 'GET',
