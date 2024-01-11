@@ -66,8 +66,8 @@ export default () => {
     form.defaultIncomeAccountId = form.defaultIncomeAccountId?.id;
     form.defaultTransferFromAccountId = form.defaultTransferFromAccountId?.id;
     form.defaultTransferToAccountId = form.defaultTransferToAccountId?.id;
-    form.defaultExpenseCategoryId = form.defaultExpenseCategoryId?.id;
-    form.defaultIncomeCategoryId = form.defaultIncomeCategoryId?.id;
+    form.defaultExpenseCategoryId = form.defaultExpenseCategoryId?.value;
+    form.defaultIncomeCategoryId = form.defaultIncomeCategoryId?.value;
     if (action !== 2) {
       await create('books', form);
     } else {
