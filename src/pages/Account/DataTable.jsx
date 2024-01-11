@@ -3,7 +3,7 @@ import {Alert, Button, Form, Input, Modal, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import {useIntl, useModel, useRequest} from '@umijs/max';
-import {queryAll, query, toggle, removeSoft, remove} from '@/services/common';
+import {queryAll, query, toggle, removeSoft} from '@/services/common';
 import {
   statistics,
   toggleCanExpense,
@@ -11,6 +11,7 @@ import {
   toggleCanTransferFrom,
   toggleCanTransferTo,
   toggleInclude,
+  refreshCurrency
 } from '@/services/account';
 import MySwitch from '@/components/MySwitch';
 import {selectSingleProp, tableProp} from '@/utils/prop';
@@ -27,6 +28,8 @@ export default ({ type, actionRef }) => {
   const intl = useIntl();
 
   const { data : currencyOptions = [], loading : currencyLoading, run : loadCurrencies} = useRequest(() => queryAll('currencies'), { manual: true });
+
+  const { loading : refreshCurrencyLoading, run : runRefreshCurrency} = useRequest(refreshCurrency, { manual: true });
 
   function successHandler() {
     actionRef.current?.reload();
@@ -347,6 +350,9 @@ export default ({ type, actionRef }) => {
         actionRef={actionRef}
         tableExtraRender={extraRender}
         toolBarRender={() => [
+          <Button type="primary" onClick={runRefreshCurrency} loading={refreshCurrencyLoading}>
+            {t('account.refresh.currency')}
+          </Button>,
           <Button type="primary" onClick={addHandler}>
             <PlusOutlined />
             {t('add')}

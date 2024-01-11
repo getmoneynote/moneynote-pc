@@ -23,4 +23,6 @@ export default {
   'total.limit': 'Total Limit',
   'total.remain.limit': 'Total Remain Limit',
 
+  'account.refresh.currency': 'Refresh Currency',
+
 }
