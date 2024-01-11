@@ -50,6 +50,11 @@ export default [
         component: './reports/ExpenseTag',
       },
       {
+        name: 'expense.payee',
+        path: '/report/expense-payee',
+        component: './reports/ExpensePayee',
+      },
+      {
         name: 'income.category',
         path: '/report/income-category',
         component: './reports/IncomeCategory',
@@ -58,6 +63,11 @@ export default [
         name: 'income.tag',
         path: '/report/income-tag',
         component: './reports/IncomeTag',
+      },
+      {
+        name: 'income.payee',
+        path: '/report/income-payee',
+        component: './reports/IncomePayee',
       },
     ],
   },

@@ -30,6 +30,20 @@ export async function getIncomeTag(params) {
   });
 }
 
+export async function getExpensePayee(params) {
+  return request(`${prefix}/expense-payee`, {
+    method: 'GET',
+    params: params,
+  });
+}
+
+export async function getIncomePayee(params) {
+  return request(`${prefix}/income-payee`, {
+    method: 'GET',
+    params: params,
+  });
+}
+
 export async function balance() {
   return request(`${prefix}/balance`, {
     method: 'GET',
