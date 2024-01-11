@@ -53,6 +53,7 @@ export default ({ type, run }) => {
           let form = JSON.parse(JSON.stringify(values));
           form.bookId = values.bookId.id;
           form.book = values.bookId.id;
+          if (values.payees) form.payees = values.payees.map((i) => i?.id || i);
           if (values.categories) form.categories = values.categories.map((i) => i?.value || i);
           if (values.tags) form.tags = values.tags.map((i) => i?.value || i);
           run(form);
