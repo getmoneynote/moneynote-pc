@@ -49,6 +49,7 @@ export default () => {
   return (
     <ProTable
       {...tableProp}
+      pagination={false}
       search={false}
       columns={columns}
       request={ queryBookTemplates }
