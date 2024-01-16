@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useModel, useRequest} from '@umijs/max';
 import {
+  ProFormDigit,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
@@ -164,6 +165,7 @@ export default () => {
           }}
         />
         <ProFormTextArea name="notes" label={t('label.notes')} />
+        <ProFormDigit name="sort" label={t('sort')} />
       </MyModalForm>
     </>
   );

@@ -11,6 +11,7 @@ import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
 import CopyForm from "./CopyForm";
 import t from '@/utils/i18n';
+import {tableSortFormat} from "@/utils/util";
 
 export default () => {
 
@@ -115,6 +116,13 @@ export default () => {
     {
       title: t('account.label.currencyCode'),
       dataIndex: 'defaultCurrencyCode',
+      sorter: true,
+      hideInSearch: true,
+    },
+    {
+      title: t('sort'),
+      dataIndex: 'sort',
+      sorter: true,
       hideInSearch: true,
     },
     {
@@ -156,6 +164,7 @@ export default () => {
     {
       title: t('label.enable'),
       dataIndex: 'enable',
+      sorter: true,
       valueType: 'select',
       fieldProps: {
         options: [
@@ -254,7 +263,7 @@ export default () => {
           expandedRowRender: (record) => expandedRowRender(record),
           rowExpandable: (record) => expandedRowRender(record),
         }}
-        request={ (params = {}, __, _) => query('books', { ...params}) }
+        request={ (params = {}, sort, _) => query('books', { ...params, ...{ sort: tableSortFormat(sort) } }) }
       />
     </>
   );
