@@ -8,6 +8,7 @@ import { tableProp } from '@/utils/prop';
 import MySwitch from '@/components/MySwitch';
 import PayeeForm from './PayeeForm';
 import t from '@/utils/i18n';
+import {tableSortFormat} from "@/utils/util";
 
 export default () => {
 
@@ -53,26 +54,15 @@ export default () => {
       hideInSearch: true,
     },
     {
-      title: t('label.enable'),
-      dataIndex: 'enable',
-      valueType: 'select',
-      fieldProps: {
-        options: [
-          { label: t('yes'), value: true },
-          { label: t('no'), value: false },
-        ],
-      },
-      render: (_, record) => (
-        <MySwitch
-          value={record.enable}
-          request={() => toggle('payees', record.id)}
-          onSuccess={successHandler}
-        />
-      ),
+      title: t('sort'),
+      dataIndex: 'sort',
+      sorter: true,
+      hideInSearch: true,
     },
     {
       title: t('label.canExpense'),
       dataIndex: 'canExpense',
+      sorter: true,
       valueType: 'select',
       fieldProps: {
         options: [
@@ -91,6 +81,7 @@ export default () => {
     {
       title: t('label.canIncome'),
       dataIndex: 'canIncome',
+      sorter: true,
       valueType: 'select',
       fieldProps: {
         options: [
@@ -102,6 +93,25 @@ export default () => {
         <MySwitch
           value={record.canIncome}
           request={() => toggleCanIncome(record.id)}
+          onSuccess={successHandler}
+        />
+      ),
+    },
+    {
+      title: t('label.enable'),
+      dataIndex: 'enable',
+      sorter: true,
+      valueType: 'select',
+      fieldProps: {
+        options: [
+          { label: t('yes'), value: true },
+          { label: t('no'), value: false },
+        ],
+      },
+      render: (_, record) => (
+        <MySwitch
+          value={record.enable}
+          request={() => toggle('payees', record.id)}
           onSuccess={successHandler}
         />
       ),
@@ -131,7 +141,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={ (params = {}, __, _) => query('payees', { ...params, ...{ bookId: bookId }}) }
+      request={ (params = {}, sort, _) => query('payees', { ...params, ...{ bookId: bookId }, ...{ sort: tableSortFormat(sort) } }) }
       actionRef={payeeActionRef}
     />
   );

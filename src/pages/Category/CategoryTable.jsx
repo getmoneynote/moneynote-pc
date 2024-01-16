@@ -7,6 +7,7 @@ import { tableProp } from '@/utils/prop';
 import MySwitch from '@/components/MySwitch';
 import CategoryForm from './CategoryForm';
 import t from '@/utils/i18n';
+import {tableSortFormat} from "@/utils/util";
 
 export default ({ type, actionRef }) => {
 
@@ -52,8 +53,15 @@ export default ({ type, actionRef }) => {
       hideInSearch: true,
     },
     {
+      title: t('sort'),
+      dataIndex: 'sort',
+      sorter: true,
+      hideInSearch: true,
+    },
+    {
       title: t('label.enable'),
       dataIndex: 'enable',
+      sorter: true,
       valueType: 'select',
       fieldProps: {
         options: [
@@ -108,8 +116,8 @@ export default ({ type, actionRef }) => {
         </Button>,
       ]}
       columns={columns}
-      request={(params = {}, __, _) => {
-        return query('categories', { ...params, ...{ bookId: bookId, type: type }});
+      request={(params = {}, sort, _) => {
+        return query('categories', { ...params, ...{ bookId: bookId, type: type }, ...{ sort: tableSortFormat(sort) } });
       }}
     />
   );

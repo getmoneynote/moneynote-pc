@@ -15,6 +15,7 @@ export default {
   'null': '空',
   'yes': '是',
   'no': '否',
+  'sort': '排序',
   'convertCurrency': '折合',
 
   'label.name': '名称',

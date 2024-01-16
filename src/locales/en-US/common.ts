@@ -15,6 +15,7 @@ export default {
   'null': 'Null',
   'yes': 'Yes',
   'no': 'No',
+  'sort': 'Sort',
   'convertCurrency': 'Convert To',
 
   'label.name': 'Name',

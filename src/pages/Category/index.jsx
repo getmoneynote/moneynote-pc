@@ -17,8 +17,8 @@ export default () => {
   }, [initialState?.currentBook, searchParams]);
 
   const tabItems = [
-    { label: t('tab.expense.category'), key: 1, children: <CategoryTable type='EXPENSE' actionRef={expenseCategoryActionRef} /> },
-    { label: t('tab.income.category'), key: 2, children: <CategoryTable type='INCOME' actionRef={incomeCategoryActionRef} /> },
+    { label: t('tab.expense.category'), key: 1, children: <CategoryTable type={100} actionRef={expenseCategoryActionRef} /> },
+    { label: t('tab.income.category'), key: 2, children: <CategoryTable type={200} actionRef={incomeCategoryActionRef} /> },
     { label: t('tab.tag'), key: 3, children: <TagTable /> },
     { label: t('tab.payee'), key: 4, children: <PayeeTable /> },
   ];

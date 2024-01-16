@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ProFormText, ProFormTextArea, ProFormTreeSelect } from '@ant-design/pro-components';
+import { ProFormText, ProFormTextArea, ProFormTreeSelect, ProFormDigit } from '@ant-design/pro-components';
 import {useModel, useRequest} from '@umijs/max';
 import MyModalForm from '@/components/MyModalForm';
 import {create, update, queryAll} from '@/services/common';
@@ -52,10 +52,10 @@ export default ({ type, actionRef }) => {
 
   const title = () => {
     let title = translateAction(action);
-    if (type === 'EXPENSE') {
+    if (type === 100) {
       return title + t('tab.expense.category');
     }
-    if (type === 'INCOME') {
+    if (type === 200) {
       return title + t('tab.income.category');
     }
   }
@@ -79,6 +79,7 @@ export default ({ type, actionRef }) => {
       />
       <ProFormText name="name" label={t('label.name')} rules={requiredRules()} />
       <ProFormTextArea name="notes" label={t('label.notes')} />
+      <ProFormDigit name="sort" label={t('sort')} />
     </MyModalForm>
   );
 };

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import { useModel } from '@umijs/max';
-import {ProFormSwitch, ProFormText, ProFormTextArea} from '@ant-design/pro-components';
+import {ProFormDigit, ProFormSwitch, ProFormText, ProFormTextArea} from '@ant-design/pro-components';
 import { create, update } from '@/services/common';
 import {requiredRules} from "@/utils/rules";
 import {translateAction} from "@/utils/util";
@@ -48,6 +48,7 @@ export default () => {
       <ProFormSwitch name="canExpense" label={t('label.canExpense')} colProps={{ xl: 6 }} />
       <ProFormSwitch name="canIncome" label={t('label.canIncome')} colProps={{ xl: 6 }} />
       <ProFormTextArea name="notes" label={t('label.notes')} />
+      <ProFormDigit name="sort" label={t('sort')} />
     </MyModalForm>
   );
 }
