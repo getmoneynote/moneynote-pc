@@ -5,7 +5,12 @@ const prefix = 'accounts';
 export async function statistics(params) {
   return request(`${prefix}/statistics`, {
     method: 'GET',
-    params: params,
+    params: {
+      ...params,
+      ...{
+        enable: true
+      }
+    },
   });
 }
 

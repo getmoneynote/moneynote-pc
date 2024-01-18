@@ -3,6 +3,8 @@ export default {
   'add': '新增',
   'update': '修改',
   'delete': '删除',
+  'trash': '删除',
+  'trash.tooltip': '移入回收站',
   'recover': '恢复',
   'delete.permanent': '彻底删除',
   'reset': '重置',
@@ -25,8 +27,7 @@ export default {
   'label.enable': '是否可用',
   'label.notes': '备注',
 
-  'delete.confirm': '确定删除{name}吗？',
-  'delete.confirm2': '删除之后无法恢复，确定删除{name}吗？',
+  'delete.confirm': '删除之后无法恢复，确定删除此条目吗？',
   'click.edit': '点击修改',
 
   'today': '今天',
@@ -46,7 +47,5 @@ export default {
   'rules.required': '请输入内容',
 
   'placeholder.can.negative': '可输入负数',
-
-  'label.tab.deleted': '已删除',
 
 };

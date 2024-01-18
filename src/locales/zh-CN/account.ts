@@ -1,4 +1,5 @@
 export default {
+  'account': '账户',
   'account.type': '账户类型',
   'checking.account': '活期账户',
   'credit.account': '信用账户',

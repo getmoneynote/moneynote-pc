@@ -1,14 +1,15 @@
-import { Button, Modal } from 'antd';
+import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import { useIntl, useModel } from '@umijs/max';
-import { query, remove, toggle } from '@/services/common';
+import { useModel } from '@umijs/max';
+import { query1, toggle } from '@/services/common';
+import TrashButton from "@/components/TrashButton";
 import { toggleCanExpense, toggleCanIncome, toggleCanTransfer } from '@/services/tag';
 import { tableProp } from '@/utils/prop';
 import MySwitch from '@/components/MySwitch';
 import TagForm from './TagForm';
-import t from '@/utils/i18n';
 import {tableSortFormat} from "@/utils/util";
+import t from '@/utils/i18n';
 
 export default () => {
 
@@ -27,19 +28,9 @@ export default () => {
     tagActionRef.current?.reload();
   }
 
-  const intl = useIntl();
-  const deleteHandler = (record) => {
-    const messageConfirm = intl.formatMessage(
-      { id: 'delete.confirm' },
-      { name: record.name },
-    );
-    Modal.confirm({
-      title: messageConfirm,
-      onOk: async () => {
-        await remove('tags', record.id);
-        successHandler();
-      },
-    });
+  const trashHandler = async (record) => {
+    await toggle('tags', record.id);
+    successHandler();
   };
 
   const columns = [
@@ -117,25 +108,6 @@ export default () => {
       ),
     },
     {
-      title: t('label.enable'),
-      dataIndex: 'enable',
-      sorter: true,
-      valueType: 'select',
-      fieldProps: {
-        options: [
-          { label: t('yes'), value: true },
-          { label: t('no'), value: false },
-        ],
-      },
-      render: (_, record) => (
-        <MySwitch
-          value={record.enable}
-          request={() => toggle('tags', record.id)}
-          onSuccess={successHandler}
-        />
-      ),
-    },
-    {
       title: t('operation'),
       align: 'center',
       hideInSearch: true,
@@ -146,9 +118,7 @@ export default () => {
         <Button type="link" onClick={() => addHandler(record)}>
           {t('add')}
         </Button>,
-        <Button type="link" onClick={() => deleteHandler(record)}>
-          {t('delete')}
-        </Button>,
+        <TrashButton onClick={() => trashHandler(record)} />,
       ],
     },
   ];
@@ -164,7 +134,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={ (params = {}, sort, _) => query('tags', { ...params, ...{ bookId: bookId }, ...{ sort: tableSortFormat(sort) } }) }
+      request={ (params = {}, sort, _) => query1('tags', { ...params, ...{ bookId: bookId }, ...{ sort: tableSortFormat(sort) } }) }
       actionRef={tagActionRef}
     />
   );

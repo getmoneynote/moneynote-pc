@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useModel, useRequest} from '@umijs/max';
-import {ProFormText, ProFormTextArea, ProFormSelect, ProFormSwitch} from '@ant-design/pro-components';
+import {ProFormText, ProFormTextArea, ProFormSelect, ProFormSwitch, ProFormDigit} from '@ant-design/pro-components';
 import {create, queryAll, update} from '@/services/common';
 import {translateAccountType, translateAction} from '@/utils/util';
 import {selectSingleProp} from '@/utils/prop';
@@ -24,7 +24,10 @@ export default ({ type, actionRef }) => {
         canIncome: true,
         canTransferFrom: true,
         canTransferTo: true,
-        currencyCode: initialState.currentGroup.defaultCurrencyCode,
+        currencyCode: {
+          label: initialState.currentGroup.defaultCurrencyCode,
+          value: initialState.currentGroup.defaultCurrencyCode,
+        },
       }
       switch (type) {
         case 'CHECKING':
@@ -139,6 +142,7 @@ export default ({ type, actionRef }) => {
         <ProFormSwitch name="canTransferTo" label={t('account.label.canTransferTo')} colProps={{ xl: 6 }} />
         <ProFormSwitch name="include" label={t('account.label.include')} />
         <ProFormTextArea name="notes" label={t('label.notes')} />
+        <ProFormDigit name="sort" label={t('sort')} />
       </MyModalForm>
     </>
   );

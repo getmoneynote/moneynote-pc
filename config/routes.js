@@ -115,6 +115,12 @@ export default [
     icon: 'book',
   },
   {
+    path: '/recycle',
+    name: 'recycle',
+    component: './Recycle',
+    icon: 'delete',
+  },
+  {
     path: '/',
     redirect: '/statement',
   },

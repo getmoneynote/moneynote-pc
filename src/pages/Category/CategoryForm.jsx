@@ -16,7 +16,6 @@ export default ({ type, actionRef }) => {
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => queryAll('categories', {
     'bookId': bookId,
     'type': type,
-    'keeps': action === 1 ? [] : currentRow.pId,
   }), { manual: true });
   useEffect(() => {
     if (visible) {

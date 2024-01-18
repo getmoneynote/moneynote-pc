@@ -21,7 +21,6 @@ export default () => {
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
     'bookId': bookId,
-    'keeps': action === 1 ? [] : currentRow.pId,
   }), { manual: true });
   useEffect(() => {
     if (visible) {

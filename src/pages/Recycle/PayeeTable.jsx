@@ -1,34 +1,38 @@
-import { Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import {useRef} from "react";
+import {Button, Modal} from 'antd';
 import { ProTable } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
-import TrashButton from "@/components/TrashButton";
-import { query1, toggle } from '@/services/common';
+import {useIntl, useModel} from '@umijs/max';
+import {query2, remove, toggle} from '@/services/common';
 import { toggleCanExpense, toggleCanIncome } from '@/services/payee';
 import { tableProp } from '@/utils/prop';
 import MySwitch from '@/components/MySwitch';
 import {tableSortFormat} from "@/utils/util";
-import PayeeForm from './PayeeForm';
 import t from '@/utils/i18n';
 
 export default () => {
 
-  const { payeeActionRef, bookId } = useModel('Category.model');
-  const { show } = useModel('modal');
-
-  const addHandler = (record) => {
-    show(<PayeeForm />, 1, record);
-  };
-
-  const updateHandler = (record) => {
-    show(<PayeeForm />, 2, record);
-  };
+  const { initialState } = useModel('@@initialState');
+  const actionRef = useRef();
 
   function successHandler() {
-    payeeActionRef.current?.reload();
+    actionRef.current?.reload();
   }
 
-  const trashHandler = async (record) => {
+  const intl = useIntl();
+  const deleteHandler = (record) => {
+    const messageDeleteConfirm = intl.formatMessage(
+      { id: 'delete.confirm' },
+    );
+    Modal.confirm({
+      title: messageDeleteConfirm,
+      onOk: async () => {
+        await remove('payees', record.id);
+        successHandler();
+      },
+    });
+  };
+
+  const recoverHandler = async (record) => {
     await toggle('payees', record.id);
     successHandler();
   };
@@ -93,10 +97,12 @@ export default () => {
       align: 'center',
       hideInSearch: true,
       render: (_, record) => [
-        <Button type="link" onClick={() => updateHandler(record)}>
-          {t('update')}
+        <Button type="link" onClick={() => deleteHandler(record)}>
+          {t('delete.permanent')}
         </Button>,
-        <TrashButton onClick={() => trashHandler(record)} />,
+        <Button type="link" onClick={() => recoverHandler(record)}>
+          {t('recover')}
+        </Button>,
       ],
     },
   ];
@@ -104,15 +110,9 @@ export default () => {
   return (
     <ProTable
       {...tableProp}
-      toolBarRender={() => [
-        <Button type="primary" onClick={() => addHandler()}>
-          <PlusOutlined />
-          {t('add')}
-        </Button>,
-      ]}
+      actionRef={actionRef}
       columns={columns}
-      request={ (params = {}, sort, _) => query1('payees', { ...params, ...{ bookId: bookId }, ...{ sort: tableSortFormat(sort) } }) }
-      actionRef={payeeActionRef}
+      request={ (params = {}, sort, _) => query2('payees', { ...params, ...{ bookId: initialState.currentBook.id }, ...{ sort: tableSortFormat(sort) } }) }
     />
   );
 };

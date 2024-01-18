@@ -1,5 +1,4 @@
 import { request  } from "@umijs/max";
-// import {request} from "@/utils/http";
 
 export async function create(prefix, data) {
   return request(prefix, {
@@ -15,6 +14,32 @@ export async function query(prefix, params) {
   });
 }
 
+// 查询可用的
+export async function query1(prefix, params) {
+  return request(prefix, {
+    method: 'GET',
+    params: {
+      ...params,
+      ...{
+        enable: true
+      }
+    },
+  });
+}
+
+// 回收站查询
+export async function query2(prefix, params) {
+  return request(prefix, {
+    method: 'GET',
+    params: {
+      ...params,
+      ...{
+        enable: false
+      }
+    },
+  });
+}
+
 export async function update(prefix, id, data) {
   return request(`${prefix}/${id}`, {
     method: 'PUT',
@@ -22,23 +47,9 @@ export async function update(prefix, id, data) {
   });
 }
 
-// 彻底删除
 export async function remove(prefix, id) {
   return request(`${prefix}/${id}`, {
     method: 'DELETE',
-  });
-}
-
-// 软删除
-export async function removeSoft(prefix, id) {
-  return request(`${prefix}/${id}/delete`, {
-    method: 'PUT',
-  });
-}
-
-export async function recover(prefix, id) {
-  return request(`${prefix}/${id}/recover`, {
-    method: 'PUT',
   });
 }
 
@@ -60,3 +71,4 @@ export async function apiVersion() {
     method: 'GET',
   });
 }
+

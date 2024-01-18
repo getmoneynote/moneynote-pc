@@ -46,18 +46,15 @@ export default ({ initType = 'EXPENSE' }) => {
     'canExpense': tabKey === 'EXPENSE' ? true : null,
     'canIncome': tabKey === 'INCOME' ? true : null,
     'canTransferFrom': tabKey === 'TRANSFER' ? true : null,
-    // 'keep': action === 1 ? null : currentRow.account.id,
   }), { manual: true });
 
   const { data : toAccounts = [], loading : toAccountsLoading, run : loadToAccounts} = useRequest(() => queryAll('accounts', {
     'canTransferTo': tabKey === 'TRANSFER' ? true : null,
-    // 'keep': action === 1 ? null : currentRow.to.id,
   }), { manual: true });
 
   const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => queryAll('categories', {
     'bookId': currentBook.id,
     'type': tabKey,
-    // 'keeps': action === 1 ? [] : currentRow.categories.map(e => e.category.id),
   }), { manual: true });
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
@@ -65,7 +62,6 @@ export default ({ initType = 'EXPENSE' }) => {
     'canExpense': tabKey === 'EXPENSE' ? true : null,
     'canIncome': tabKey === 'INCOME' ? true : null,
     'canTransfer': tabKey === 'TRANSFER' ? true : null,
-    // 'keeps': action === 1 ? [] : currentRow.tags.map(e => e.tag.id),
   }), { manual: true });
 
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });

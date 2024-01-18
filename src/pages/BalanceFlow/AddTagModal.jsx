@@ -15,7 +15,6 @@ export default (props) => {
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
     'bookId': book.id,
-    'keeps': [],
   }), { manual: true });
 
   return (

@@ -3,6 +3,8 @@ export default {
   'add': 'New ',
   'update': 'Update ',
   'delete': 'Delete',
+  'trash': 'Trash',
+  'trash.tooltip': 'Move to Trash',
   'recover': 'Recover',
   'delete.permanent': 'Delete Permanently',
   'reset': 'Reset',
@@ -25,8 +27,7 @@ export default {
   'label.enable': 'Enable',
   'label.notes': 'Notes',
 
-  'delete.confirm': 'Are you sure to delete {name}?',
-  'delete.confirm2': 'This action can\'t redo，Are you sure to delete {name}?',
+  'delete.confirm': 'Are you sure you want to permanently delete this item?',
   'click.edit': 'Click to Edit',
 
   'today': 'Today',
@@ -46,7 +47,5 @@ export default {
   'rules.required': 'This field is required',
 
   'placeholder.can.negative': 'Negative numbers can be entered',
-
-  'label.tab.deleted': 'Deleted',
 
 };

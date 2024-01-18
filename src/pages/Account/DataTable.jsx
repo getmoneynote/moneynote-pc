@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import {Alert, Button, Form, Input, Modal, Space} from 'antd';
+import {Alert, Button, Form, Input, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import {useIntl, useModel, useRequest} from '@umijs/max';
-import {queryAll, query, toggle, removeSoft} from '@/services/common';
+import {useModel, useRequest} from '@umijs/max';
+import {queryAll, query1, toggle} from '@/services/common';
 import {
   statistics,
   toggleCanExpense,
@@ -14,6 +14,7 @@ import {
   refreshCurrency
 } from '@/services/account';
 import MySwitch from '@/components/MySwitch';
+import TrashButton from '@/components/TrashButton';
 import {selectSingleProp, tableProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
@@ -25,7 +26,6 @@ export default ({ type, actionRef }) => {
 
   const { show } = useModel('modal');
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
-  const intl = useIntl();
 
   const { data : currencyOptions = [], loading : currencyLoading, run : loadCurrencies} = useRequest(() => queryAll('currencies'), { manual: true });
 
@@ -35,18 +35,9 @@ export default ({ type, actionRef }) => {
     actionRef.current?.reload();
   }
 
-  const deleteHandler = async (record) => {
-    const messageConfirm = intl.formatMessage(
-      { id: 'delete.confirm' },
-      { name: record.name },
-    );
-    Modal.confirm({
-      title: messageConfirm,
-      onOk: async () => {
-        await removeSoft('accounts', record.id);
-        successHandler();
-      },
-    });
+  const trashHandler = async (record) => {
+    await toggle('accounts', record.id);
+    successHandler();
   };
 
   const addHandler = () => {
@@ -100,6 +91,12 @@ export default ({ type, actionRef }) => {
           onFocus: loadCurrencies,
           labelInValue: false,
         },
+      },
+      {
+        title: t('sort'),
+        dataIndex: 'sort',
+        sorter: true,
+        hideInSearch: true,
       },
     ];
 
@@ -248,25 +245,6 @@ export default ({ type, actionRef }) => {
         ),
       },
       {
-        title: t('label.enable'),
-        dataIndex: 'enable',
-        sorter: true,
-        valueType: 'select',
-        fieldProps: {
-          options: [
-            { label: t('yes'), value: true },
-            { label: t('no'), value: false },
-          ],
-        },
-        render: (_, record) => (
-          <MySwitch
-            value={record.enable}
-            request={() => toggle('accounts', record.id)}
-            onSuccess={successHandler}
-          />
-        ),
-      },
-      {
         title: t('operation'),
         align: 'center',
         hideInSearch: true,
@@ -274,9 +252,7 @@ export default ({ type, actionRef }) => {
           <Button type="link" onClick={() => updateHandler(record)}>
             {t('update')}
           </Button>,
-          <Button type="link" onClick={() => deleteHandler(record)}>
-            {t('delete')}
-          </Button>,
+          <TrashButton onClick={() => trashHandler(record)} />,
           <Button type="link" onClick={() => adjustHandler(record)}>
             {t('adjust.balance')}
           </Button>,
@@ -368,7 +344,7 @@ export default ({ type, actionRef }) => {
           statistics(params).then((res) => {
             setStatisticsData(res.data);
           });
-          return query('accounts', { ...params, ...{ sort: tableSortFormat(sort) } });
+          return query1('accounts', { ...params, ...{ sort: tableSortFormat(sort) } });
         }}
       />
     </>
