@@ -8,7 +8,6 @@ export default {
   'book.label.default.transfer.from.account': 'Default Transfer From Account',
   'book.label.default.transfer.to.account': 'Default Transfer To Account',
   'book.set.default': 'Set as Default',
-  'book.config': 'Config',
   'book.export': 'Export Transactions',
   'book.export.confirm': 'Are you sure? You can only export each book once every 24 hours.',
   'book.export.fail': 'Export failed, please try again later.',

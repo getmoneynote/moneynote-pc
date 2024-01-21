@@ -8,7 +8,6 @@ export default {
   'book.label.default.transfer.from.account': '默认转出账户',
   'book.label.default.transfer.to.account': '默认转入账户',
   'book.set.default': '设为默认',
-  'book.config': '配置',
   'book.export': '导出账单',
   'book.export.confirm': '每个账本24小时内只能操作1次导出，确认此操作吗？',
   'book.export.fail': '导出失败，请稍后重试。',

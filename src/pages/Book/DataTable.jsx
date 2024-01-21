@@ -10,8 +10,8 @@ import MySwitch from '@/components/MySwitch';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
 import CopyForm from "./CopyForm";
-import t from '@/utils/i18n';
 import {tableSortFormat} from "@/utils/util";
+import t from '@/utils/i18n';
 
 export default () => {
 
@@ -189,7 +189,7 @@ export default () => {
         <Button
           size="small"
           type="link"
-          disabled={record.default || !record.enable}
+          disabled={record.current || !record.enable}
           onClick={() => setDefaultHandler(record)}
         >
           {t('book.set.default')}
@@ -200,13 +200,6 @@ export default () => {
           onClick={() => updateHandler(record)}
         >
           {t('update')}
-        </Button>,
-        <Button
-          size="small"
-          type="link"
-          onClick={() => history.push(`/categories?bookId=${record.id}&bookName=${record.name}`, { book: record })}
-        >
-          {t('book.config')}
         </Button>,
         <Button
           size="small"
