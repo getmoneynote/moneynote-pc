@@ -51,10 +51,10 @@ export default ({ type, actionRef }) => {
 
   const title = () => {
     let title = translateAction(action);
-    if (type === 100) {
+    if (type === 'EXPENSE') {
       return title + t('tab.expense.category');
     }
-    if (type === 200) {
+    if (type === 'INCOME') {
       return title + t('tab.income.category');
     }
   }
