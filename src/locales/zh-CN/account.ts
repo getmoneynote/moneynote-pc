@@ -5,6 +5,7 @@ export default {
   'credit.account': '信用账户',
   'debt.account': '贷款账户',
   'asset.account': '资产账户',
+  'account.rate': '汇率',
 
   'account.label.balance': '当前余额',
   'account.label.currencyCode': '币种',

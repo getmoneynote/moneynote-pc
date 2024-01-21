@@ -5,6 +5,7 @@ export default {
   'credit.account': 'Credit Account',
   'debt.account': 'Debt Account',
   'asset.account': 'Asset Account',
+  'account.rate': 'Rate',
 
   'account.label.balance': 'Current Balance',
   'account.label.currencyCode': 'Currency',

@@ -4,7 +4,7 @@ import ModalContainer from "@/components/ModalContainer";
 import {apiVersion} from "@/services/common";
 import styles from './index.less';
 import t from '@/utils/i18n';
-
+import packageJson from '/package.json';
 
 export default () => {
 
@@ -26,7 +26,7 @@ export default () => {
         <Divider type="vertical" />
         {/*<a target="_blank" href="https://beian.miit.gov.cn/" rel="noreferrer">{t('footer.no')}</a>*/}
         {/*<Divider type="vertical" />*/}
-        v1.0.32
+        v{packageJson.version}
         <Divider type="vertical" />
         api-version: {version}
       </div>
