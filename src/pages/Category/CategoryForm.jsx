@@ -27,7 +27,7 @@ export default ({ type, actionRef }) => {
   useEffect(() => {
     if (action === 1) {
       setInitialValues({
-        pId: currentRow,
+        parent: currentRow,
       });
     } else if (action === 2) {
       setInitialValues({ ...currentRow });
@@ -41,7 +41,8 @@ export default ({ type, actionRef }) => {
   const requestHandler = async (values) => {
     let form = JSON.parse(JSON.stringify(values));
     // 修改是pid为数值
-    form.pId = values.pId?.value;
+    form.pId = values.parent?.value;
+    delete form.parent;
     if (action === 1) {
       await create('categories', {...form, ...{ bookId: bookId, type: type }});
     } else if (action === 2) {
@@ -68,7 +69,7 @@ export default ({ type, actionRef }) => {
       initialValues={initialValues}
     >
       <ProFormTreeSelect
-        name="pId"
+        name="parent"
         label={t('label.parent.category')}
         fieldProps={{
           ...treeSelectSingleProp,
