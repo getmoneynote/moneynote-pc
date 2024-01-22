@@ -20,6 +20,8 @@ export default () => {
 
   const { data : currencies = [], loading : currenciesLoading, run : loadCurrencies} = useRequest(() => queryAll('currencies'), { manual: true });
 
+  const { data : templates = [], loading: templatesLoading, run: loadTemplates } = useRequest(() => queryAll('book-templates'), { manual: true });
+
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (action === 1) {
@@ -39,7 +41,10 @@ export default () => {
 
   const requestHandler = async (values) => {
     if (action !== 2) {
-      await create('groups', values);
+      let form = JSON.parse(JSON.stringify(values));
+      // 修改是pid为数值
+      form.templateId = values.templateId?.value;
+      await create('groups', form);
     } else {
       await update('groups', currentRow.id, values);
     }
@@ -57,9 +62,8 @@ export default () => {
         <ProFormText name="name" label={t('label.name')} rules={requiredRules()} />
         <ProFormSelect
           name="defaultCurrencyCode"
-          label={t('book.label.default.currency')}
+          label={t('account.label.currencyCode')}
           rules={requiredRules()}
-          disabled={action === 2}
           fieldProps={{
             ...selectSingleProp,
             onFocus: loadCurrencies,
@@ -69,6 +73,21 @@ export default () => {
             labelInValue: false,
           }}
         />
+        {
+          action === 1 &&
+          <ProFormSelect
+            name="templateId"
+            label={t('menu.bookTemplates')}
+            rules={requiredRules()}
+            fieldProps={{
+              ...selectSingleProp,
+              onFocus: loadTemplates,
+              loading: templatesLoading,
+              options: templates,
+              allowClear: false,
+            }}
+          />
+        }
         <ProFormTextArea name="notes" label={t('label.notes')} />
       </MyModalForm>
     </>

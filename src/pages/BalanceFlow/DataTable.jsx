@@ -338,9 +338,9 @@ export default () => {
   }
 
   function extraRender() {
-    const total1 = `${t('flow.total.expense')}: ${statisticsData[0]}`;
-    const total2 = `${t('flow.total.income')}: ${statisticsData[1]}`;
-    const total3 = `${t('flow.total.surplus')}: ${statisticsData[2]}`;
+    const total1 = `${t('flow.total.expense')}(${initialState.currentBook.defaultCurrencyCode}): ${statisticsData[0]}`;
+    const total2 = `${t('flow.total.income')}(${initialState.currentBook.defaultCurrencyCode}): ${statisticsData[1]}`;
+    const total3 = `${t('flow.total.surplus')}(${initialState.currentBook.defaultCurrencyCode}): ${statisticsData[2]}`;
     const message = (
       <span>
         {total1}&nbsp;&nbsp;&nbsp;&nbsp;{total2}&nbsp;&nbsp;&nbsp;&nbsp;{total3}

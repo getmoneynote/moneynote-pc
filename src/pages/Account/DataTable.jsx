@@ -24,6 +24,7 @@ import t from '@/utils/i18n';
 
 export default ({ type, actionRef }) => {
 
+  const { initialState } = useModel('@@initialState');
   const { show } = useModel('modal');
   const [statisticsData, setStatisticsData] = useState([0, 0, 0]);
 
@@ -264,10 +265,10 @@ export default ({ type, actionRef }) => {
   }
 
   function extraRender() {
-    let message = `${t('total.balance')}: ${statisticsData[0]}`;
+    let message = `${t('total.balance')}(${initialState.currentGroup.defaultCurrencyCode}): ${statisticsData[0]}`;
     if (type === 'CREDIT' || type === 'DEBT') {
-      const totalLimit = `${t('total.limit')}: ${statisticsData[1]}`;
-      const totalRemain = `${t('total.remain.limit')}: ${statisticsData[2]}`;
+      const totalLimit = `${t('total.limit')}(${initialState.currentGroup.defaultCurrencyCode}): ${statisticsData[1]}`;
+      const totalRemain = `${t('total.remain.limit')}(${initialState.currentGroup.defaultCurrencyCode}): ${statisticsData[2]}`;
       message = (
         <span>
           {message}&nbsp;&nbsp;&nbsp;&nbsp;{totalLimit}&nbsp;&nbsp;&nbsp;&nbsp;{totalRemain}
@@ -277,7 +278,6 @@ export default ({ type, actionRef }) => {
     return <Alert type="info" showIcon message={message} />;
   }
 
-  const { initialState } = useModel('@@initialState');
   function expandedRowRender(record) {
     let notesItem = null;
     if (record.notes) {
