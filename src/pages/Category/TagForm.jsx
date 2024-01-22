@@ -66,7 +66,7 @@ export default () => {
       initialValues={initialValues}
     >
       <ProFormTreeSelect
-        name="pId"
+        name="parent"
         label={t('label.parent.tag')}
         fieldProps={{
           ...treeSelectSingleProp,
