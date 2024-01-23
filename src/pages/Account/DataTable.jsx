@@ -11,8 +11,8 @@ import {
   toggleCanTransferFrom,
   toggleCanTransferTo,
   toggleInclude,
-  refreshCurrency
 } from '@/services/account';
+import { refresh } from "@/services/currency";
 import MySwitch from '@/components/MySwitch';
 import TrashButton from '@/components/TrashButton';
 import {selectSingleProp, tableProp} from '@/utils/prop';
@@ -30,7 +30,7 @@ export default ({ type, actionRef }) => {
 
   const { data : currencyOptions = [], loading : currencyLoading, run : loadCurrencies} = useRequest(() => queryAll('currencies'), { manual: true });
 
-  const { loading : refreshCurrencyLoading, run : runRefreshCurrency} = useRequest(refreshCurrency, { manual: true });
+  const { loading : refreshCurrencyLoading, run : runRefreshCurrency} = useRequest(refresh, { manual: true });
 
   function successHandler() {
     actionRef.current?.reload();

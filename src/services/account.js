@@ -63,9 +63,3 @@ export async function overview() {
     method: 'GET',
   });
 }
-
-export async function refreshCurrency() {
-  return request('currencies/refresh', {
-    method: 'POST',
-  });
-}

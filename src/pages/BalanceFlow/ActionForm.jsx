@@ -1,6 +1,6 @@
 import {useEffect, useState, useMemo, useRef} from 'react';
-import {Col, Form, Row, Space, Tabs} from 'antd';
-import {MinusCircleOutlined, PlusCircleOutlined} from '@ant-design/icons';
+import {Button, Col, Form, Input, Row, Space, Tabs} from 'antd';
+import {MinusCircleOutlined, PlusCircleOutlined, CalculatorOutlined} from '@ant-design/icons';
 import {
   ProFormDateTimePicker,
   ProFormSelect,
@@ -13,6 +13,7 @@ import { useModel, useRequest } from '@umijs/max';
 import moment from 'moment';
 import { translateAction, translateFlowType } from '@/utils/util';
 import { queryAll, create, update } from '@/services/common';
+import {rate} from "@/services/currency";
 import { treeSelectSingleProp, treeSelectMultipleProp, selectSingleProp } from '@/utils/prop';
 import { requiredRules } from '@/utils/rules';
 import MyModalForm from '@/components/MyModalForm';
@@ -103,7 +104,6 @@ export default ({ initType = 'EXPENSE' }) => {
         categories: categories,
         confirm: true,
         include: true,
-        updateBalance: true,
         to: initToAccount,
       });
     } else {
@@ -133,7 +133,6 @@ export default ({ initType = 'EXPENSE' }) => {
           initialValues.convertedAmount = initialValues.convertedAmount * -1;
         }
       }
-      initialValues.updateBalance = true;
       setInitialValues(initialValues);
     }
   }, [action, tabKey, currentRow, currentBook, visible]);
@@ -157,6 +156,29 @@ export default ({ initType = 'EXPENSE' }) => {
       }
     }
   }, [tabKey, account?.currencyCode, toAccount?.currencyCode, currentBook.defaultCurrencyCode]);
+
+  // 需要转换汇率，请求rate接口
+  const { data : currencyRate, loading: currencyRateLoading, run: loadCurrencyRate } = useRequest(() => rate(account.currencyCode, currencyConvert.convertCode), { manual: true });
+  useEffect(() => {
+    if (currencyConvert.needConvert) {
+      loadCurrencyRate();
+    }
+  }, [tabKey, account?.currencyCode, toAccount?.currencyCode, currentBook.defaultCurrencyCode])
+  function rateClickHandler(field) {
+    let newValues = JSON.parse(JSON.stringify(formRef.current?.getFieldsValue()));
+    let newCategory = newValues.categories[field.key];
+    if (newCategory?.amount && Number(newCategory.amount) !== 0) {
+      newValues.categories[field.key] = {
+        ...newValues.categories[field.key],
+        amount: currencyRate * Number(newCategory.amount),
+        convertedAmount: currencyRate * Number(newCategory.amount),
+      }
+    }
+    formRef.current?.setFieldsValue({
+      categories: newValues.categories
+    });
+  }
+
 
   const successHandler = () => {
     actionRef.current?.reload();
@@ -318,12 +340,17 @@ export default ({ initType = 'EXPENSE' }) => {
                     </Col>
                     {currencyConvert.needConvert && (
                       <Col flex="210px">
-                        <ProFormText
+                        <Form.Item
                           name={[field.name, 'convertedAmount']}
                           label={convertCurrencyMsg + currencyConvert.convertCode}
                           rules={requiredRules()}
                           labelCol={{ span: 10 }}
-                        />
+                        >
+                          <Space.Compact>
+                            <Input />
+                            <Button onClick={() => rateClickHandler(field)} loading={currencyRateLoading} size="small" type="primary" icon={<CalculatorOutlined /> } />
+                          </Space.Compact>
+                        </Form.Item>
                       </Col>
                     )}
                     <Col flex="25px">
