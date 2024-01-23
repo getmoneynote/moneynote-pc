@@ -1,5 +1,5 @@
 import {useEffect, useState, useMemo, useRef} from 'react';
-import {Button, Col, Form, Input, Row, Space, Tabs} from 'antd';
+import {Button, Col, Form, Input, Row, Space, Tabs, Tooltip} from 'antd';
 import {MinusCircleOutlined, PlusCircleOutlined, CalculatorOutlined} from '@ant-design/icons';
 import {
   ProFormDateTimePicker,
@@ -170,8 +170,7 @@ export default ({ initType = 'EXPENSE' }) => {
     if (newCategory?.amount && Number(newCategory.amount) !== 0) {
       newValues.categories[field.key] = {
         ...newValues.categories[field.key],
-        amount: currencyRate * Number(newCategory.amount),
-        convertedAmount: currencyRate * Number(newCategory.amount),
+        convertedAmount: (currencyRate * Number(newCategory.amount)).toFixed(2),
       }
     }
     formRef.current?.setFieldsValue({
@@ -239,6 +238,7 @@ export default ({ initType = 'EXPENSE' }) => {
   const amountLabelMsg = t('flow.label.amount');
   const convertCurrencyMsg = t('convertCurrency');
   const placeholderRefundMsg = t('placeholder.negative.refund');
+  const currencyTooltipMsg = t('flow.currency.auto.tooltip', {rate: currencyRate})
   return (
     <>
       <MyModalForm
@@ -340,17 +340,19 @@ export default ({ initType = 'EXPENSE' }) => {
                     </Col>
                     {currencyConvert.needConvert && (
                       <Col flex="210px">
-                        <Form.Item
-                          name={[field.name, 'convertedAmount']}
-                          label={convertCurrencyMsg + currencyConvert.convertCode}
-                          rules={requiredRules()}
-                          labelCol={{ span: 10 }}
-                        >
-                          <Space.Compact>
-                            <Input />
+                        <Space.Compact>
+                          <Form.Item
+                            name={[field.name, 'convertedAmount']}
+                            label={convertCurrencyMsg + currencyConvert.convertCode}
+                            rules={requiredRules()}
+                            labelCol={{ span: 10 }}
+                          >
+                              <Input />
+                          </Form.Item>
+                          <Tooltip title={currencyTooltipMsg}>
                             <Button onClick={() => rateClickHandler(field)} loading={currencyRateLoading} size="small" type="primary" icon={<CalculatorOutlined /> } />
-                          </Space.Compact>
-                        </Form.Item>
+                          </Tooltip>
+                        </Space.Compact>
                       </Col>
                     )}
                     <Col flex="25px">
