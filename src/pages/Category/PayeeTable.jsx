@@ -13,7 +13,7 @@ import t from '@/utils/i18n';
 
 export default () => {
 
-  const { payeeActionRef, bookId } = useModel('Category.model');
+  const { payeeActionRef } = useModel('Category.model');
   const { show } = useModel('modal');
 
   const addHandler = (record) => {
@@ -111,7 +111,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={ (params = {}, sort, _) => query1('payees', { ...params, ...{ bookId: bookId }, ...{ sort: tableSortFormat(sort) } }) }
+      request={ (params = {}, sort, _) => query1('payees', { ...params, ...{ sort: tableSortFormat(sort) } }) }
       actionRef={payeeActionRef}
     />
   );

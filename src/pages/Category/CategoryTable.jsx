@@ -12,7 +12,6 @@ import t from '@/utils/i18n';
 export default ({ type, actionRef }) => {
 
   const { show } = useModel('modal');
-  const { bookId } = useModel('Category.model');
 
   const addHandler = (record) => {
     show(<CategoryForm type={type} actionRef={actionRef} />, 1, record)
@@ -83,7 +82,7 @@ export default ({ type, actionRef }) => {
       ]}
       columns={columns}
       request={(params = {}, sort, _) => {
-        return query1('categories', { ...params, ...{ bookId: bookId, type: type }, ...{ sort: tableSortFormat(sort) } });
+        return query1('categories', { ...params, ...{ type: type }, ...{ sort: tableSortFormat(sort) } });
       }}
     />
   );

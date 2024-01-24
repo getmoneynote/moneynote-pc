@@ -13,7 +13,7 @@ import t from '@/utils/i18n';
 
 export default () => {
 
-  const { tagActionRef, bookId } = useModel('Category.model');
+  const { tagActionRef } = useModel('Category.model');
   const { show } = useModel('modal');
 
   const addHandler = (record) => {
@@ -134,7 +134,7 @@ export default () => {
         </Button>,
       ]}
       columns={columns}
-      request={ (params = {}, sort, _) => query1('tags', { ...params, ...{ bookId: bookId }, ...{ sort: tableSortFormat(sort) } }) }
+      request={ (params = {}, sort, _) => query1('tags', { ...params, ...{ sort: tableSortFormat(sort) } }) }
       actionRef={tagActionRef}
     />
   );

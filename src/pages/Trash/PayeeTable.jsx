@@ -1,7 +1,7 @@
 import {useRef} from "react";
 import {Button, Modal} from 'antd';
 import { ProTable } from '@ant-design/pro-components';
-import {useIntl, useModel} from '@umijs/max';
+import {useIntl} from '@umijs/max';
 import {query2, remove, toggle} from '@/services/common';
 import { tableProp } from '@/utils/prop';
 import {tableSortFormat} from "@/utils/util";
@@ -9,7 +9,6 @@ import t from '@/utils/i18n';
 
 export default () => {
 
-  const { initialState } = useModel('@@initialState');
   const actionRef = useRef();
 
   function successHandler() {
@@ -72,7 +71,7 @@ export default () => {
       {...tableProp}
       actionRef={actionRef}
       columns={columns}
-      request={ (params = {}, sort, _) => query2('payees', { ...params, ...{ bookId: initialState.currentBook.id }, ...{ sort: tableSortFormat(sort) } }) }
+      request={ (params = {}, sort, _) => query2('payees', { ...params, ...{ sort: tableSortFormat(sort) } }) }
     />
   );
 };

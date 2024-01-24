@@ -7,7 +7,7 @@ import { tableProp } from '@/utils/prop';
 import {tableSortFormat} from "@/utils/util";
 import t from '@/utils/i18n';
 
-export default ({ type }) => {
+export default () => {
 
   const actionRef = useRef();
 
@@ -23,14 +23,14 @@ export default ({ type }) => {
     Modal.confirm({
       title: messageDeleteConfirm,
       onOk: async () => {
-        await remove('categories', record.id);
+        await remove('books', record.id);
         successHandler();
       },
     });
   };
 
   const recoverHandler = async (record) => {
-    await toggle('categories', record.id);
+    await toggle('books', record.id);
     successHandler();
   };
 
@@ -70,11 +70,8 @@ export default ({ type }) => {
     <ProTable
       {...tableProp}
       actionRef={actionRef}
-      pagination={false}
       columns={columns}
-      request={(params = {}, sort, _) => {
-        return query2('categories', { ...params, ...{ sort: tableSortFormat(sort) } });
-      }}
+      request={ (params = {}, sort, _) => query2('books', { ...params, ...{ sort: tableSortFormat(sort) } }) }
     />
   );
 };
