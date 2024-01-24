@@ -68,7 +68,9 @@ export default () => {
     const response = await initialState.fetchUserInfo();
     setInitialState(prevState => ({
       ...prevState,
+      currentUser: response.user,
       currentBook: response.book,
+      currentGroup: response.group,
     }));
     successHandler();
   };
@@ -85,6 +87,11 @@ export default () => {
     {
       title: t('group.label.role'),
       dataIndex: 'role',
+    },
+    {
+      title: t('group.label.default.book'),
+      dataIndex: 'defaultBook',
+      render: (_, record) => record.defaultBook?.name,
     },
     {
       title: t('label.notes'),

@@ -1,6 +1,7 @@
 export default {
   'group': 'Group',
   'group.label.role': 'Role',
+  'group.label.default.book': 'Default Book',
   'group.invite': 'Invite',
   'group.invite.user': 'Invite User',
   'group.agree': 'Agree',

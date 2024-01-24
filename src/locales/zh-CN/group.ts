@@ -1,6 +1,7 @@
 export default {
   'group': '分组',
   'group.label.role': '角色',
+  'group.label.default.book': '默认账本',
   'group.invite': '邀请',
   'group.invite.user': '邀请用户',
   'group.agree': '同意',

@@ -22,6 +22,8 @@ export default () => {
 
   const { data : templates = [], loading: templatesLoading, run: loadTemplates } = useRequest(() => queryAll('book-templates'), { manual: true });
 
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
+
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (action === 1) {
@@ -40,13 +42,15 @@ export default () => {
   };
 
   const requestHandler = async (values) => {
+    let form = JSON.parse(JSON.stringify(values));
     if (action !== 2) {
-      let form = JSON.parse(JSON.stringify(values));
       // 修改是pid为数值
       form.templateId = values.templateId?.value;
       await create('groups', form);
     } else {
-      await update('groups', currentRow.id, values);
+      form.defaultBookId = form.defaultBook.value;
+      delete form.defaultBook;
+      await update('groups', currentRow.id, form);
     }
   };
 
@@ -84,6 +88,21 @@ export default () => {
               onFocus: loadTemplates,
               loading: templatesLoading,
               options: templates,
+              allowClear: false,
+            }}
+          />
+        }
+        {
+          action === 2 &&
+          <ProFormSelect
+            name="defaultBook"
+            label={t('group.label.default.book')}
+            rules={requiredRules()}
+            fieldProps={{
+              ...selectSingleProp,
+              onFocus: loadBooks,
+              loading: booksLoading,
+              options: books,
               allowClear: false,
             }}
           />

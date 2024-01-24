@@ -1,17 +1,18 @@
 import {useState} from "react";
 import { Button, Modal, message } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
-import { useIntl, useModel, history } from '@umijs/max';
+import { useIntl, useModel } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import { query, remove, toggle } from '@/services/common';
-import { setDefaultBook } from '@/services/user';
 import { exportFlow } from '@/services/book';
+import { setDefaultBook } from '@/services/user';
 import MySwitch from '@/components/MySwitch';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
 import CopyForm from "./CopyForm";
 import {tableSortFormat} from "@/utils/util";
 import t from '@/utils/i18n';
+import TrashButton from "@/components/TrashButton";
 
 export default () => {
 
@@ -58,6 +59,11 @@ export default () => {
       ...prevState,
       currentBook: response.book,
     }));
+    successHandler();
+  };
+
+  const trashHandler = async (record) => {
+    await toggle('books', record.id);
     successHandler();
   };
 
@@ -209,14 +215,15 @@ export default () => {
         >
           {t('book.export')}
         </Button>,
-        <Button
-          size="small"
-          type="link"
-          disabled={initialState.currentBook?.id === record.id}
-          onClick={() => deleteHandler(record)}
-        >
-          {t('delete')}
-        </Button>,
+        // <Button
+        //   size="small"
+        //   type="link"
+        //   disabled={initialState.currentBook?.id === record.id}
+        //   onClick={() => deleteHandler(record)}
+        // >
+        //   {t('delete')}
+        // </Button>,
+        <TrashButton onClick={() => trashHandler(record)} />,
         <Button
           size="small"
           type="link"
