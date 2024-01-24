@@ -64,15 +64,15 @@ export default () => {
 
   const setDefaultHandler = async (record) => {
     await setDefaultGroup(record.id);
-    // window.location.reload();
-    const response = await initialState.fetchUserInfo();
-    setInitialState(prevState => ({
-      ...prevState,
-      currentUser: response.user,
-      currentBook: response.book,
-      currentGroup: response.group,
-    }));
-    successHandler();
+    window.location.reload();
+    // const response = await initialState.fetchUserInfo();
+    // setInitialState(prevState => ({
+    //   ...prevState,
+    //   currentUser: response.user,
+    //   currentBook: response.book,
+    //   currentGroup: response.group,
+    // }));
+    // successHandler();
   };
 
   const columns = [
@@ -124,7 +124,7 @@ export default () => {
             <Button
               size="small"
               type="link"
-              disabled={record.default || !record.enable}
+              disabled={record.current}
               onClick={() => setDefaultHandler(record)}
             >
               {t('book.set.default')}
@@ -132,6 +132,7 @@ export default () => {
             <Button
               size="small"
               type="link"
+              disabled={record.roleId !== 1}
               onClick={() => updateHandler(record)}
             >
               {t('update')}
@@ -139,7 +140,7 @@ export default () => {
             <Button
               size="small"
               type="link"
-              disabled={initialState.currentGroup?.id === record.id}
+              disabled={record.current}
               onClick={() => deleteHandler(record)}
             >
               {t('delete')}

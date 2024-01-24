@@ -43,6 +43,7 @@ export default () => {
         labelInValue={false}
         options={books}
         loading={booksLoading}
+        onFocus={loadBooks}
         allowClear={false}
         onChange={handleChange}
       />
