@@ -3,9 +3,7 @@ import {Button, Modal} from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import {useIntl, useModel} from '@umijs/max';
 import {query2, remove, toggle} from '@/services/common';
-import { toggleCanExpense, toggleCanIncome } from '@/services/payee';
 import { tableProp } from '@/utils/prop';
-import MySwitch from '@/components/MySwitch';
 import {tableSortFormat} from "@/utils/util";
 import t from '@/utils/i18n';
 
@@ -53,44 +51,6 @@ export default () => {
       dataIndex: 'sort',
       sorter: true,
       hideInSearch: true,
-    },
-    {
-      title: t('label.canExpense'),
-      dataIndex: 'canExpense',
-      sorter: true,
-      valueType: 'select',
-      fieldProps: {
-        options: [
-          { label: t('yes'), value: true },
-          { label: t('no'), value: false },
-        ],
-      },
-      render: (_, record) => (
-        <MySwitch
-          value={record.canExpense}
-          request={() => toggleCanExpense(record.id)}
-          onSuccess={successHandler}
-        />
-      ),
-    },
-    {
-      title: t('label.canIncome'),
-      dataIndex: 'canIncome',
-      sorter: true,
-      valueType: 'select',
-      fieldProps: {
-        options: [
-          { label: t('yes'), value: true },
-          { label: t('no'), value: false },
-        ],
-      },
-      render: (_, record) => (
-        <MySwitch
-          value={record.canIncome}
-          request={() => toggleCanIncome(record.id)}
-          onSuccess={successHandler}
-        />
-      ),
     },
     {
       title: t('operation'),

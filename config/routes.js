@@ -115,9 +115,9 @@ export default [
     icon: 'book',
   },
   {
-    path: '/recycle',
-    name: 'recycle',
-    component: './Recycle',
+    path: '/trash',
+    name: 'trash',
+    component: './Trash',
     icon: 'delete',
   },
   {

@@ -3,7 +3,7 @@ import { Button, Modal, message } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
-import { query, remove, toggle } from '@/services/common';
+import { query1, remove, toggle } from '@/services/common';
 import { exportFlow } from '@/services/book';
 import { setDefaultBook } from '@/services/user';
 import MySwitch from '@/components/MySwitch';
@@ -263,7 +263,7 @@ export default () => {
           expandedRowRender: (record) => expandedRowRender(record),
           rowExpandable: (record) => expandedRowRender(record),
         }}
-        request={ (params = {}, sort, _) => query('books', { ...params, ...{ sort: tableSortFormat(sort) } }) }
+        request={ (params = {}, sort, _) => query1('books', { ...params, ...{ sort: tableSortFormat(sort) } }) }
       />
     </>
   );

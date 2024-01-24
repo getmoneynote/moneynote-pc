@@ -14,6 +14,6 @@ export default {
   'menu.groups': 'Groups',
   'menu.bookTemplates': 'Book Templates',
   'menu.noteDays': 'Note Days',
-  'menu.recycle': 'Recycle Bin',
+  'menu.trash': 'Recycle Bin',
   'menu.login': 'Login Page',
 };
