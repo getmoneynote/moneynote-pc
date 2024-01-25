@@ -3,13 +3,13 @@ import {Button, Space, Select} from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import {useModel, useRequest} from "@umijs/max";
 import {getBooksSelect, setDefaultGroupAndBook} from "@/services/user";
-import ActionForm from "@/pages/Book/ActionForm";
+import ActionForm from "@/pages/BalanceFlow/ActionForm";
 import t from '@/utils/i18n';
 
 export default () => {
 
   const { show } = useModel('modal');
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { initialState } = useModel('@@initialState');
 
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => getBooksSelect(), { manual: false });
 
