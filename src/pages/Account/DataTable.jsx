@@ -151,6 +151,32 @@ export default ({ type, actionRef }) => {
 
     columns = columns.concat([
       {
+        title: t('operation'),
+        align: 'center',
+        hideInSearch: true,
+        render: (_, record) => [
+          <Button type="link" onClick={() => {
+            history.push(
+              {
+                pathname: '/statement',   //要跳转的路由
+              },
+              {
+                account: record
+              }
+            )
+          }}>
+            {t('account.audit')}
+          </Button>,
+          <Button type="link" onClick={() => updateHandler(record)}>
+            {t('update')}
+          </Button>,
+          <TrashButton onClick={() => trashHandler(record)} />,
+          <Button type="link" onClick={() => adjustHandler(record)}>
+            {t('adjust.balance')}
+          </Button>,
+        ],
+      },
+      {
         title: t('account.label.include'),
         dataIndex: 'include',
         sorter: true,
@@ -244,25 +270,6 @@ export default ({ type, actionRef }) => {
             onSuccess={successHandler}
           />
         ),
-      },
-      {
-        title: t('operation'),
-        align: 'center',
-        hideInSearch: true,
-        render: (_, record) => [
-          <Button type="link" onClick={() => {
-            history.push('/statement')
-          }}>
-            {t('account.audit')}
-          </Button>,
-          <Button type="link" onClick={() => updateHandler(record)}>
-            {t('update')}
-          </Button>,
-          <TrashButton onClick={() => trashHandler(record)} />,
-          <Button type="link" onClick={() => adjustHandler(record)}>
-            {t('adjust.balance')}
-          </Button>,
-        ],
       },
     ]);
 

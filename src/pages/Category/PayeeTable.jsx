@@ -51,6 +51,17 @@ export default () => {
       hideInSearch: true,
     },
     {
+      title: t('operation'),
+      align: 'center',
+      hideInSearch: true,
+      render: (_, record) => [
+        <Button type="link" onClick={() => updateHandler(record)}>
+          {t('update')}
+        </Button>,
+        <TrashButton onClick={() => trashHandler(record)} />,
+      ],
+    },
+    {
       title: t('label.canExpense'),
       dataIndex: 'canExpense',
       sorter: true,
@@ -87,17 +98,6 @@ export default () => {
           onSuccess={successHandler}
         />
       ),
-    },
-    {
-      title: t('operation'),
-      align: 'center',
-      hideInSearch: true,
-      render: (_, record) => [
-        <Button type="link" onClick={() => updateHandler(record)}>
-          {t('update')}
-        </Button>,
-        <TrashButton onClick={() => trashHandler(record)} />,
-      ],
     },
   ];
 

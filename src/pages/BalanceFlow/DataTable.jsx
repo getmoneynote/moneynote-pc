@@ -1,8 +1,8 @@
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { Alert, Button, Dropdown, Form, Input, Modal, Space, Tag, Tooltip } from 'antd';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import {useModel, useRequest} from '@umijs/max';
+import {useModel, useRequest, history} from '@umijs/max';
 import moment from 'moment';
 import { confirm, statistics } from '@/services/flow';
 import { queryAll, query, remove } from '@/services/common';
@@ -18,7 +18,24 @@ export default () => {
 
   const { initialState } = useModel('@@initialState');
   const { actionRef } = useModel('BalanceFlow.model');
+  const formRef = useRef();
   const { show } = useModel('modal');
+
+  // 对账点击过来的
+  useEffect(() => {
+    console.log(history.location.state?.account)
+    if (history.location.state?.account) {
+      loadAccounts();
+      formRef.current?.setFieldsValue({
+        account: history.location.state.account.value,
+        // 对账查所有账本
+        book: null,
+      });
+      formRef.current?.submit();
+      // 刷新清空
+      window.history.replaceState(null, '')
+    }
+  }, [history.location.state?.account]);
 
   const [currentBook, setCurrentBook] = useState(initialState.currentBook);
   const [type, setType] = useState();
@@ -108,6 +125,7 @@ export default () => {
       title: t('flow.label.book'),
       dataIndex: 'book',
       sorter: true,
+      order: 20,
       render: (_, record) => record.book.name,
       hideInTable: false,
       valueType: 'select',
@@ -131,6 +149,7 @@ export default () => {
       dataIndex: 'type',
       render: (_, record) => record.typeName,
       sorter: true,
+      order: 18,
       align: 'center',
       valueType: 'select',
       fieldProps: {
@@ -186,6 +205,7 @@ export default () => {
       title: t('flow.label.account'),
       dataIndex: 'account',
       sorter: true,
+      order: 19,
       render: (_, record) => record.accountName,
       valueType: 'select',
       fieldProps: {
@@ -264,26 +284,6 @@ export default () => {
       dataIndex: 'notes',
       hideInTable: true,
     },
-    {
-      title: t('operation'),
-      align: 'center',
-      width: 160,
-      hideInSearch: true,
-      render: (_, record) => [
-        <Button type="link" disabled={record.type === 'ADJUST'} onClick={() => show(<ActionForm />, 3, record)}>
-          {t('copy')}
-        </Button>,
-        <Dropdown
-          menu={{
-            items: moreOperationItems(record),
-          }}
-        >
-          <Button type="text">
-            {t('more')} <DownOutlined />
-          </Button>
-        </Dropdown>,
-      ],
-    },
   ];
 
   function tagColumnRender(record) {
@@ -355,6 +355,7 @@ export default () => {
         {...tableProp}
         defaultSize="small"
         actionRef={actionRef}
+        formRef={formRef}
         tableExtraRender={extraRender}
         toolBarRender={() => [
           <Button type="primary" onClick={() => show(<ActionForm />)}>
