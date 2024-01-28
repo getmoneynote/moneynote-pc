@@ -24,13 +24,13 @@ export default (props) => {
         <Button icon={<PlusOutlined />} type="link">{t('add')}</Button>
       }
       onOpenChange={open => {
-        if (open) {
+        setTimeout(() => {
           formRef.current?.resetFields();
           formRef.current?.setFieldsValue({
             canExpense: type === 'EXPENSE',
             canIncome: type === 'INCOME',
           });
-        }
+        }, 50)
       }}
       onFinish={async (values) => {
         await create('payees', {...values, ...{ bookId: book.id } });
