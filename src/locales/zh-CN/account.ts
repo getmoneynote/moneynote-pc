@@ -26,5 +26,6 @@ export default {
   'total.remain.limit': '总剩余额度',
 
   'account.refresh.currency': '刷新汇率',
+  'account.audit': '对账',
 
 }

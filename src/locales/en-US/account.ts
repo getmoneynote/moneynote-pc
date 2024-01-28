@@ -26,5 +26,6 @@ export default {
   'total.remain.limit': 'Total Remain Limit',
 
   'account.refresh.currency': 'Refresh Currency',
+  'account.audit': 'Audit',
 
 }

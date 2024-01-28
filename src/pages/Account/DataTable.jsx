@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {Alert, Button, Form, Input, Space} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
-import {useModel, useRequest} from '@umijs/max';
+import {useModel, useRequest, history} from '@umijs/max';
 import {queryAll, query1, toggle} from '@/services/common';
 import {
   statistics,
@@ -250,6 +250,11 @@ export default ({ type, actionRef }) => {
         align: 'center',
         hideInSearch: true,
         render: (_, record) => [
+          <Button type="link" onClick={() => {
+            history.push('/statement')
+          }}>
+            {t('account.audit')}
+          </Button>,
           <Button type="link" onClick={() => updateHandler(record)}>
             {t('update')}
           </Button>,
