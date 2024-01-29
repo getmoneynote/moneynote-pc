@@ -17,6 +17,8 @@ export default {
   'null': 'Null',
   'yes': 'Yes',
   'no': 'No',
+  'have': 'Have',
+  'none': 'None',
   'sort': 'Sort',
   'convertCurrency': 'Convert To',
 

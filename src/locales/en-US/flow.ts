@@ -32,5 +32,6 @@ export default {
   'flow.operation.file': 'File',
   'flow.file.size.error': 'Too Large',
   'flow.currency.auto.tooltip': 'Convert，Currency：{rate}',
+  'flow.search.has.file': 'Has File',
 
 }

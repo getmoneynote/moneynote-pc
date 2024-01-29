@@ -17,6 +17,8 @@ export default {
   'null': '空',
   'yes': '是',
   'no': '否',
+  'have': '有',
+  'none': '无',
   'sort': '排序',
   'convertCurrency': '折合',
 

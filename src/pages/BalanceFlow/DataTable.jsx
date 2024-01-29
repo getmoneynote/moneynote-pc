@@ -280,9 +280,39 @@ export default () => {
       },
     },
     {
+      title: t('flow.search.has.file'),
+      dataIndex: 'hasFile',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        true: { text: t('have'), status: 'Success' },
+        false: { text: t('none'), status: 'Error' },
+      },
+    },
+    {
       title: t('label.notes'),
       dataIndex: 'notes',
       hideInTable: true,
+    },
+    {
+      title: t('operation'),
+      align: 'center',
+      width: 160,
+      hideInSearch: true,
+      render: (_, record) => [
+        <Button type="link" disabled={record.type === 'ADJUST'} onClick={() => show(<ActionForm />, 3, record)}>
+          {t('copy')}
+        </Button>,
+        <Dropdown
+          menu={{
+            items: moreOperationItems(record),
+          }}
+        >
+          <Button type="text">
+            {t('more')} <DownOutlined />
+          </Button>
+        </Dropdown>,
+      ],
     },
   ];
 
