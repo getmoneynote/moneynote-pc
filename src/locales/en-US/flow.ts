@@ -33,5 +33,7 @@ export default {
   'flow.file.size.error': 'Too Large',
   'flow.currency.auto.tooltip': 'Convert，Currency：{rate}',
   'flow.search.has.file': 'Has File',
+  'flow.search.label.category.check.strictly': 'Category Checked With children',
+  'flow.search.label.tag.check.strictly': 'Tag Checked With children',
 
 }

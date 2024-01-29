@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
-import { Alert, Button, Dropdown, Form, Input, Modal, Space, Tag, Tooltip } from 'antd';
+import {Alert, Button, Dropdown, Form, Input, Modal, Space, Switch, Tag, Tooltip} from 'antd';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import {useModel, useRequest, history} from '@umijs/max';
@@ -20,6 +20,9 @@ export default () => {
   const { actionRef } = useModel('BalanceFlow.model');
   const formRef = useRef();
   const { show } = useModel('modal');
+
+  const [categoryTreeCheckStrictly, setCategoryTreeCheckStrictly] = useState(false);
+  const [tagTreeCheckStrictly, setTagTreeCheckStrictly] = useState(false);
 
   // 对账点击过来的
   useEffect(() => {
@@ -227,6 +230,7 @@ export default () => {
         onFocus: loadCategories,
         options: categories,
         loading: categoriesLoading,
+        treeCheckStrictly: categoryTreeCheckStrictly,
       },
     },
     {
@@ -240,6 +244,7 @@ export default () => {
         ...treeSelectMultipleProp,
         options: tags,
         loading: tagsLoading,
+        treeCheckStrictly: tagTreeCheckStrictly,
       },
     },
     {
@@ -381,6 +386,14 @@ export default () => {
 
   return (
     <>
+      <Form layout="inline" style={{background: "white", padding: "24px 24px 0 24px"}}>
+        <Form.Item label={t('flow.search.label.category.check.strictly')}>
+          <Switch checked={!categoryTreeCheckStrictly} onChange={(checked) => setCategoryTreeCheckStrictly(!checked)} />
+        </Form.Item>
+        <Form.Item label={t('flow.search.label.tag.check.strictly')}>
+          <Switch checked={!tagTreeCheckStrictly} onChange={(checked) => setTagTreeCheckStrictly(!checked)} />
+        </Form.Item>
+      </Form>
       <ProTable
         {...tableProp}
         defaultSize="small"

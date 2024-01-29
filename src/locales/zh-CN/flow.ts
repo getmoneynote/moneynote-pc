@@ -34,5 +34,7 @@ export default {
   'flow.file.size.error': '文件太大',
   'flow.currency.auto.tooltip': '自动折算，当前汇率：{rate}',
   'flow.search.has.file': '文件',
+  'flow.search.label.category.check.strictly': '分类自动选择子类',
+  'flow.search.label.tag.check.strictly': '标签自动选择子类',
 
 }
