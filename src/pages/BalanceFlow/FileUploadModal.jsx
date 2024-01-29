@@ -1,7 +1,6 @@
-import {useEffect, useState, useMemo, useRef} from 'react';
+import {useEffect, useState} from 'react';
 import {message, Modal, Upload} from "antd";
-import {useModel} from "@umijs/max";
-import {MinusCircleOutlined, PlusCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import {PlusOutlined} from '@ant-design/icons';
 import MyModalForm from '@/components/MyModalForm';
 import { remove } from '@/services/common';
 import { getFiles, buildUrl } from '@/services/flow';
