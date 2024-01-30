@@ -73,7 +73,7 @@ export default ({ type }) => {
       pagination={false}
       columns={columns}
       request={(params = {}, sort, _) => {
-        return query2('categories', { ...params, ...{ sort: tableSortFormat(sort) } });
+        return query2('categories', { ...params, ...{ type: type }, ...{ sort: tableSortFormat(sort) } });
       }}
     />
   );

@@ -150,7 +150,15 @@ export default () => {
     {
       title: t('flow.label.type'),
       dataIndex: 'type',
-      render: (_, record) => record.typeName,
+      render: (_, record) => {
+        if (record.type === 'EXPENSE') {
+          return <span style={{color: "green"}}>{record.typeName}</span>;
+        }
+        if (record.type === 'INCOME') {
+          return <span style={{color: "red"}}>{record.typeName}</span>;
+        }
+        return record.typeName;
+      },
       sorter: true,
       order: 18,
       align: 'center',
