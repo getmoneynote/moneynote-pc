@@ -1,6 +1,6 @@
 {
   "name": "moneywhere-user-fe",
-  "version": "1.0.49",
+  "version": "1.0.50",
   "private": true,
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
