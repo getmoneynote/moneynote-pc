@@ -9,6 +9,7 @@ export const tableProp = {
   },
   pagination: {
     defaultPageSize: 10,
+    showSizeChanger: true,
   },
   scroll: {
     x: 'max-content',
