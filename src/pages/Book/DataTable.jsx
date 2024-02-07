@@ -1,12 +1,11 @@
 import {useState} from "react";
 import { Button, Modal, message } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
+import {useIntl, useModel} from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import { query1, toggle } from '@/services/common';
 import { exportFlow } from '@/services/book';
 import { setDefaultBook } from '@/services/user';
-import MySwitch from '@/components/MySwitch';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
 import CopyForm from "./CopyForm";
@@ -32,26 +31,7 @@ export default () => {
     show(<ActionForm />, 2, record);
   };
 
-  // const intl = useIntl();
-  // const deleteHandler = (record) => {
-  //   const messageConfirm = intl.formatMessage(
-  //     { id: 'delete.confirm' },
-  //     { name: record.name },
-  //   );
-  //   Modal.confirm({
-  //     title: messageConfirm,
-  //     onOk: async () => {
-  //       const res = await remove('books', record.id);
-  //       if (res.success) {
-  //         //
-  //         if (record.current) {
-  //
-  //         }
-  //       }
-  //       successHandler();
-  //     },
-  //   });
-  // };
+  const intl = useIntl();
 
   const copyHandler = (record) => {
     show(<CopyForm />, 1, record);
