@@ -17,7 +17,6 @@ export default () => {
 
   const { actionRef } = useModel('Book.model');
   const { show } = useModel('modal');
-  const { initialState } = useModel('@@initialState');
 
   function successHandler() {
     actionRef.current?.reload();
