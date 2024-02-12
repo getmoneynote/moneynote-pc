@@ -8,11 +8,11 @@ import {
   QueryFilter,
 } from '@ant-design/pro-components';
 import {useModel, useRequest} from "@umijs/max";
-import moment from 'moment/moment';
 import {selectMultipleProp, selectSingleProp, treeSelectMultipleProp} from '@/utils/prop';
 import {datePickerRanges} from '@/utils/util';
 import { queryAll } from '@/services/common';
 import {requiredRules} from "@/utils/rules";
+import moment from 'moment/moment';
 import t from '@/utils/i18n';
 
 // type是支出和收入，cat是分类还是标签
@@ -38,6 +38,8 @@ export default ({ type, run }) => {
     'canIncome': type === 'INCOME' ? true : null,
   }), { manual: true });
 
+  const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => queryAll('accounts'), { manual: true });
+
   useEffect(() => {
     if (initialState.currentBook?.id) {
       formRef.current?.submit();
@@ -53,6 +55,8 @@ export default ({ type, run }) => {
           let form = JSON.parse(JSON.stringify(values));
           form.bookId = values.bookId.id;
           form.book = values.bookId.id;
+          if (values.accountId) form.accountId = values.accountId.id;
+          if (values.accountId) form.account = values.accountId.id;
           if (values.payees) form.payees = values.payees.map((i) => i?.id || i);
           if (values.categories) form.categories = values.categories.map((i) => i?.value || i);
           if (values.tags) form.tags = values.tags.map((i) => i?.value || i);
@@ -119,6 +123,16 @@ export default ({ type, run }) => {
             options: tags,
             onFocus: loadTags,
             // treeCheckStrictly: cat === 2,
+          }}
+        />
+        <ProFormSelect
+          name="accountId"
+          label={t('flow.label.account')}
+          fieldProps={{
+            ...selectSingleProp,
+            options: accounts,
+            loading: accountsLoading,
+            onFocus: loadAccounts,
           }}
         />
       </QueryFilter>
