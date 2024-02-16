@@ -23,9 +23,11 @@ export async function exportFlow(id) {
   });
 }
 
-export async function queryBookTemplates(params) {
+export async function queryBookTemplates(lang) {
   return request('book-templates', {
     method: 'GET',
-    params: params,
+    params: {
+      lang: lang
+    },
   });
 }

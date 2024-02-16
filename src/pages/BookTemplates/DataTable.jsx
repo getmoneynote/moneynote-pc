@@ -1,6 +1,6 @@
 import {Button} from "antd";
 import { ProTable } from '@ant-design/pro-components';
-import { useModel } from "@umijs/max";
+import { useModel, getLocale } from "@umijs/max";
 import { queryBookTemplates } from '@/services/book';
 import { tableProp } from '@/utils/prop';
 import CopyForm from './CopyForm';
@@ -52,7 +52,7 @@ export default () => {
       pagination={false}
       search={false}
       columns={columns}
-      request={ queryBookTemplates }
+      request={ () => queryBookTemplates(getLocale()) }
     />
   );
 };
