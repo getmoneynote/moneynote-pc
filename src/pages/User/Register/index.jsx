@@ -21,8 +21,8 @@ export default () => {
       <div className={styles.content}>
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
-          title="九快记账"
-          subTitle="记账是一种生活态度"
+          title="MoneyNote"
+          subTitle="  "
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
