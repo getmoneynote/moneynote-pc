@@ -8,7 +8,7 @@ export default {
   fixSiderbar: true,
   siderWidth: 180,
   colorWeak: false,
-  title: '九快记账',
+  title: 'MoneyNote',
   pwa: false,
   logo: '/logo.svg',
   iconfontUrl: '',

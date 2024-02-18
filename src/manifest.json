@@ -1,6 +1,6 @@
 {
-  "name": "九快记账",
-  "short_name": "九快记账",
+  "name": "MoneyNote",
+  "short_name": "MoneyNote",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",

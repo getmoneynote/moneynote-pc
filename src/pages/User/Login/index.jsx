@@ -1,7 +1,6 @@
 import {useRef} from "react";
-import {Button} from "antd";
 import {SelectLang, Helmet} from '@umijs/max';
-import {LockOutlined, UserOutlined, WechatOutlined} from '@ant-design/icons';
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {LoginForm, ProFormCheckbox, ProFormText} from '@ant-design/pro-components';
 import Settings from '../../../../config/defaultSettings';
 import { login, wxLoginUrl } from '@/services/user';
@@ -78,8 +77,8 @@ export default () => {
         <LoginForm
           formRef={formRef}
           logo={<img alt="logo" src="/logo.svg" />}
-          title="九快记账"
-          subTitle="记账是一种生活态度"
+          title="MoneyNote"
+          subTitle=" "
           initialValues={{
             remember: false,
           }}
