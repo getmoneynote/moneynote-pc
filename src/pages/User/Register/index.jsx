@@ -15,7 +15,7 @@ export default () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.lang} data-lang>
+      <div className={styles.lang}>
         {SelectLang && <SelectLang />}
       </div>
       <div className={styles.content}>
@@ -36,6 +36,7 @@ export default () => {
             name="username"
             fieldProps={{
               size: 'large',
+              autoComplete: 'off',
               prefix: <UserOutlined className={styles.prefixIcon} />,
             }}
             rules={requiredRules()}
@@ -45,6 +46,7 @@ export default () => {
             name="password"
             fieldProps={{
               size: 'large',
+              autoComplete: 'new-password',
               prefix: <LockOutlined className={styles.prefixIcon} />,
             }}
             rules={requiredRules()}
