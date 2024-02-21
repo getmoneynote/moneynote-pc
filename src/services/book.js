@@ -31,3 +31,19 @@ export async function queryBookTemplates(lang) {
     },
   });
 }
+
+export async function allBookTemplates(lang) {
+  return request('book-templates/all', {
+    method: 'GET',
+    params: {
+      lang: lang
+    },
+  });
+}
+
+
+
+
+
+
+

@@ -13,4 +13,5 @@ export default {
   'has.account.login': '已有账户，登录',
   'register.success': '注册成功！',
   'wechat.login': '微信扫码登录',
+  'register.template': '账本模板',
 };

@@ -12,4 +12,5 @@ export default {
   'register.account': 'Register',
   'has.account.login': 'Has account, Login',
   'wechat.login': 'Wechat Login',
+  'register.template': 'Book Template',
 };
