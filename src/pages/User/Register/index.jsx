@@ -1,7 +1,7 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import { LockOutlined, UserOutlined, VerifiedOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText, ProFormSelect } from '@ant-design/pro-components';
-import {SelectLang, useRequest, getLocale} from '@umijs/max';
+import {SelectLang, useRequest} from '@umijs/max';
 import {register} from '@/services/user';
 import { allBookTemplates } from "@/services/book";
 import { requiredRules } from '@/utils/rules';
@@ -21,9 +21,7 @@ export default () => {
     await register(form);
   };
 
-  const { data : bookTemplates = [], loading : bookTemplatesLoading} = useRequest(() => allBookTemplates(getLocale()), { manual: false });
-
-  const [defaultTemplate, setDefaultTemplate] = useState();
+  const { data : bookTemplates = [], loading : bookTemplatesLoading} = useRequest(allBookTemplates, { manual: false });
 
   useEffect(() => {
     formRef.current?.setFieldsValue({
