@@ -2,7 +2,7 @@ export default {
   'login.remember': '30天内自动登录',
   'change.password': '修改密码',
   'logout': '退出登录',
-  'old.password': '原始密码',
+  'old.password': '原密码',
   'new.password': '新密码',
   'bind.user': '绑定账号',
 
