@@ -1,5 +1,5 @@
 import { Avatar, Spin } from 'antd';
-import {LockOutlined, LogoutOutlined, UserAddOutlined} from '@ant-design/icons';
+import {LockOutlined, LogoutOutlined} from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import HeaderDropdown from '../HeaderDropdown';
 import ChangePasswordForm from './ChangePasswordForm';
