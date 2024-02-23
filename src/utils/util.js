@@ -132,3 +132,29 @@ export function datePickerRanges() {
     [t('last.year')]: [moment().add(-1, 'years').startOf('year'), moment().add(-1, 'years').endOf('year')],
   }
 }
+
+export function timeZoneOffset() {
+  return (new Date().getTimezoneOffset()/60) * (-1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,8 +16,8 @@ export async function copy(data) {
   });
 }
 
-export async function exportFlow(id) {
-  return request(`${prefix}/${id}/export`, {
+export async function exportFlow(id, offset) {
+  return request(`${prefix}/${id}/export?timeZoneOffset=${offset}`, {
     method: 'GET',
     responseType: 'blob',
   });

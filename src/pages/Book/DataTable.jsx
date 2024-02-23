@@ -9,7 +9,7 @@ import { setDefaultBook } from '@/services/user';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
 import CopyForm from "./CopyForm";
-import {tableSortFormat} from "@/utils/util";
+import {tableSortFormat, timeZoneOffset} from "@/utils/util";
 import TrashButton from "@/components/TrashButton";
 import t from '@/utils/i18n';
 
@@ -57,7 +57,7 @@ export default () => {
       onOk: async () => {
         setExportingBook(record);
         try {
-          const response = await exportFlow(record.id);
+          const response = await exportFlow(record.id, timeZoneOffset());
           if (response.type === 'application/json') {
             let reader = new FileReader()
             reader.onload = e => {
