@@ -1,5 +1,5 @@
-# 九快记账网页端
+# Money Note
 
-本项目是九快记账网页端源代码。
+Money Note Web UI for PC browser.
 
 
