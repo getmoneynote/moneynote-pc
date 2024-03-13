@@ -334,7 +334,7 @@ export default ({ initType = 'EXPENSE' }) => {
                         name={[field.name, 'amount']}
                         label={amountLabelMsg}
                         rules={requiredRules()}
-                        labelCol={{ span: 7 }}
+                        labelCol={{ span: 9 }}
                         placeholder={placeholderRefundMsg}
                       />
                     </Col>

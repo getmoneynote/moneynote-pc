@@ -20,7 +20,7 @@ export default {
   'have': 'Have',
   'none': 'None',
   'sort': 'Sort',
-  'convertCurrency': 'Convert To',
+  'convertCurrency': 'To ',
 
   'label.name': 'Name',
   'label.canExpense': 'Can Expense',
