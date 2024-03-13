@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DatePicker, Radio, Space } from 'antd';
-import { radioValueToTimeRange } from '@/utils/util';
+import {dateFormatStr2, radioValueToTimeRange} from '@/utils/util';
 import t from '@/utils/i18n';
 
 export default (props) => {
@@ -31,7 +31,7 @@ export default (props) => {
         allowClear={false}
         value={rangePickerValue}
         showTime={false}
-        format="YYYY-MM-DD"
+        format={dateFormatStr2()}
       />
     </Space>
   );

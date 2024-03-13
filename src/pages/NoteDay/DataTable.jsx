@@ -8,6 +8,7 @@ import { recall, runOnce } from '@/services/note-day';
 import { tableProp } from '@/utils/prop';
 import ActionForm from './ActionForm';
 import t from '@/utils/i18n';
+import {dateFormatStr2} from "@/utils/util";
 
 export default () => {
 
@@ -61,13 +62,13 @@ export default () => {
       dataIndex: 'startDate',
       sorter: true,
       align: 'center',
-      render: (value) => moment(value).format('YYYY-MM-DD'),
+      render: (value) => moment(value).format(dateFormatStr2()),
     },
     {
       title: t('note.day.label.end.date'),
       dataIndex: 'endDate',
       align: 'center',
-      render: (value) => moment(value).format('YYYY-MM-DD'),
+      render: (value) => moment(value).format(dateFormatStr2()),
     },
     {
       title: t('note.day.label.repeatDescription'),
@@ -77,7 +78,7 @@ export default () => {
       title: t('note.day.label.nextDate'),
       dataIndex: 'nextDate',
       sorter: true,
-      render: (value) => moment(value).format('YYYY-MM-DD'),
+      render: (value) => moment(value).format(dateFormatStr2()),
     },
     {
       title: t('note.day.label.countDown'),

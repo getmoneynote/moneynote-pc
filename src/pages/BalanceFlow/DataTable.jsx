@@ -7,7 +7,7 @@ import moment from 'moment';
 import { confirm, statistics } from '@/services/flow';
 import { queryAll, query, remove } from '@/services/common';
 import {selectMultipleProp, selectSingleProp, tableProp, treeSelectMultipleProp} from '@/utils/prop';
-import {datePickerRanges, tableSortFormat} from '@/utils/util';
+import {dateFormatStr1, datePickerRanges, tableSortFormat} from '@/utils/util';
 import ActionForm from './ActionForm';
 import AdjustForm from '../Account/AdjustForm';
 import TagForm from './TagForm';
@@ -199,7 +199,7 @@ export default () => {
       dataIndex: 'createTime',
       sorter: true,
       align: 'center',
-      render: (_, record) => moment(record.createTime).format('YYYY-MM-DD HH:mm'),
+      render: (_, record) => moment(record.createTime).format(dateFormatStr1()),
       valueType: 'dateRange',
       search: {
         transform: (value) => ({

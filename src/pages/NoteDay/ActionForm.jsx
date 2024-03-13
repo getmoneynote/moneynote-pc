@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import { create, update } from '@/services/common';
 import { requiredRules } from '@/utils/rules';
-import { translateAction } from "@/utils/util";
+import {dateFormatStr2, translateAction} from "@/utils/util";
 import MyModalForm from '@/components/MyModalForm';
 import t from '@/utils/i18n';
 
@@ -86,7 +86,7 @@ export default () => {
             name="startDate"
             label={t('note.day.label.start.date')}
             rules={requiredRules()}
-            format="YYYY-MM-DD"
+            format={dateFormatStr2()}
             allowClear={false}
           />
         )}
@@ -101,7 +101,7 @@ export default () => {
                 endDate: moment(value[1]).endOf('day').valueOf(),
               })}
               fieldProps={{
-                format: 'YYYY-MM-DD',
+                format: dateFormatStr2(),
                 allowClear: false,
               }}
             />

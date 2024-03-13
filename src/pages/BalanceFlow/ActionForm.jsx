@@ -11,7 +11,7 @@ import {
 } from '@ant-design/pro-components';
 import { useModel, useRequest } from '@umijs/max';
 import moment from 'moment';
-import { translateAction, translateFlowType } from '@/utils/util';
+import {dateFormatStr1, translateAction, translateFlowType} from '@/utils/util';
 import { queryAll, create, update } from '@/services/common';
 import {rate} from "@/services/currency";
 import { treeSelectSingleProp, treeSelectMultipleProp, selectSingleProp } from '@/utils/prop';
@@ -268,7 +268,7 @@ export default ({ initType = 'EXPENSE' }) => {
         <ProFormText name="title" label={t('flow.label.title')} />
         <ProFormDateTimePicker
           name="createTime"
-          format="YYYY-MM-DD HH:mm"
+          format={dateFormatStr1()}
           label={t('flow.label.createTime')}
           allowClear={false}
           rules={requiredRules()}

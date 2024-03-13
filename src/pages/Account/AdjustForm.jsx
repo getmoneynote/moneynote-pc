@@ -8,6 +8,7 @@ import {amountRequiredRules, requiredRules} from "@/utils/rules";
 import {selectSingleProp} from "@/utils/prop";
 import {queryAll} from "@/services/common";
 import t from '@/utils/i18n';
+import {dateFormatStr1} from "@/utils/util";
 
 
 export default ({ actionRef }) => {
@@ -69,7 +70,7 @@ export default ({ actionRef }) => {
           }}
         />
         <ProFormText name="title" label={t('flow.label.title')} />
-        <ProFormDateTimePicker name="createTime" format="YYYY-MM-DD HH:mm" label={t('flow.label.createTime')} allowClear={false} rules={requiredRules()} />
+        <ProFormDateTimePicker name="createTime" format={dateFormatStr1()} label={t('flow.label.createTime')} allowClear={false} rules={requiredRules()} />
         {
           action === 1 &&
           <ProFormText name="balance" label={t('account.label.balance')} rules={amountRequiredRules()} />
