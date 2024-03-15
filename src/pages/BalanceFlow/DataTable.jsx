@@ -52,15 +52,10 @@ export default () => {
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
     'bookId': currentBook?.id,
-    'canExpense': type === 'EXPENSE' ? true : null,
-    'canIncome': type === 'INCOME' ? true : null,
-    'canTransfer': type === 'TRANSFER' ? true : null,
   }), { manual: true });
 
   const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {
     'bookId': currentBook?.id,
-    'canExpense': type === 'EXPENSE' ? true : null,
-    'canIncome': type === 'INCOME' ? true : null,
   }), { manual: true });
 
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
