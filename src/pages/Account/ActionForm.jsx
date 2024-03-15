@@ -29,32 +29,7 @@ export default ({ type, actionRef }) => {
           value: initialState.currentGroup.defaultCurrencyCode,
         },
       }
-      switch (type) {
-        case 'CHECKING':
-          setInitialValues(initialValues);
-          break;
-        case 'CREDIT':
-          setInitialValues({
-            ...initialValues,
-            canIncome: false,
-            canTransferFrom: false,
-          });
-          break;
-        case 'ASSET':
-          setInitialValues({
-            ...initialValues,
-            canExpense: false,
-            canIncome: false,
-          });
-          break;
-        case 'DEBT':
-          setInitialValues({
-            ...initialValues,
-            canExpense: false,
-            canIncome: false,
-          });
-          break;
-      }
+      setInitialValues(initialValues);
     } else if (action === 2) {
       // 数字类型的校验存在问题, antd bug
       setInitialValues({...currentRow, balance: currentRow.balance.toString()});
