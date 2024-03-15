@@ -7,7 +7,7 @@ export default {
 
   'flow.label.book': '所属账本',
   'flow.label.title': '标题',
-  'flow.label.type': '交易类型',
+  'flow.label.type': '账单类型',
   'flow.label.amount': '金额',
   'flow.label.createTime': '时间',
   'flow.label.account': '账户',

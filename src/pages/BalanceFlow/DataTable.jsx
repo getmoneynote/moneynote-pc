@@ -160,7 +160,7 @@ export default () => {
         return record.typeName;
       },
       sorter: true,
-      order: 18,
+      order: 20,
       align: 'center',
       valueType: 'select',
       fieldProps: {
