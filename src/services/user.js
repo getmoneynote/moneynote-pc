@@ -53,11 +53,8 @@ export async function setDefaultGroup(id) {
 }
 
 export async function setDefaultGroupAndBook(id) {
-  return request('setDefaultGroupAndBook', {
+  return request(`setDefaultGroupAndBook/${id}`, {
     method: 'PATCH',
-    params: {
-      id: id
-    }
   });
 }
 
