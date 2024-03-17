@@ -2,16 +2,18 @@ import {useEffect, useState} from "react";
 import {Button, Space, Select} from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import {useModel, useRequest} from "@umijs/max";
-import {getBooksSelect, setDefaultGroupAndBook} from "@/services/user";
+import {setDefaultGroupAndBook} from "@/services/user";
+import {queryAll} from "@/services/common";
 import ActionForm from "@/pages/BalanceFlow/ActionForm";
 import t from '@/utils/i18n';
+
 
 export default () => {
 
   const { show } = useModel('modal');
   const { initialState } = useModel('@@initialState');
 
-  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => getBooksSelect(), { manual: false });
+  const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('bookSelect'), { manual: false });
 
   const [bookValue, setBookValue] = useState();
   useEffect(() => {
@@ -19,11 +21,6 @@ export default () => {
       setBookValue(initialState.currentGroup.id + '-' + initialState.currentBook.id)
     }
   }, [books])
-  useEffect(() => {
-    if(books && books.length > 0) {
-      setBookValue(initialState.currentGroup.id + '-' + initialState.currentBook.id)
-    }
-  }, [bookValue])
 
   const handleChange = async (value) => {
     const res = await setDefaultGroupAndBook(value);

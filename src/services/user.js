@@ -52,12 +52,6 @@ export async function setDefaultGroup(id) {
   });
 }
 
-export async function getBooksSelect() {
-  return request('books/select', {
-    method: 'GET',
-  });
-}
-
 export async function setDefaultGroupAndBook(id) {
   return request('setDefaultGroupAndBook', {
     method: 'PATCH',
