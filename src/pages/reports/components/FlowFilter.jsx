@@ -53,11 +53,11 @@ export default ({ type, run }) => {
         defaultCollapsed={false}
         onFinish={(values) => {
           let form = JSON.parse(JSON.stringify(values));
-          form.book = values.book.value;
-          form.account = values.account.value;
-          if (values.payees) form.payees = values.payees.map((i) => i?.id || i);
-          if (values.categories) form.categories = values.categories.map((i) => i?.value || i);
-          if (values.tags) form.tags = values.tags.map((i) => i?.value || i);
+          form.book = values.book?.value;
+          form.account = values.account?.value;
+          if (values.payees && values.payees.length > 0) form.payees = values.payees.map((i) => i?.id || i);
+          if (values.categories && values.categories.length > 0) form.categories = values.categories.map((i) => i?.value || i);
+          if (values.tags && values.tags.length > 0) form.tags = values.tags.map((i) => i?.value || i);
           run(form);
         }}
       >
