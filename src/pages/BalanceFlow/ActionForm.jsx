@@ -69,7 +69,6 @@ export default ({ initType = 'EXPENSE' }) => {
 
   const [account, setAccount] = useState();
   const [toAccount, setToAccount] = useState();
-  const [confirm, setConfirm] = useState(true);
   const [initialValues, setInitialValues] = useState({});
   useEffect(() => {
     if (!visible) return;
@@ -96,7 +95,6 @@ export default ({ initType = 'EXPENSE' }) => {
         setAccount(currentBook.defaultTransferFromAccount);
         setToAccount(currentBook.defaultTransferToAccount);
       }
-      setConfirm(true);
       setInitialValues({
         book: currentBook,
         createTime: moment(),
@@ -109,7 +107,6 @@ export default ({ initType = 'EXPENSE' }) => {
     } else {
       setAccount(currentRow.account);
       setToAccount(currentRow.to);
-      setConfirm(currentRow.confirm);
       // 一定要深度复制
       let initialValues = JSON.parse(JSON.stringify(currentRow));
       initialValues.tags = initialValues.tags?.map((item) => item.tag);
@@ -118,7 +115,6 @@ export default ({ initType = 'EXPENSE' }) => {
         initialValues.createTime = moment();
         initialValues.confirm = true;
         initialValues.include = true;
-        setConfirm(true);
       }
       if (action === 4) {
         if (initialValues.type === 'EXPENSE' || initialValues.type === 'INCOME') {
@@ -400,9 +396,6 @@ export default ({ initType = 'EXPENSE' }) => {
           name="confirm"
           label={t('flow.label.confirm')}
           colProps={{ xl: 6 }}
-          fieldProps={{
-            onChange: checked => setConfirm(checked)
-          }}
         />
         <ProFormSwitch name="include" label={t('flow.label.include')} colProps={{ xl: 6 }} />
         <ProFormTextArea name="notes" label={t('label.notes')} />

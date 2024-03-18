@@ -39,8 +39,7 @@ export default ({ actionRef }) => {
 
   const requestHandler = async (values) => {
     let form = JSON.parse(JSON.stringify(values));
-    form.bookId = form.book.value;
-    delete form.book;
+    form.book = form.book.value;
     if (action === 1) {
       await createAdjust(currentRow.id, form);
     } else if (action === 2) {
