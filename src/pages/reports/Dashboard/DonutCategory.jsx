@@ -18,7 +18,7 @@ export default ({ request, title }) => {
   useEffect(() => {
     if (initialState.currentBook?.id) {
       const rangeValues = radioValueToTimeRange(timeRange);
-      run({ bookId: initialState.currentBook.id, minTime: rangeValues[0].valueOf(), maxTime: rangeValues[1].valueOf() });
+      run({ book: initialState.currentBook.id, minTime: rangeValues[0].valueOf(), maxTime: rangeValues[1].valueOf() });
     }
   }, [timeRange, initialState.currentBook?.id]);
 
