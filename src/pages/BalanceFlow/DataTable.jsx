@@ -52,7 +52,12 @@ export default () => {
         'type': type,
       });
     }
-    return Promise.resolve([]);
+    if (type === 'TRANSFER' || type === 'ADJUST') {
+      return Promise.resolve([]);
+    }
+    return queryAll('categories', {
+      'bookId': currentBook?.id,
+    });
   }, { manual: true });
 
   const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => {
