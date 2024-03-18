@@ -189,20 +189,15 @@ export default ({ initType = 'EXPENSE' }) => {
     if (form.tags) {
       form.tags = form.tags.map((i) => i?.value || i);
     }
-    form.bookId = form.book.value;
-    delete form.book;
-    form.accountId = form.account?.value;
-    delete form.account;
-    form.payeeId = form.payee?.value;
-    delete form.payee;
-    form.toId = form.to?.value;
-    delete form.to;
+    form.book = form.book.value;
+    form.account = form.account?.value;
+    form.payee = form.payee?.value;
+    form.to = form.to?.value;
     if (form.categories) {
       form.categories = form.categories.map((e) => ({
         ...e,
-        'categoryId': e.category.value,
+        'category': e.category.value,
       }));
-      form.categories.forEach(e => delete e.category);
     }
     if (action !== 2) {
       await create('balance-flows', form);
