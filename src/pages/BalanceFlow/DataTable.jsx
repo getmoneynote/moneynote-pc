@@ -73,7 +73,7 @@ export default () => {
   }, { manual: true });
 
   const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => {
-    if (type === 'ADJUST') {
+    if (type === 'TRANSFER' || type === 'ADJUST') {
       return Promise.resolve([]);
     }
     return queryAll('payees', {
