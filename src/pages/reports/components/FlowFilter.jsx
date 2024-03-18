@@ -53,10 +53,8 @@ export default ({ type, run }) => {
         defaultCollapsed={false}
         onFinish={(values) => {
           let form = JSON.parse(JSON.stringify(values));
-          form.bookId = values.bookId.id;
-          form.book = values.bookId.id;
-          if (values.accountId) form.accountId = values.accountId.id;
-          if (values.accountId) form.account = values.accountId.id;
+          form.book = values.book.value;
+          form.account = values.account.value;
           if (values.payees) form.payees = values.payees.map((i) => i?.id || i);
           if (values.categories) form.categories = values.categories.map((i) => i?.value || i);
           if (values.tags) form.tags = values.tags.map((i) => i?.value || i);
@@ -64,7 +62,7 @@ export default ({ type, run }) => {
         }}
       >
         <ProFormSelect
-          name="bookId"
+          name="book"
           label={t('flow.label.book')}
           rules={requiredRules()}
           onChange={(_, option) => {
@@ -126,7 +124,7 @@ export default ({ type, run }) => {
           }}
         />
         <ProFormSelect
-          name="accountId"
+          name="account"
           label={t('flow.label.account')}
           fieldProps={{
             ...selectSingleProp,

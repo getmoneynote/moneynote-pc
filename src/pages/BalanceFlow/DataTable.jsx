@@ -45,18 +45,38 @@ export default () => {
 
   const { data : accounts = [], loading : accountsLoading, run : loadAccounts} = useRequest(() => queryAll('accounts'), { manual: true });
 
-  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => queryAll('categories', {
-    'bookId': currentBook?.id,
-    'type': type,
-  }), { manual: true });
+  const { data : categories = [], loading : categoriesLoading, run : loadCategories} = useRequest(() => {
+    if (type === 'EXPENSE' || type === 'INCOME') {
+      return queryAll('categories', {
+        'bookId': currentBook?.id,
+        'type': type,
+      });
+    }
+    return Promise.resolve([]);
+  }, { manual: true });
 
-  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => queryAll('tags', {
-    'bookId': currentBook?.id,
-  }), { manual: true });
+  const { data : tags = [], loading : tagsLoading, run : loadTags} = useRequest(() => {
+    if (type === 'ADJUST') {
+      return Promise.resolve([]);
+    }
+    return queryAll('tags', {
+      'bookId': currentBook?.id,
+      'canExpense': type === 'EXPENSE' ? true : null,
+      'canIncome': type === 'INCOME' ? true : null,
+      'canTransfer': type === 'TRANSFER' ? true : null,
+    });
+  }, { manual: true });
 
-  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => queryAll('payees', {
-    'bookId': currentBook?.id,
-  }), { manual: true });
+  const { data : payees = [], loading : payeesLoading, run : loadPayees} = useRequest(() => {
+    if (type === 'ADJUST') {
+      return Promise.resolve([]);
+    }
+    return queryAll('payees', {
+      'bookId': currentBook?.id,
+      'canExpense': type === 'EXPENSE' ? true : null,
+      'canIncome': type === 'INCOME' ? true : null,
+    });
+  }, { manual: true });
 
   const { data : books = [], loading: booksLoading, run: loadBooks } = useRequest(() => queryAll('books'), { manual: true });
 
