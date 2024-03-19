@@ -30,7 +30,7 @@ export default {
   'label.enable': 'Enable',
   'label.notes': 'Notes',
 
-  'delete.confirm': 'Are you sure you want to permanently delete this item?',
+  'delete.confirm': 'Are you sure to delete this item permanently?',
   'click.edit': 'Click to Edit',
 
   'today': 'Today',

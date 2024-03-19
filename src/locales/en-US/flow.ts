@@ -23,7 +23,7 @@ export default {
   'flow.total.income': 'Total Income',
   'flow.total.surplus': 'Surplus',
 
-  'delete.confirm.balance': 'Are you sure you want to delete this transaction? It will also change your account balance.',
+  'delete.confirm.balance': 'Are you sure? It will also change roll back account balance.',
   'update.tag.amount': 'Change Tag Amount',
   'flow.label.tag.amount': 'Tag Amount',
 

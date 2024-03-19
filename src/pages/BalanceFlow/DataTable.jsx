@@ -26,7 +26,6 @@ export default () => {
 
   // 对账点击过来的
   useEffect(() => {
-    console.log(history.location.state?.account)
     if (history.location.state?.account) {
       loadAccounts();
       formRef.current?.setFieldsValue({
