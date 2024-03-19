@@ -311,7 +311,7 @@ export default ({ type, actionRef }) => {
     if (initialState.currentGroup.defaultCurrencyCode !== record.currencyCode) {
       currencyItem = (
         <span>
-          {t('convertCurrency') + initialState.currentGroup.defaultCurrencyCode}: {record.convertedBalance},&nbsp;&nbsp;&nbsp;
+          {t('convertCurrency', {code: initialState.currentGroup.defaultCurrencyCode})}: {record.convertedBalance},&nbsp;&nbsp;&nbsp;
           {t('account.rate')}：{record.rate}
         </span>
       );

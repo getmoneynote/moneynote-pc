@@ -28,7 +28,7 @@ export default ({ flow }) => {
   return (
     <MyModalForm
       title={t('update.tag.amount')}
-      labelWidth={80}
+      labelWidth={100}
       request={requestHandler}
       onSuccess={successHandler}
       initialValues={initialValues}
@@ -36,7 +36,7 @@ export default ({ flow }) => {
       <ProFormText name="amount" label={t('flow.label.tag.amount')} rules={requiredRules()} />
       {
         initialState.currentBook.defaultCurrencyCode !== flow.account.currencyCode &&
-        <ProFormText name="convertedAmount" label={t('convertCurrency')} rules={requiredRules()} />
+        <ProFormText name="convertedAmount" label={t('convertCurrency', {code: initialState.currentBook.defaultCurrencyCode})} rules={requiredRules()} />
       }
     </MyModalForm>
   );

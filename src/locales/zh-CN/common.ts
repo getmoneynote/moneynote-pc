@@ -20,7 +20,7 @@ export default {
   'have': '有',
   'none': '无',
   'sort': '排序',
-  'convertCurrency': '折合',
+  'convertCurrency': '折合{code}',
 
   'label.name': '名称',
   'label.canExpense': '可支出',

@@ -227,7 +227,7 @@ export default ({ initType = 'EXPENSE' }) => {
 
   const categoryLabelMsg = t('flow.label.category');
   const amountLabelMsg = t('flow.label.amount');
-  const convertCurrencyMsg = t('convertCurrency');
+  const convertCurrencyMsg = t('convertCurrency', {code: currencyConvert.convertCode});
   const placeholderRefundMsg = t('placeholder.negative.refund');
   const currencyTooltipMsg = t('flow.currency.auto.tooltip', {rate: currencyRate})
   return (
@@ -269,6 +269,7 @@ export default ({ initType = 'EXPENSE' }) => {
           label={ tabKey !== 'TRANSFER' ? t('flow.label.account') : t('flow.label.transfer.from.account') }
           rules={ tabKey === 'TRANSFER' ? requiredRules() : null }
           onChange={ (_, option) => setAccount(option) }
+          disabled={action === 2}
           fieldProps={{
             ...selectSingleProp,
             onFocus: loadAccounts,
@@ -283,6 +284,7 @@ export default ({ initType = 'EXPENSE' }) => {
               label={t('flow.label.transfer.to.account')}
               rules={requiredRules()}
               onChange={ (_, option) => setToAccount(option) }
+              disabled={action === 2}
               fieldProps={{
                 ...selectSingleProp,
                 onFocus: loadToAccounts,
@@ -291,12 +293,18 @@ export default ({ initType = 'EXPENSE' }) => {
                 allowClear: false,
               }}
             />
-            <ProFormText name="amount" label={t('flow.label.amount')} rules={requiredRules()} />
+            <ProFormText
+              name="amount"
+              label={t('flow.label.amount')}
+              rules={requiredRules()}
+              disabled={action === 2}
+            />
             {currencyConvert.needConvert && (
               <ProFormText
                 name="convertedAmount"
-                label={convertCurrencyMsg + currencyConvert.convertCode}
+                label={convertCurrencyMsg}
                 rules={requiredRules()}
+                disabled={action === 2}
               />
             )}
           </>
@@ -318,6 +326,7 @@ export default ({ initType = 'EXPENSE' }) => {
                           loading: categoriesLoading,
                           options: categories,
                         }}
+                        disabled={action === 2}
                       />
                     </Col>
                     <Col flex="210px">
@@ -327,6 +336,7 @@ export default ({ initType = 'EXPENSE' }) => {
                         rules={requiredRules()}
                         labelCol={{ span: 9 }}
                         placeholder={placeholderRefundMsg}
+                        disabled={action === 2}
                       />
                     </Col>
                     {currencyConvert.needConvert && (
@@ -334,25 +344,27 @@ export default ({ initType = 'EXPENSE' }) => {
                         <Space.Compact>
                           <Form.Item
                             name={[field.name, 'convertedAmount']}
-                            label={convertCurrencyMsg + currencyConvert.convertCode}
+                            label={convertCurrencyMsg}
                             rules={requiredRules()}
                             labelCol={{ span: 10 }}
                           >
-                              <Input />
+                              <Input disabled={action === 2} />
                           </Form.Item>
                           <Tooltip title={currencyTooltipMsg}>
-                            <Button onClick={() => rateClickHandler(field)} loading={currencyRateLoading} size="small" type="primary" icon={<CalculatorOutlined /> } />
+                            <Button disabled={action === 2} onClick={() => rateClickHandler(field)} loading={currencyRateLoading} size="small" type="primary" icon={<CalculatorOutlined /> } />
                           </Tooltip>
                         </Space.Compact>
                       </Col>
                     )}
                     <Col flex="25px">
+                    {action !== 2 && (
                       <Space>
                         <PlusCircleOutlined onClick={() => add()} />
                         {fields.length > 1 ? (
                           <MinusCircleOutlined onClick={() => remove(field.name)} />
                         ) : null}
                       </Space>
+                    )}
                     </Col>
                   </Row>
                 ))

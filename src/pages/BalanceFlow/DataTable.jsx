@@ -383,7 +383,7 @@ export default () => {
     if (record.needConvert) {
       currencyItem = (
         <span>
-          {t('convertCurrency') + record.convertCode}: {record.convertedAmount}
+          {t('convertCurrency', {code: record.convertCode})}: {record.convertedAmount}
         </span>
       );
     }
