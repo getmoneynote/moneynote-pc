@@ -21,6 +21,7 @@ export default {
   'none': 'None',
   'sort': 'Sort',
   'convertCurrency': 'To {code}',
+  'confirm.msg': 'Are you sure?',
 
   'label.name': 'Name',
   'label.canExpense': 'Can Expense',

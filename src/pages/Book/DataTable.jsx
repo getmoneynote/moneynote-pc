@@ -51,7 +51,7 @@ export default () => {
   const [exportingBook, setExportingBook] = useState();
   const exportFlowHandler = async (record) => {
     const messageFailExport = intl.formatMessage({ id: 'book.export.fail' });
-    const messageConfirmExport = intl.formatMessage({ id: 'book.export.confirm' });
+    const messageConfirmExport = intl.formatMessage({ id: 'confirm.msg' });
     Modal.confirm({
       title: messageConfirmExport,
       onOk: async () => {

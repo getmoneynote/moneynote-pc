@@ -9,7 +9,6 @@ export default {
   'book.label.default.transfer.to.account': 'Default Transfer To Account',
   'book.set.default': 'Set as Default',
   'book.export': 'Export Transactions',
-  'book.export.confirm': 'Are you sure?',
   'book.export.fail': 'Export failed, please try again later.',
 
   'template.label.previewUrl': 'Preview',

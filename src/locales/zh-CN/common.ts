@@ -21,6 +21,7 @@ export default {
   'none': '无',
   'sort': '排序',
   'convertCurrency': '折合{code}',
+  'confirm.msg': '确认此操作吗？',
 
   'label.name': '名称',
   'label.canExpense': '可支出',

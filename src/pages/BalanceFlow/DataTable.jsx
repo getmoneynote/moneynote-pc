@@ -99,9 +99,15 @@ export default () => {
     }
   };
 
+  const confirmMsg = t('confirm.msg');
   const confirmHandler = async (record) => {
-    await confirm(record.id);
-    successHandler();
+    Modal.confirm({
+      title: confirmMsg,
+      onOk: async () => {
+        await confirm(record.id);
+        successHandler();
+      }
+    });
   };
 
   const messageDeleteConfirm = t('delete.confirm');

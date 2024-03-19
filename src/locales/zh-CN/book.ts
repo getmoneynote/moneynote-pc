@@ -9,7 +9,6 @@ export default {
   'book.label.default.transfer.to.account': '默认转入账户',
   'book.set.default': '设为默认',
   'book.export': '导出账单',
-  'book.export.confirm': '确认此操作吗？',
   'book.export.fail': '导出失败，请稍后重试。',
 
   'template.label.previewUrl': '账本结构',
