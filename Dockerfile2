@@ -1,4 +1,6 @@
 FROM markliu2018/moneynote-all:latest
+
+COPY ./docker/pc.conf /etc/nginx/sites-available/pc.conf
 COPY ./dist/ /var/www/pc
 
 WORKDIR /app
