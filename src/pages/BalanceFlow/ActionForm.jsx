@@ -221,6 +221,7 @@ export default ({ initType = 'EXPENSE' }) => {
     if (action === 1) {
       return <Tabs activeKey={tabKey} items={items} onChange={(value) => setTabKey(value)} />;
     } else {
+      // TODO @name@code
       return translateAction(action) + translateFlowType(currentRow.type);
     }
   };

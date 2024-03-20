@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {message, Modal, Upload} from "antd";
+import {useModel} from "@umijs/max";
 import {PlusOutlined} from '@ant-design/icons';
 import MyModalForm from '@/components/MyModalForm';
 import { remove } from '@/services/common';
@@ -10,6 +11,7 @@ import t from "@/utils/i18n";
 export default ({ flowId }) => {
 
   const [fileList, setFileList] = useState([]);
+  const { visible } = useModel('modal');
 
   const maxFileCount = 6;
 
@@ -68,9 +70,11 @@ export default ({ flowId }) => {
   }
 
   useEffect(() => {
-    setFileList([]);
-    fetchFiles(flowId);
-  }, [flowId]);
+    if (visible) {
+      setFileList([]);
+      fetchFiles(flowId);
+    }
+  }, [flowId, visible]);
 
   function fetchFiles(flowId) {
     getFiles(flowId).then(res => {
