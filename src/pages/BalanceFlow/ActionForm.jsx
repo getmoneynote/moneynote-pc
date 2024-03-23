@@ -270,7 +270,6 @@ export default ({ initType = 'EXPENSE' }) => {
           label={ tabKey !== 'TRANSFER' ? t('flow.label.account') : t('flow.label.transfer.from.account') }
           rules={ tabKey === 'TRANSFER' ? requiredRules() : null }
           onChange={ (_, option) => setAccount(option) }
-          disabled={action === 2}
           fieldProps={{
             ...selectSingleProp,
             onFocus: loadAccounts,
@@ -285,7 +284,6 @@ export default ({ initType = 'EXPENSE' }) => {
               label={t('flow.label.transfer.to.account')}
               rules={requiredRules()}
               onChange={ (_, option) => setToAccount(option) }
-              disabled={action === 2}
               fieldProps={{
                 ...selectSingleProp,
                 onFocus: loadToAccounts,
@@ -298,14 +296,12 @@ export default ({ initType = 'EXPENSE' }) => {
               name="amount"
               label={t('flow.label.amount')}
               rules={requiredRules()}
-              disabled={action === 2}
             />
             {currencyConvert.needConvert && (
               <ProFormText
                 name="convertedAmount"
                 label={convertCurrencyMsg}
                 rules={requiredRules()}
-                disabled={action === 2}
               />
             )}
           </>
@@ -327,7 +323,6 @@ export default ({ initType = 'EXPENSE' }) => {
                           loading: categoriesLoading,
                           options: categories,
                         }}
-                        disabled={action === 2}
                       />
                     </Col>
                     <Col flex="210px">
@@ -337,7 +332,6 @@ export default ({ initType = 'EXPENSE' }) => {
                         rules={requiredRules()}
                         labelCol={{ span: 9 }}
                         placeholder={placeholderRefundMsg}
-                        disabled={action === 2}
                       />
                     </Col>
                     {currencyConvert.needConvert && (
@@ -349,10 +343,10 @@ export default ({ initType = 'EXPENSE' }) => {
                             rules={requiredRules()}
                             labelCol={{ span: 10 }}
                           >
-                              <Input disabled={action === 2} />
+                              <Input />
                           </Form.Item>
                           <Tooltip title={currencyTooltipMsg}>
-                            <Button disabled={action === 2} onClick={() => rateClickHandler(field)} loading={currencyRateLoading} size="small" type="primary" icon={<CalculatorOutlined /> } />
+                            <Button onClick={() => rateClickHandler(field)} loading={currencyRateLoading} size="small" type="primary" icon={<CalculatorOutlined /> } />
                           </Tooltip>
                         </Space.Compact>
                       </Col>
