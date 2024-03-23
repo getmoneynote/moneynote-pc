@@ -173,7 +173,12 @@ export default ({ initType = 'EXPENSE' }) => {
       categories: newValues.categories
     });
   }
-
+  function rateClickHandler2() {
+    const amount = formRef.current?.getFieldValue('amount');
+    formRef.current?.setFieldsValue({
+      convertedAmount: (currencyRate * Number(amount)).toFixed(2)
+    });
+  }
 
   const successHandler = () => {
     actionRef.current?.reload();
@@ -298,11 +303,18 @@ export default ({ initType = 'EXPENSE' }) => {
               rules={requiredRules()}
             />
             {currencyConvert.needConvert && (
-              <ProFormText
-                name="convertedAmount"
-                label={convertCurrencyMsg}
-                rules={requiredRules()}
-              />
+              <Space.Compact>
+                <Form.Item
+                  name='convertedAmount'
+                  label={convertCurrencyMsg}
+                  rules={requiredRules()}
+                >
+                  <Input />
+                </Form.Item>
+                <Tooltip title={currencyTooltipMsg}>
+                  <Button onClick={() => rateClickHandler2()} loading={currencyRateLoading} size="small" type="primary" icon={<CalculatorOutlined /> } />
+                </Tooltip>
+              </Space.Compact>
             )}
           </>
         )}
@@ -343,7 +355,7 @@ export default ({ initType = 'EXPENSE' }) => {
                             rules={requiredRules()}
                             labelCol={{ span: 10 }}
                           >
-                              <Input />
+                            <Input />
                           </Form.Item>
                           <Tooltip title={currencyTooltipMsg}>
                             <Button onClick={() => rateClickHandler(field)} loading={currencyRateLoading} size="small" type="primary" icon={<CalculatorOutlined /> } />
