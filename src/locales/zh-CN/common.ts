@@ -1,4 +1,5 @@
 export default {
+  'action.title': '{action}{title}',
   'operation': '操作',
   'add': '新增',
   'update': '修改',

@@ -63,3 +63,11 @@ export async function overview() {
     method: 'GET',
   });
 }
+
+export async function updateNotes(id, notes) {
+  return request(`${prefix}/${id}/updateNotes`, {
+    method: 'PUT',
+    data: {"notes": notes},
+  });
+
+}

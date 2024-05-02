@@ -18,6 +18,7 @@ import TrashButton from '@/components/TrashButton';
 import {selectSingleProp, tableProp} from '@/utils/prop';
 import { tableSortFormat } from '@/utils/util';
 import ActionForm from './ActionForm';
+import NotesForm from './NotesForm';
 import AdjustForm from './AdjustForm';
 import t from '@/utils/i18n';
 
@@ -47,6 +48,10 @@ export default ({ type, actionRef }) => {
 
   const updateHandler = (record) => {
     show(<ActionForm type={type} actionRef={actionRef} />, 2, record);
+  };
+
+  const notesUpdateHandler = (record) => {
+    show(<NotesForm actionRef={actionRef} />, 2, record);
   };
 
   const adjustHandler = (record) => {
@@ -173,6 +178,9 @@ export default ({ type, actionRef }) => {
           <TrashButton onClick={() => trashHandler(record)} />,
           <Button type="link" onClick={() => adjustHandler(record)}>
             {t('adjust.balance')}
+          </Button>,
+          <Button type="link" onClick={() => notesUpdateHandler(record)}>
+            {t('label.notes')}
           </Button>,
         ],
       },

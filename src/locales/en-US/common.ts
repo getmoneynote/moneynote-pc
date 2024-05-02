@@ -1,4 +1,5 @@
 export default {
+  'action.title': '{action} {title}',
   'operation': 'Actions',
   'add': 'New ',
   'update': 'Update ',
