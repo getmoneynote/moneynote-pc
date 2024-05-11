@@ -1,4 +1,5 @@
 import type { IApi } from 'umi';
+import {prepend} from "@umijs/utils/compiled/cheerio/lib/api/manipulation";
 
 export default (api: IApi) => {
   api.modifyHTML(($) => {
@@ -49,7 +50,7 @@ export default (api: IApi) => {
         }
       </style>`,
     ]);
-    $('body').append([
+    $('body').prepend([
       `<div class="loading">
          <div class="loader"></div>
        </div>`
