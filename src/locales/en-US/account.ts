@@ -27,5 +27,7 @@ export default {
 
   'account.refresh.currency': 'Refresh Currency',
   'account.audit': 'Audit',
+  'currency.description': 'Description',
+  'currency.base': 'Base Currency',
 
 }

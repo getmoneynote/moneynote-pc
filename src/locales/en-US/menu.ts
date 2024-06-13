@@ -16,4 +16,5 @@ export default {
   'menu.noteDays': 'Note Days',
   'menu.trash': 'Recycle Bin',
   'menu.login': 'Login Page',
+  'menu.currency': 'Currency List',
 };

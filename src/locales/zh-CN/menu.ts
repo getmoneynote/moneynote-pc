@@ -16,4 +16,5 @@ export default {
   'menu.noteDays': '提醒事项',
   'menu.trash': '回收站',
   'menu.login': '登录页',
+  'menu.currency': '汇率列表',
 };

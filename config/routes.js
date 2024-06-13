@@ -109,6 +109,12 @@ export default [
     component: './BookTemplates',
   },
   {
+    path: '/currency',
+    name: 'currency',
+    icon: 'dollar',
+    component: './Currency',
+  },
+  {
     path: '/note-days',
     name: 'noteDays',
     component: './NoteDay',

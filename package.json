@@ -1,6 +1,6 @@
 {
   "name": "moneynote-pc",
-  "version": "1.0.90",
+  "version": "1.0.91",
   "private": true,
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
