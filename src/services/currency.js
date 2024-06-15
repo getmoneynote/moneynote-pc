@@ -17,3 +17,11 @@ export async function rate(from, to) {
     },
   });
 }
+
+export async function updateRates(id, data) {
+  return request(`${prefix}/${id}/rate`, {
+    method: 'PUT',
+    data: data,
+  });
+
+}

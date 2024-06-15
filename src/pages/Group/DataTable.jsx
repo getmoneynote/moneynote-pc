@@ -15,7 +15,6 @@ export default () => {
 
   const { actionRef } = useModel('Group.model');
   const { show } = useModel('modal');
-  const { initialState, setInitialState } = useModel('@@initialState');
 
   function successHandler() {
     actionRef.current?.reload();
@@ -65,14 +64,6 @@ export default () => {
   const setDefaultHandler = async (record) => {
     await setDefaultGroup(record.id);
     window.location.reload();
-    // const response = await initialState.fetchUserInfo();
-    // setInitialState(prevState => ({
-    //   ...prevState,
-    //   currentUser: response.user,
-    //   currentBook: response.book,
-    //   currentGroup: response.group,
-    // }));
-    // successHandler();
   };
 
   const columns = [

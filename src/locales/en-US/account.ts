@@ -29,5 +29,6 @@ export default {
   'account.audit': 'Audit',
   'currency.description': 'Description',
   'currency.base': 'Base Currency',
+  'currency.update': 'Change Rate',
 
 }

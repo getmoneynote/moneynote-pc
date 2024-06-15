@@ -29,5 +29,6 @@ export default {
   'account.audit': '对账',
   'currency.description': '描述',
   'currency.base': '基准币种',
+  'currency.update': '修改汇率',
 
 }
